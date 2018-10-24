@@ -1,0 +1,56 @@
+<form>
+  <div *ngIf="condition === true">
+    <div class="branches_not_found" *ngFor="let a of repos_data">
+      <dl *ngIf="a.err !== ''">
+      <dt *ngIf="a.master !== undefined" >Repository name: {{ a.repo_name }}</dt>
+      <dd>timestamp: {{ a.timestamp }}</dd>
+      <dt *ngIf="a.master !== undefined" >master: </dt>
+      <dd *ngIf="a.master !== undefined" >name: {{ a.master.name }}</dd>
+      <dd *ngIf="a.master !== undefined" >version: {{ a.master.version }}</dd>
+      <dd *ngIf="a.master !== undefined" >description: {{ a.master.description }}</dd>
+      <dd *ngIf="a.master !== undefined" [class]="s(a.master.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ a.master.lodash }}</dd>
+      <dd *ngIf="a.master !== undefined" [class]="s(a.master.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ a.master.tslint }}</dd>
+      <dd *ngIf="a.master !== undefined" [class]="s(a.master.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ a.master.typescript }}</dd>
+      <dd *ngIf="a.master !== undefined" [class]="s(a.master.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ a.master.express }}</dd>
+      <dd *ngIf="a.master !== undefined" [class]="s(a.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ a.master['@angular/common'] }}</dd>
+      <dt *ngIf="a.dev !== undefined">development: </dt>
+      <dd *ngIf="a.dev !== undefined">name: {{ a.dev.name }}</dd>
+      <dd *ngIf="a.dev !== undefined">version: {{ a.dev.version }}</dd>
+      <dd *ngIf="a.dev !== undefined">description: {{ a.dev.description }}</dd>
+      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ a.dev.lodash }}</dd>
+      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ a.dev.tslint }}</dd>
+      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ a.dev.typescript }}</dd>
+      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ a.dev.express }}</dd>
+      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ a.dev['@angular/common'] }}</dd>
+    </dl>
+      <div class="error_alert">
+        {{ a.err }}
+      </div>
+
+      <div class="versions_control" *ngFor="let d of repos_data">
+    <dl *ngIf='d.err === ""'>
+      <dt>Repository name: {{ d.repo_name }}</dt>
+      <dd>timestamp: {{ d.timestamp }}</dd>
+      <dt>master: </dt>
+      <dd>name: {{ d.master.name }}</dd>
+      <dd>version: {{ d.master.version }}</dd>
+      <dd>description: {{ d.master.description }}</dd>
+      <dd [class]="s(d.master.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ d.master.lodash }}</dd>
+      <dd [class]="s(d.master.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ d.master.tslint }}</dd>
+      <dd [class]="s(d.master.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ d.master.typescript }}</dd>
+      <dd [class]="s(d.master.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ d.master.express }}</dd>
+      <dd [class]="s(d.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ d.master['@angular/common'] }}</dd>
+      <dt>development: </dt>
+      <dd>name: {{ d.dev.name }}</dd>
+      <dd>version: {{ d.dev.version }}</dd>
+      <dd>description: {{ d.dev.description }}</dd>
+      <dd [class]="s(d.dev.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ d.dev.lodash }}</dd>
+      <dd [class]="s(d.dev.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ d.dev.tslint }}</dd>
+      <dd [class]="s(d.dev.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ d.dev.typescript }}</dd>
+      <dd [class]="s(d.dev.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ d.dev.express }}</dd>
+      <dd [class]="s(d.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ d.dev['@angular/common'] }}</dd>
+    </dl>
+  </div>
+    </div>
+  </div>
+</form>
