@@ -1,63 +1,105 @@
-<button (click)="getRData()">GET</button>
-<button (click)="insertData()">INSERT</button>
-
-<div class="repos_pages" *ngFor="let repo of repos_data">
-  <a [routerLink]="['/main-page/', repo.repo_name]">{{ repo.repo_name }}</a>
-</div>
-
 <form>
-  <div class="branches_not_found" *ngFor="let a of repos_data">
-    <dl *ngIf="a.err !== ''">
-      <dt *ngIf="a.master !== undefined" >Repository name: {{ a.repo_name }}</dt>
-      <dd>timestamp: {{ a.timestamp }}</dd>
-      <dt *ngIf="a.master !== undefined" >master: </dt>
-      <dd *ngIf="a.master !== undefined" >name: {{ a.master.name }}</dd>
-      <dd *ngIf="a.master !== undefined" >version: {{ a.master.version }}</dd>
-      <dd *ngIf="a.master !== undefined" >description: {{ a.master.description }}</dd>
-      <dd *ngIf="a.master !== undefined" [class]="s(a.master.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ a.master.lodash }}</dd>
-      <dd *ngIf="a.master !== undefined" [class]="s(a.master.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ a.master.tslint }}</dd>
-      <dd *ngIf="a.master !== undefined" [class]="s(a.master.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ a.master.typescript }}</dd>
-      <dd *ngIf="a.master !== undefined" [class]="s(a.master.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ a.master.express }}</dd>
-      <dd *ngIf="a.master !== undefined" [class]="s(a.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ a.master['@angular/common'] }}</dd>
-      <dt *ngIf="a.dev !== undefined">development: </dt>
-      <dd *ngIf="a.dev !== undefined">name: {{ a.dev.name }}</dd>
-      <dd *ngIf="a.dev !== undefined">version: {{ a.dev.version }}</dd>
-      <dd *ngIf="a.dev !== undefined">description: {{ a.dev.description }}</dd>
-      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ a.dev.lodash }}</dd>
-      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ a.dev.tslint }}</dd>
-      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ a.dev.typescript }}</dd>
-      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ a.dev.express }}</dd>
-      <dd *ngIf="a.dev !== undefined" [class]="s(a.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ a.dev['@angular/common'] }}</dd>
-    </dl>
-    <div class="error_alert">
-      {{ a.err }}
-    </div>
-  </div>
-
-  <div class="versions_control" *ngFor="let d of repos_data">
-    <dl *ngIf='d.err === ""'>
-      <dt>Repository name: {{ d.repo_name }}</dt>
-      <dd>timestamp: {{ d.timestamp }}</dd>
-      <dt>master: </dt>
-      <dd>name: {{ d.master.name }}</dd>
-      <dd>version: {{ d.master.version }}</dd>
-      <dd>description: {{ d.master.description }}</dd>
-      <dd [class]="s(d.master.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ d.master.lodash }}</dd>
-      <dd [class]="s(d.master.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ d.master.tslint }}</dd>
-      <dd [class]="s(d.master.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ d.master.typescript }}</dd>
-      <dd [class]="s(d.master.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ d.master.express }}</dd>
-      <dd [class]="s(d.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ d.master['@angular/common'] }}</dd>
-      <dt>development: </dt>
-      <dd>name: {{ d.dev.name }}</dd>
-      <dd>version: {{ d.dev.version }}</dd>
-      <dd>description: {{ d.dev.description }}</dd>
-      <dd [class]="s(d.dev.lodash) < ver.lodash ? 'old_version' : ''"><a>lodash: </a>{{ d.dev.lodash }}</dd>
-      <dd [class]="s(d.dev.tslint) < ver.tslint ? 'old_version' : ''"><a>tslint: </a>{{ d.dev.tslint }}</dd>
-      <dd [class]="s(d.dev.typescript) < ver.typescript ? 'old_version' : ''"><a>typescript: </a>{{ d.dev.typescript }}</dd>
-      <dd [class]="s(d.dev.express) < ver.express ? 'old_version' : ''"><a>express: </a>{{ d.dev.express }}</dd>
-      <dd [class]="s(d.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''"><a>@angular/common: </a>{{ d.dev['@angular/common'] }}</dd>
-    </dl>
+  <div class="versions_control">
+    <table align="center">
+      <tr>
+        <th rowspan="2">Repository name</th>
+        <th rowspan="2">timestamp</th>
+        <th colspan="8">master</th>
+        <th colspan="8">development</th>
+      </tr>
+      <tr>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+      </tr>
+      <tr *ngFor="let a of repos_data">
+        <td *ngIf='a.err === ""'>{{ a.repo_name }}</td>
+        <td *ngIf='a.err === ""'>{{ a.timestamp }}</td>
+        <td *ngIf='a.err === ""'>{{ a.master.name }}</td>
+        <td *ngIf='a.err === ""'>{{ a.master.version }}</td>
+        <td *ngIf='a.err === ""'>{{ a.master.description }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.master.lodash) < ver.lodash ? 'old_version' : ''">{{ a.master.lodash }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.master.tslint) < ver.tslint ? 'old_version' : ''">{{ a.master.tslint}}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.master.typescript) < ver.typescript ? 'old_version' : ''">{{ a.master.typescript }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.master.express) < ver.express ? 'old_version' : ''">{{ a.master.express }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ a.master['@angular/common'] }}</td>
+        <td *ngIf='a.err === ""'>{{ a.dev.name }}</td>
+        <td *ngIf='a.err === ""'>{{ a.dev.version }}</td>
+        <td *ngIf='a.err === ""'>{{ a.dev.description }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.dev.lodash) < ver.lodash ? 'old_version' : ''">{{ a.dev.lodash }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.dev.tslint) < ver.tslint ? 'old_version' : ''">{{ a.dev.tslint}}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.dev.typescript) < ver.typescript ? 'old_version' : ''">{{ a.dev.typescript }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.dev.express) < ver.express ? 'old_version' : ''">{{ a.dev.express }}</td>
+        <td *ngIf='a.err === ""' [class]="s(a.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ a.dev['@angular/common'] }}</td>
+      </tr>
+      <tr>
+        <th class="string-height" colspan="18">Branches data missing</th>
+      </tr>
+      <tr>
+        <th rowspan="2">Repository name</th>
+        <th rowspan="2">timestamp</th>
+        <th colspan="8">master</th>
+        <th colspan="8">development</th>
+      </tr>
+      <tr>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+      </tr>
+      <tr *ngFor="let d of repos_data">
+        <td class="error_alert" *ngIf='d.err !== "" && d.master === undefined' colspan="8">{{ d.err }}</td>
+        <td *ngIf='d.err !== ""'>{{ d.repo_name }}</td>
+        <td *ngIf='d.err !== ""'>{{ d.timestamp }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined'>{{ d.master.name }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined'>{{ d.master.version }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined'>{{ d.master.description }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined' [class]="s(d.master.lodash) < ver.lodash ? 'old_version' : ''">{{ d.master.lodash }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined' [class]="s(d.master.tslint) < ver.tslint ? 'old_version' : ''">{{ d.master.tslint}}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined' [class]="s(d.master.typescript) < ver.typescript ? 'old_version' : ''">{{ d.master.typescript }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined' [class]="s(d.master.express) < ver.express ? 'old_version' : ''">{{ d.master.express }}</td>
+        <td *ngIf='d.err !== "" && d.master !== undefined' [class]="s(d.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ d.master['@angular/common'] }}</td>
+        <td class="error_alert" *ngIf='d.err !== "" && d.dev === undefined' colspan="8">{{ d.err }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined'>{{ d.dev.name }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined'>{{ d.dev.version }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined'>{{ d.dev.description }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined' [class]="s(d.dev.lodash) < ver.lodash ? 'old_version' : ''">{{ d.dev.lodash }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined' [class]="s(d.dev.tslint) < ver.tslint ? 'old_version' : ''">{{ d.dev.tslint}}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined' [class]="s(d.dev.typescript) < ver.typescript ? 'old_version' : ''">{{ d.dev.typescript }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined' [class]="s(d.dev.express) < ver.express ? 'old_version' : ''">{{ d.dev.express }}</td>
+        <td *ngIf='d.err !== "" && d.dev !== undefined' [class]="s(d.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ d.dev['@angular/common'] }}</td>
+      </tr>
+    </table>
   </div>
 </form>
+
+<div class="btn-pos">
+   <button class="button-btn" (click)="getRData()">SYNCHRONIZE</button>
+</div>
 
 <router-outlet></router-outlet>

@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 
 const url = 'http://localhost:8000';
+const url1 = 'http://8b786b85.ngrok.io';
 
 @Injectable()
 export class AppService {
@@ -12,17 +13,7 @@ export class AppService {
 
 
   getData(): Observable<any> {
-    return this.http.get(`${url}/repos/get-repository`)
-      .pipe(
-        catchError(err => err.code === 404
-          ? throwError('Not found')
-          : throwError(err)
-        )
-      );
-  }
-
-  getRepoData(): Observable<any> {
-    return this.http.get(`${url}/repos/get-repo-data`)
+    return this.http.get(`${url1}/repos/get-repository`)
       .pipe(
         catchError(err => err.code === 404
           ? throwError('Not found')

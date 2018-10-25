@@ -6,20 +6,40 @@
 .old_version {
   font-family: Lucida, sans-serif;
   font-weight: bold;
-  color: red;
+  background-color: #ce0000;
+  color: white;
+}
+
+table, th, td {
+  text-align: center;
+  border: 1px solid black;
+}
+
+.string-height {
+  height: 30px;
+}
+
+.btn-pos {
+  text-align: center;
+}
+.button-btn {
+  position: absolute;
+  background-color: #2750af;
+  border-radius: 2px;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 }
 
 .error_alert {
   font-family: Lucida, sans-serif;
   font-weight: bolder;
-  color: red;
-}
-
-dt {
-  font-weight: bold;
-}
-
-a {
-  font-weight: lighter;
-  color: black;
+  background-color: #ce0000;
+  color: white;
 }

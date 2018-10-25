@@ -1,4 +1,4 @@
-import { Model, Schema } from 'mongoose';
+import { Model } from 'mongoose';
 import { Injectable, Inject, HttpService } from '@nestjs/common';
 import * as _ from 'lodash';
 import { Repo } from '../interfaces/repo.interface';
@@ -7,8 +7,6 @@ import repo_config from '../parameters/repo_data_config';
 
 @Injectable()
 export class GithubReposService {
-
-    private arrayId: any = [];
 
     constructor(private readonly httpService: HttpService, @Inject('RepoModelToken') private readonly repoModel: Model<Repo>) {  }
 
@@ -47,34 +45,35 @@ export class GithubReposService {
                 await callback(array[i], i, array)
             }
         };
-
         await asyncForEach(repo_config.repositories, async (repo) => {
             const obj = await _.reduce(repo_config.branches, async (result, branch) => {
                 const syncResult = await result;
                 syncResult[branch] = await this.getRepoData(`https://raw.githubusercontent.com/${repo}/${branch}/package.json`);
                 return syncResult;
             }, {});
-            const resultData = obj1.push(Object.assign({repo_name: repo, timestamp: new Date}, obj));
+            let currentDate = new Date();
+            let datetime = currentDate.getDay() + "/" + (currentDate.getMonth() +1)
+                + "/" + currentDate.getFullYear() + " @ "
+                + currentDate.getHours() + ":"
+                + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+            const resultData = obj1.push(Object.assign({repo_name: repo, timestamp: datetime}, obj));
             return resultData;
         });
-        _.forEach(obj1, (item) => {
-            this.create(item);
-            return;
+        const finalResult = obj1.map(item => {
+            return this.create(item);
         });
+        return Promise.all(finalResult);
     }
 
     async create(createRepoDto: CreateRepoDto): Promise<Repo> {
-        const arrId = [];
         const createdRepo = new this.repoModel(createRepoDto);
-            return await createdRepo.save({ validateBeforeSave: false }, async (err, result) => {
-                this.arrayId = arrId.push(result._id);
-                let obj = await this.findById(this.arrayId);
-                console.log(obj);
-            });
+        const result = await createdRepo.save({ validateBeforeSave: false });
+        const res = await this.findById(result._id);
+        return res[0];
     }
 
     async findById(parameter): Promise<Repo[]> {
-        return await this.repoModel.find({_id: { $in: [parameter] }});
+        return await this.repoModel.find({_id: parameter }).exec();
     }
 
     async findAll(): Promise<Repo[]> {

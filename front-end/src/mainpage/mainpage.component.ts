@@ -17,16 +17,10 @@ export class MainpageComponent implements OnInit {
 
   ngOnInit() {}
 
-  insertData() {
+  getRData() {
     return this.app.getData()
       .subscribe(res => {
         console.log(res);
-      })
-  }
-
-  getRData() {
-    return this.app.getRepoData()
-      .subscribe(res => {
         const repo_data_array = [];
         _.forEach(res, (item) => {
           if(item.develop === undefined && item.development === undefined) {

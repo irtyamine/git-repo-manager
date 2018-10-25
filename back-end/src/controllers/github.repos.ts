@@ -14,26 +14,7 @@ export class GithubRepos {
         @Res() res: Response
     ) {
         let a = await this.repo.getRepo();
-        console.log(a);
+        console.log(1111);
         return res.json(a);
-    }
-
-    @Get('get-repo-data')
-    async getRepoData(
-        @Req() req: Request,
-        @Res() res: Response
-    ) {
-        let a = await this.repo.findAll();
-        return res.json(a);
-    }
-
-    @Post('inset-into')
-    async create(@Body() createRepoDto: CreateRepoDto) {
-        this.repo.create(createRepoDto);
-    }
-
-    @Get('select')
-    async findAll(): Promise<Repo[]> {
-        return this.repo.findAll();
     }
 }
