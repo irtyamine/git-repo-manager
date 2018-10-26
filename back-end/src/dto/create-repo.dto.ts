@@ -1,5 +1,5 @@
 export class CreateRepoDto {
-    readonly repo_name: string;
+    readonly repoName: string;
     readonly timestamp: string;
     readonly master: {
         readonly version: string,

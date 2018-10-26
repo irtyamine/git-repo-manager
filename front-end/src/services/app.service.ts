@@ -13,7 +13,7 @@ export class AppService {
 
 
   getData(): Observable<any> {
-    return this.http.get(`${url1}/repos/get-repository`)
+    return this.http.get(`${url}/repos/get-repository`)
       .pipe(
         catchError(err => err.code === 404
           ? throwError('Not found')

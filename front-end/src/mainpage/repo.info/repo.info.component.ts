@@ -20,7 +20,7 @@ export class RepoInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    return this.app.getRepoData()
+    return this.app.getData()
       .subscribe(res => {
         const repo_data_array = [];
         _.forEach(res, (item) => {

@@ -12,7 +12,7 @@ export class MainpageComponent implements OnInit {
 
   constructor(private app: AppService) {  }
 
-  private repos_data: any = [];
+  private reposData: any = [];
   public ver = versions;
 
   ngOnInit() {}
@@ -21,37 +21,60 @@ export class MainpageComponent implements OnInit {
     return this.app.getData()
       .subscribe(res => {
         console.log(res);
-        const repo_data_array = [];
+        const repoDataArray = [];
         _.forEach(res, (item) => {
-          if(item.develop === undefined && item.development === undefined) {
+          if(item.master === undefined && item.develop === undefined && item.development === undefined) {
             const newObj = {
-              repo_name: item.repo_name,
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              err: `There aren't any branches in '${item.repoName}' repository`
+            };
+            return repoDataArray.push(newObj);
+          } else if(item.develop === undefined && item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
               timestamp: item.timestamp,
               master: item.master,
-              err: `There isn't 'development' branch in '${item.repo_name}' repository`
+              err: `There isn't 'development' branch in '${item.repoName}' repository`
             };
-            return repo_data_array.push(newObj);
+            return repoDataArray.push(newObj);
+          } else if(item.master === undefined && item.develop === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              dev: item.development,
+              err: `There isn't 'master' branch in '${item.repoName}' repository`
+            };
+            return repoDataArray.push(newObj);
+          } else if(item.master === undefined && item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              dev: item.develop,
+              err: `There isn't 'master' branch in '${item.repoName}' repository`
+            };
+            return repoDataArray.push(newObj);
           } else if(item.develop === undefined) {
             const newObj = {
-              repo_name: item.repo_name,
+              repoName: item.repoName,
               timestamp: item.timestamp,
               master: item.master,
               dev: item.development,
               err: "",
             };
-            return repo_data_array.push(newObj);
+            return repoDataArray.push(newObj);
           } else if(item.development === undefined) {
             const newObj = {
-              repo_name: item.repo_name,
+              repoName: item.repoName,
               timestamp: item.timestamp,
               master: item.master,
               dev: item.develop,
               err: ""
             };
-            return repo_data_array.push(newObj);
+            return repoDataArray.push(newObj);
           }
         });
-        this.repos_data = repo_data_array;
+        this.reposData = repoDataArray;
       })
   }
 

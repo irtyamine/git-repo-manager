@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export interface Repo extends Document{
-    readonly repo_name: string,
+    readonly repoName: string,
     readonly timestamp: string,
     readonly master: {
         readonly version: string,

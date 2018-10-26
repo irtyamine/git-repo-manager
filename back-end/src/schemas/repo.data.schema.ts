@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const RepoDataSchema = new mongoose.Schema({
-    repo_name: {
+    repoName: {
         type: String
     },
     timestamp: {

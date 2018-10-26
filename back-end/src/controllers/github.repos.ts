@@ -1,8 +1,6 @@
-import { Controller, Get, Req, Post, Res, Body } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { GithubReposService } from '../services/github.repos.service';
-import { CreateRepoDto } from '../dto/create-repo.dto';
-import { Repo } from '../interfaces/repo.interface';
 
 @Controller('repos')
 export class GithubRepos {
@@ -13,8 +11,8 @@ export class GithubRepos {
         @Req() req: Request,
         @Res() res: Response
     ) {
-        let a = await this.repo.getRepo();
-        console.log(1111);
-        return res.json(a);
+        let result = await this.repo.getRepo();
+        console.log(`Response status - 200. Time: ${new Date}`);
+        return res.json(result);
     }
 }
