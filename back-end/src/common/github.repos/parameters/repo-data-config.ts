@@ -3,11 +3,8 @@ let repoConfig = {
         'VS-work/vs-website',
         'VS-work/ngx-bootstrap',
         'Gapminder/dollar-street-pages',
-        'valor-software/dollar-street-consumer-api',
-        'valor-software/dollar-street-cms-server',
         'valor-software/dollar-street-cms-pages',
         'valor-software/dollar-street-embed-api',
-        'Gapminder/test-and-learn-server',
         'vizabi/vizabi',
         'vizabi/vizabi-interpolators',
         'vizabi/ng2-vizabi',
@@ -17,16 +14,19 @@ let repoConfig = {
         'Gapminder/ddf-validation',
         'Gapminder/gapminder-offline',
         'Gapminder/waffle-server',
-        'Gapminder/waffle-server-import-cli',
         'VS-work/waffle-server-repo-service',
         'VS-work/git-csv-diff',
         'vizabi/readers-test',
         'Gapminder/ddf-time-utils',
-        'valor-software/personal-crm',
         'VS-work/live-starter',
         'VS-work/live-starter-api',
-        'valor-software/church-app',
         'MilaLys/themes-switching'
+    ],
+    privateRepositories: [
+        'valor-software/dollar-street-consumer-api',
+        'valor-software/dollar-street-cms-server',
+        'valor-software/personal-crm',
+        'valor-software/church-app'
     ],
     branches: [
         'master',
@@ -54,7 +54,7 @@ let repoConfig = {
         'version',
         'name',
         'description',
-    ],
+    ]
 };
 
 export default repoConfig;

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../services/app.service';
-import * as _ from 'lodash';
-import  versions  from '../config/versions.config';
+import { forEach } from 'lodash';
+import versions from '../config/versions.config';
 
 @Component({
   selector: 'app-mainpage',
@@ -12,49 +12,52 @@ export class MainpageComponent implements OnInit {
 
   constructor(private app: AppService) {  }
 
-  private reposData: any = [];
+  private publicReposData: any = [];
+  private privateReposData: any = [];
   public ver = versions;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getRData();
+  }
 
-  getRData() {
+  public getRData() {
     return this.app.getData()
       .subscribe(res => {
-        console.log(res);
-        const repoDataArray = [];
-        _.forEach(res, (item) => {
-          if(item.master === undefined && item.develop === undefined && item.development === undefined) {
+        const publicRepoDataArray = [];
+        const privateRepoDataArray = [];
+        forEach(res.publicRepositories, (item) => {
+          if (item.master === undefined && item.develop === undefined && item.development === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
               err: `There aren't any branches in '${item.repoName}' repository`
             };
-            return repoDataArray.push(newObj);
-          } else if(item.develop === undefined && item.development === undefined) {
+            return publicRepoDataArray.push(newObj);
+          } else if (item.develop === undefined && item.development === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
               master: item.master,
               err: `There isn't 'development' branch in '${item.repoName}' repository`
             };
-            return repoDataArray.push(newObj);
-          } else if(item.master === undefined && item.develop === undefined) {
+            return publicRepoDataArray.push(newObj);
+          } else if (item.master === undefined && item.develop === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
               dev: item.development,
               err: `There isn't 'master' branch in '${item.repoName}' repository`
             };
-            return repoDataArray.push(newObj);
-          } else if(item.master === undefined && item.development === undefined) {
+            return publicRepoDataArray.push(newObj);
+          } else if (item.master === undefined && item.development === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
               dev: item.develop,
               err: `There isn't 'master' branch in '${item.repoName}' repository`
             };
-            return repoDataArray.push(newObj);
-          } else if(item.develop === undefined) {
+            return publicRepoDataArray.push(newObj);
+          } else if (item.develop === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
@@ -62,8 +65,8 @@ export class MainpageComponent implements OnInit {
               dev: item.development,
               err: "",
             };
-            return repoDataArray.push(newObj);
-          } else if(item.development === undefined) {
+            return publicRepoDataArray.push(newObj);
+          } else if (item.development === undefined) {
             const newObj = {
               repoName: item.repoName,
               timestamp: item.timestamp,
@@ -71,16 +74,70 @@ export class MainpageComponent implements OnInit {
               dev: item.develop,
               err: ""
             };
-            return repoDataArray.push(newObj);
+            return publicRepoDataArray.push(newObj);
           }
         });
-        this.reposData = repoDataArray;
+        this.publicReposData = publicRepoDataArray;
+
+        forEach(res.privateRepositories, (item) => {
+          if (item.master === undefined && item.develop === undefined && item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              err: `There aren't any branches in '${item.repoName}' repository`
+            };
+            return privateRepoDataArray.push(newObj);
+          } else if (item.develop === undefined && item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              master: item.master,
+              err: `There isn't 'development' branch in '${item.repoName}' repository`
+            };
+            return privateRepoDataArray.push(newObj);
+          } else if (item.master === undefined && item.develop === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              dev: item.development,
+              err: `There isn't 'master' branch in '${item.repoName}' repository`
+            };
+            return privateRepoDataArray.push(newObj);
+          } else if (item.master === undefined && item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              dev: item.develop,
+              err: `There isn't 'master' branch in '${item.repoName}' repository`
+            };
+            return privateRepoDataArray.push(newObj);
+          } else if (item.develop === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              master: item.master,
+              dev: item.development,
+              err: "",
+            };
+            return privateRepoDataArray.push(newObj);
+          } else if (item.development === undefined) {
+            const newObj = {
+              repoName: item.repoName,
+              timestamp: item.timestamp,
+              master: item.master,
+              dev: item.develop,
+              err: ""
+            };
+            return privateRepoDataArray.push(newObj);
+          }
+        });
+        this.privateReposData = privateRepoDataArray;
       })
   }
 
-  s(d) {
-    if(d !== 'undefined' && d) {
-      return d.replace(/[^]*([\0-9].[\0-9].[\0-9])/, '$1');
+  public setVersion(version) {
+    if(version !== 'undefined' && version) {
+      return version.replace(/[^]*([\0-9].[\0-9].[\0-9])/, '$1');
     }
   }
 }
