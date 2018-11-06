@@ -1,15 +1,16 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Repo } from '../database/interfaces/repos.interface/repo.interface';
-import { CreateRepoDto } from '../database/dto/repos.dto/create.repo.dto';
+import { Repo } from './interfaces/repos.interface';
+import { CreateReposDto } from './dto/create.repos.dto';
 
 @Injectable()
-export class ReposDbService {
+export class ReposRepository {
 
     constructor(@Inject('RepoModelToken') private readonly repoModel: Model<Repo>) {  }
 
-    async insertToDB(item: CreateRepoDto): Promise<Repo> {
+    async insertToDB(item: CreateReposDto): Promise<Repo> {
         const createdRepo = new this.repoModel(item);
         return await createdRepo.save();
     }
+
 }

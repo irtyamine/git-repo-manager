@@ -49,6 +49,27 @@
         ],
         "one-variable-per-declaration": [
             false
+        ],
+        "no-shadowed-variable": [
+            false
+        ],
+        "no-console": [
+            false
+        ],
+        "no-trailing-whitespace": [
+            false
+        ],
+        "no-consecutive-blank-lines": [
+            false
+        ],
+        "trailing-comma": [
+            false
+        ],
+        "object-literal-key-quotes": [
+          false
+        ],
+        "new-parens": [
+            false
         ]
     },
     "rulesDirectory": []

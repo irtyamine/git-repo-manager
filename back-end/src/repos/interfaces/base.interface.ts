@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
-export interface RepoDevelopInterface extends Document{
-    develop: {
+export interface BaseInterface extends Document{
+    base: {
         readonly version: string,
         readonly name: string,
         readonly description: string,

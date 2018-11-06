@@ -1,4 +1,4 @@
-let versions = {
+const versions = {
   lodash: `4.17.7`,
   tslint: '5.8.0',
   typescript: `2.5.2`,

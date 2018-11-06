@@ -1,4 +1,4 @@
-let repoConfig = {
+const repoConfig = {
     repositories: [
         'VS-work/vs-website',
         'VS-work/ngx-bootstrap',
@@ -20,41 +20,31 @@ let repoConfig = {
         'Gapminder/ddf-time-utils',
         'VS-work/live-starter',
         'VS-work/live-starter-api',
-        'MilaLys/themes-switching'
+        'MilaLys/themes-switching',
     ],
     privateRepositories: [
         'valor-software/dollar-street-consumer-api',
         'valor-software/dollar-street-cms-server',
         'valor-software/personal-crm',
-        'valor-software/church-app'
+        'valor-software/church-app',
     ],
     branches: [
         'master',
         'develop',
-        'development'
+        'development',
     ],
-    objectPackages: [
-        'express',
-        'lodash',
-        'tslint',
-        'typescript',
-        '@angular/common'
-    ],
-    packages: [
-        'version',
-        'name',
-        'description',
-        'express',
-        'lodash',
-        'tslint',
-        'typescript',
-        '@angular/common'
-    ],
-    staticRepoData: [
-        'version',
-        'name',
-        'description',
-    ]
+    objectPackages: {
+        express: 'express',
+        lodash: 'lodash',
+        tslint: 'tslint',
+        typescript: 'typescript',
+        angular: '@angular/common',
+    },
+    staticRepoData: {
+        version: 'version',
+        name: 'name',
+        description: 'description',
+    },
 };
 
 export default repoConfig;

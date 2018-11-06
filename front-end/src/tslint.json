@@ -12,6 +12,15 @@
             "element",
             "app",
             "kebab-case"
+        ],
+        "max-line-length": [
+          210
+        ],
+        "quotemark": [
+          false
+        ],
+        "no-trailing-whitespace": [
+          false
         ]
     }
 }

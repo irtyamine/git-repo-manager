@@ -1,18 +1,27 @@
 import { Module } from '@nestjs/common';
-import { GithubRepos } from './common/github.repos/controllers/github.repos';
-import { GithubReposService } from './services/github.repos.service';
-
+import { ReposModule } from './repos/repos.module';
 import { HttpModule } from '@nestjs/common';
-import { repoProviders } from './common/github.repos/providers/repo.provider';
-import { DatabaseModule } from './database/database.module';
-import { ReposDbService } from './services/repos.db.service';
+import { databaseProviders } from './common/database.providers';
+import { reposProviders } from './repos/repos.providers';
+import { ReposService } from './repos/repos.service';
+import { ReposRepository } from './repos/repos.repository';
+import { ReposController } from './repos/repos.controller';
 
 @Module({
+  exports: [
+      ...databaseProviders,
+      ...reposProviders
+  ],
   imports: [
       HttpModule,
-      DatabaseModule
+      ReposModule
   ],
-  controllers: [ GithubRepos ],
-  providers: [ GithubReposService, ReposDbService, ...repoProviders],
+  controllers: [ ReposController ],
+  providers: [
+      ReposService,
+      ReposRepository,
+      ...databaseProviders,
+      ...reposProviders
+  ],
 })
 export class AppModule {  }

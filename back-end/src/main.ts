@@ -1,19 +1,19 @@
 import { NestFactory } from '@nestjs/core';
+import * as cors from 'cors';
 import { join } from 'path';
 import { AppModule } from './app.module';
 
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: false,
+};
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-    app.use((req, res, next) => {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        next();
-    });
+  app.use(cors(corsOptions));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
 
-  await app.listen(8000);
+  await app.listen(3000, () => console.log('Application is listening on port 3000'));
 }
 bootstrap();

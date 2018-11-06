@@ -8,14 +8,13 @@ import { AppService } from './services/app.service';
 import { routes } from './app.routing';
 import { AppComponent } from './app/app.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
-import { RepoInfoComponent } from './mainpage/repo.info/repo.info.component';
 import { NotFoundComponent } from './not.found/not.found.component';
+import { SortDataService } from './services/sort.data.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainpageComponent,
-    RepoInfoComponent,
     NotFoundComponent
   ],
   imports: [
@@ -24,7 +23,8 @@ import { NotFoundComponent } from './not.found/not.found.component';
     RouterModule.forRoot(routes)
   ],
   providers: [
-    AppService
+    AppService,
+    SortDataService
   ],
   bootstrap: [
     AppComponent

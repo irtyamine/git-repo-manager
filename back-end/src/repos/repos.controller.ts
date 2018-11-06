@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { GithubReposService } from '../../../services/github.repos.service';
+import { ReposService } from './repos.service';
 
 @Controller('repos')
-export class GithubRepos {
-    constructor(private readonly repo: GithubReposService) {  }
+export class ReposController {
+    constructor(private readonly repo: ReposService) {  }
 
     @Get('get-repository')
     async getRepo() {
