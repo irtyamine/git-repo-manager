@@ -10,7 +10,7 @@ export class AppService {
   constructor(private http: HttpClient) {  }
 
   getData(): Observable<any> {
-    return this.http.get(`${url.localhost}/repos/get-repository`)
+    return this.http.get(`${url.ngrok}/repos/get-repository`)
       .pipe(
         catchError(err => err.code === 404
           ? throwError('Not found')

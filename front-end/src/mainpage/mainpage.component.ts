@@ -11,8 +11,7 @@ import versions from '../config/versions.config';
 export class MainpageComponent implements OnInit {
   constructor(private app: AppService, private sortData: SortDataService) {}
 
-  private publicReposData: any = [];
-  private privateReposData: any = [];
+  public reposData: any = [];
   public ver = versions;
 
   ngOnInit() {
@@ -21,8 +20,7 @@ export class MainpageComponent implements OnInit {
 
   public getReposData() {
     return this.app.getData().subscribe(res => {
-      this.publicReposData = this.sortData.sortReposData(res.publicRepositories);
-      this.privateReposData = this.sortData.sortReposData(res.privateRepositories);
+      this.reposData = this.sortData.sortReposData(res);
     });
   }
 

@@ -4,13 +4,17 @@ import { ReposChildSchema } from './repos.child.schema';
 export const ReposParentSchema = new mongoose.Schema({
     repoName: {
         type: String,
-        required: true
+        required: false
     },
     timestamp: {
-        type: String,
-        required: true
+        type: Date,
+        required: false
     },
-    master: [ReposChildSchema][0],
-    develop: [ReposChildSchema][0],
-    development: [ReposChildSchema][0]
+    repoType: {
+        type: String,
+        required: false
+    },
+    master: ReposChildSchema,
+    develop: ReposChildSchema,
+    development: ReposChildSchema
 });

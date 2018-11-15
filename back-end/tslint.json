@@ -21,7 +21,7 @@
         ],
         "max-line-length": [
             true,
-            150
+            210
         ],
         "member-ordering": [
             false
@@ -70,7 +70,11 @@
         ],
         "new-parens": [
             false
-        ]
+        ],
+        "prefer-const": false,
+        "align": false,
+        "object-literal-shorthand": false,
+        "no-string-literal": false
     },
     "rulesDirectory": []
 }

@@ -3,7 +3,8 @@ import { ReposService } from './repos.service';
 
 @Controller('repos')
 export class ReposController {
-    constructor(private readonly repo: ReposService) {  }
+    constructor(private readonly repo: ReposService) {
+    }
 
     @Get('get-repository')
     async getRepo() {
