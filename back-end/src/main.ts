@@ -4,7 +4,7 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 
 const corsOptions = {
-    origin: 'http://425b1770.ngrok.io',
+    origin: '*',
     credentials: false,
 };
 

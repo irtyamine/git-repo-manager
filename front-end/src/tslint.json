@@ -21,6 +21,8 @@
         ],
         "no-trailing-whitespace": [
           false
-        ]
+        ],
+      "class-name": false,
+      "no-inferrable-types": false
     }
 }

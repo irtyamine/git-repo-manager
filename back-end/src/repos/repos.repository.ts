@@ -1,15 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
-import * as mongoose from 'mongoose';
 import { Model } from 'mongoose';
-import { Repo } from './interfaces/repos.interface';
-import { CreateReposDto } from './dto/create.repos.dto';
+import { Repo } from './interfaces/repo.interface';
+import { RepoDto } from './dto/repo.dto';
 
 @Injectable()
-export class ReposRepository {
+export class GitHubRepositoriesRepository {
   constructor(@Inject('RepoModelToken') private readonly repoModel: Model<Repo>) {}
 
-  async insertToDB(item: CreateReposDto) {
-    mongoose.set('useFindAndModify', false);
+  async insertToDB(item: RepoDto) {
     process.nextTick(() => {
       this.repoModel.findOneAndUpdate(
         { repoName: item.repoName },
@@ -18,16 +16,14 @@ export class ReposRepository {
           upsert: true
         },
         (err, res) => {
-          if (err) {
-            throw err;
-          }
+          if (err) throw err;
           console.log('Upload');
         },
       );
     });
   }
 
-  async findReposData() {
+    findRepositoriesData() {
       return this.repoModel.find();
   }
 

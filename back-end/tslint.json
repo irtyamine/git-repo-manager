@@ -21,7 +21,7 @@
         ],
         "max-line-length": [
             true,
-            210
+            310
         ],
         "member-ordering": [
             false
@@ -74,7 +74,8 @@
         "prefer-const": false,
         "align": false,
         "object-literal-shorthand": false,
-        "no-string-literal": false
+        "no-string-literal": false,
+        "prefer-for-of": false
     },
     "rulesDirectory": []
 }

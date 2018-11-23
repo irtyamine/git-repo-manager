@@ -2,8 +2,12 @@
   <div class="versions_control">
     <table align="center">
       <tr>
-        <th rowspan="2">Repository name</th>
-        <th rowspan="2">timestamp</th>
+        <th rowspan="3">Repository name</th>
+        <th rowspan="3">Type of privacy</th>
+        <th rowspan="3">Last update</th>
+        <th colspan="16">Branches</th>
+      </tr>
+      <tr>
         <th colspan="8">master</th>
         <th colspan="8">development</th>
       </tr>
@@ -25,81 +29,36 @@
         <th>express</th>
         <th>@angular/common</th>
       </tr>
-      <tr *ngFor="let repoData of reposData">
-        <td *ngIf='repoData.err === ""'>{{ repoData.repoName }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.timestamp }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.master.name }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.master.version }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.master.description }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.master.lodash) < ver.lodash ? 'old_version' : ''">{{ repoData.master.lodash }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.master.tslint) < ver.tslint ? 'old_version' : ''">{{ repoData.master.tslint}}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.master.typescript) < ver.typescript ? 'old_version' : ''">{{ repoData.master.typescript }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.master.express) < ver.express ? 'old_version' : ''">{{ repoData.master.express }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ repoData.master['@angular/common'] }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.dev.name }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.dev.version }}</td>
-        <td *ngIf='repoData.err === ""'>{{ repoData.dev.description }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.dev.lodash) < ver.lodash ? 'old_version' : ''">{{ repoData.dev.lodash }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.dev.tslint) < ver.tslint ? 'old_version' : ''">{{ repoData.dev.tslint}}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.dev.typescript) < ver.typescript ? 'old_version' : ''">{{ repoData.dev.typescript }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.dev.express) < ver.express ? 'old_version' : ''">{{ repoData.dev.express }}</td>
-        <td *ngIf='repoData.err === ""' [class]="setVersion(repoData.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ repoData.dev['@angular/common'] }}</td>
-      </tr>
-      <tr>
-        <th class="string-height" colspan="19">Branches data missing</th>
-      </tr>
-      <tr>
-        <th rowspan="2">Repository name</th>
-        <th rowspan="2">timestamp</th>
-        <th colspan="8">master</th>
-        <th colspan="8">development</th>
-      </tr>
-      <tr>
-        <th>name</th>
-        <th>version</th>
-        <th>description</th>
-        <th>lodash</th>
-        <th>tslint</th>
-        <th>typescript</th>
-        <th>express</th>
-        <th>@angular/common</th>
-        <th>name</th>
-        <th>version</th>
-        <th>description</th>
-        <th>lodash</th>
-        <th>tslint</th>
-        <th>typescript</th>
-        <th>express</th>
-        <th>@angular/common</th>
-      </tr>
-      <tr *ngFor="let errorRepoData of reposData">
-        <td *ngIf='errorRepoData.err !== ""'>{{ errorRepoData.repoName }}</td>
-        <td *ngIf='errorRepoData.err !== ""'>{{ errorRepoData.timestamp }}</td>
-        <td class="error_alert" *ngIf='errorRepoData.err !== "" && errorRepoData.master === undefined && errorRepoData.dev !== undefined' colspan="8">{{ errorRepoData.err }}</td>
-        <td class="error_alert" *ngIf='errorRepoData.err !== "" && errorRepoData.master === undefined && errorRepoData.dev === undefined' colspan="16">{{ errorRepoData.err }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined'>{{ errorRepoData.master.name }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined'>{{ errorRepoData.master.version }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined'>{{ errorRepoData.master.description }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined' [class]="setVersion(errorRepoData.master.lodash) < ver.lodash ? 'old_version' : ''">{{ errorRepoData.master.lodash }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined' [class]="setVersion(errorRepoData.master.tslint) < ver.tslint ? 'old_version' : ''">{{ errorRepoData.master.tslint}}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined' [class]="setVersion(errorRepoData.master.typescript) < ver.typescript ? 'old_version' : ''">{{ errorRepoData.master.typescript }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined' [class]="setVersion(errorRepoData.master.express) < ver.express ? 'old_version' : ''">{{ errorRepoData.master.express }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.master !== undefined' [class]="setVersion(errorRepoData.master['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ errorRepoData.master['@angular/common'] }}</td>
-        <td class="error_alert" *ngIf='errorRepoData.err !== "" && errorRepoData.dev === undefined && errorRepoData.master !==undefined' colspan="8">{{ errorRepoData.err }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined'>{{ errorRepoData.dev.name }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined'>{{ errorRepoData.dev.version }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined'>{{ errorRepoData.dev.description }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined' [class]="setVersion(errorRepoData.dev.lodash) < ver.lodash ? 'old_version' : ''">{{ errorRepoData.dev.lodash }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined' [class]="setVersion(errorRepoData.dev.tslint) < ver.tslint ? 'old_version' : ''">{{ errorRepoData.dev.tslint}}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined' [class]="setVersion(errorRepoData.dev.typescript) < ver.typescript ? 'old_version' : ''">{{ errorRepoData.dev.typescript }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined' [class]="setVersion(errorRepoData.dev.express) < ver.express ? 'old_version' : ''">{{ errorRepoData.dev.express }}</td>
-        <td *ngIf='errorRepoData.err !== "" && errorRepoData.dev !== undefined' [class]="setVersion(errorRepoData.dev['@angular/common']) < ver['@angular/common'] ? 'old_version' : ''">{{ errorRepoData.dev['@angular/common'] }}</td>
+      <tr *ngFor="let repository of repositories">
+        <td>{{ repository.repoName }}</td>
+        <td [class]="repository.repoType === 'Public' ? 'publicRepos' : 'privateRepos'">{{ repository.repoType }}</td>
+        <td>{{ lastUpdateTime(repository.timestamp) }}</td>
+        <td class="error_alert" *ngIf='!repository.master && !!repository.development' colspan="8">There isn't branch 'master' at '{{ repository.repoName }}'</td>
+        <td class="error_alert" *ngIf='!repository.master && !repository.development' colspan="16">There aren't any branches at '{{ repository.repoName }}'</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.name }}</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.version }}</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.description }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.master.lodash }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.master.tslint}}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.master.typescript }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.master.express }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.master['@angular/common'] }}</td>
+        <td class="error_alert" *ngIf='!repository.development && !!repository.master' colspan="8">There isn't branch 'development' at '{{ repository.repoName }}'</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.name }}</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.version }}</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.description }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.development.lodash }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.development.tslint}}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.development.typescript }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.development.express }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.development['@angular/common'] }}</td>
       </tr>
     </table>
   </div>
 </form>
 
 <div class="btn-pos">
-   <button class="button-btn" (click)="getReposData()">SYNCHRONIZE</button>
+   <button *ngIf="!condition" disabled class="button-btn-disabled">SYNCHRONIZE</button>
+   <button *ngIf="condition" class="button-btn" (click)="getReposData()">SYNCHRONIZE</button>
 </div>
 

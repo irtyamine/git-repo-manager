@@ -1,14 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
-import { ReposService } from './repos.service';
+import { GitHubRepositoriesService } from './repos.service';
 
-@Controller('repos')
-export class ReposController {
-    constructor(private readonly repo: ReposService) {
+@Controller('repositories')
+export class RepositoriesController {
+    constructor(private readonly repositoryService: GitHubRepositoriesService) {}
+
+    @Get('repository')
+    async getRepo() {
+        return await this.repositoryService.getRepositories();
     }
 
-    @Get('get-repository')
-    async getRepo() {
-        console.log(`Response status - 200. Time: ${new Date}`);
-        return await this.repo.getRepo();
+    @Get('all-repositories')
+    findAllRepositories() {
+        return this.repositoryService.findAllDataAtDatabase();
     }
 }

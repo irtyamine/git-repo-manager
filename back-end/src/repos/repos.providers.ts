@@ -1,10 +1,11 @@
 import { Connection } from 'mongoose';
-import { ReposParentSchema } from './schemas/repos.parent.schema';
+import { RepoSchema } from './schemas/repo.schema';
 
 export const reposProviders = [
-    {
-        provide: 'RepoModelToken',
-        useFactory: (connection: Connection) => connection.model('Repo', ReposParentSchema),
-        inject: ['DbConnectionToken']
-    }
+  {
+    provide: 'RepoModelToken',
+    useFactory: (connection: Connection) =>
+      connection.model('Repo', RepoSchema),
+    inject: ['DbConnectionToken'],
+  },
 ];

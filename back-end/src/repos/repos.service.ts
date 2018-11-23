@@ -1,59 +1,56 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { assign, map, pick, flatMap } from 'lodash';
-import repoConfig from '../../config/repo-data-config';
-import { ReposRepository } from './repos.repository';
+import { assign, pick, flatMap } from 'lodash';
+import { GitHubRepositoriesRepository } from './repos.repository';
+import { Repos } from './interfaces/repo.object.interface';
+import gitHubConfig from '../../../helpers/github.repositories';
 
 @Injectable()
-export class ReposService {
-  constructor(private readonly httpService: HttpService, private readonly repoDB: ReposRepository) {}
+export class GitHubRepositoriesService {
+  constructor(private readonly httpService: HttpService, private readonly repoDB: GitHubRepositoriesRepository) {}
 
-  public async getRepo() {
-    const publicRepositories = await this.makeRequestToGitHubLink(repoConfig.repositories);
-    return publicRepositories;
+  public async getRepositories() {
+      return await this.makeRequestToGitHubLink(gitHubConfig.repositories);
   }
 
   private async makeRequestToGitHubLink(repositories) {
-      interface Repos {
-        link: string;
-        repoType: string;
-        repoName: string;
-        branch: string;
-        token: string;
-      }
-
-      const arrayOfRepos: Repos[] = flatMap(repositories,
-        (repoData): Repos[] => {
-          return map(repoConfig.branches, (branch: string) => {
+      const arrayOfRepos = flatMap(repositories,
+        (repoData): Repos => {
               return {
-              link: `https://raw.githubusercontent.com/${repoData.name}/${branch}/package.json`,
-              repoType: repoData._privacy,
+              repoType: repoData.repoType,
               repoName: repoData.name,
-              branch: branch,
+              aliases: gitHubConfig.aliases,
               token: repoData.token
             };
           });
-        },
-      );
 
-          for (let repo of arrayOfRepos) {
-              const {link, repoType, repoName, branch, token} = repo;
-              const githubData = await this.getReposData(link, token);
-
-              if (githubData !== undefined) {
-                  const newObject = assign({}, {
-                      repoName,
-                      timestamp: new Date(),
-                      repoType,
-                      [branch]: githubData
-                  });
-                  await this.repoDB.insertToDB(newObject);
+      for (let repo of arrayOfRepos) {
+        const { repoType, repoName, aliases, token } = repo;
+        for (let alias of aliases) {
+          const branchName = alias[0];
+          for (let branch of alias) {
+            const link = `https://raw.githubusercontent.com/${repoName}/${branch}/package.json`;
+              try {
+                const githubData = await this.getRepositoryData(link, token);
+                const repositoryObject = {
+                  repoName,
+                  timestamp: Date.now(),
+                  repoType,
+                  [branchName]: githubData
+                };
+                  await this.repoDB.insertToDB(repositoryObject);
+                break;
+              } catch (error) {
+                  if (error.response.status !== 404) {
+                      console.log(`${error.message}:  ${error.cause}`);
+                  }
               }
+            }
           }
-    return await this.repoDB.findReposData();
+      }
+      return await this.repoDB.findRepositoriesData();
   }
 
-  private async getReposData(route: string, accessToken?: string) {
-    try {
+  private async getRepositoryData(route: string, accessToken?: string) {
       const config = {
         headers: {
           Authorization: accessToken,
@@ -64,24 +61,23 @@ export class ReposService {
       const dependencies = assign({}, packageJsonData.devDependencies, packageJsonData.dependencies);
 
       const staticRepoData = pick(packageJsonData, [
-        repoConfig.staticRepoData.version,
-        repoConfig.staticRepoData.name,
-        repoConfig.staticRepoData.description,
+          gitHubConfig.staticRepoData.version,
+          gitHubConfig.staticRepoData.name,
+          gitHubConfig.staticRepoData.description,
       ]);
 
       const dependenciesRepo = pick(dependencies, [
-        repoConfig.objectPackages.express,
-        repoConfig.objectPackages.lodash,
-        repoConfig.objectPackages.tslint,
-        repoConfig.objectPackages.typescript,
-        repoConfig.objectPackages.angular,
+          gitHubConfig.objectPackages.express,
+          gitHubConfig.objectPackages.lodash,
+          gitHubConfig.objectPackages.tslint,
+          gitHubConfig.objectPackages.typescript,
+          gitHubConfig.objectPackages.angular,
       ]);
 
       return assign({}, staticRepoData, dependenciesRepo);
-    } catch (err) {
-      if (err.response.data === 'Not found\n') {
-        return { data: 'Nothing data' };
-      }
-    }
+  }
+
+  public findAllDataAtDatabase() {
+      return this.repoDB.findRepositoriesData();
   }
 }

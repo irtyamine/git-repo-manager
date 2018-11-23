@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { ReposModule } from './repos/repos.module';
-import { HttpModule } from '@nestjs/common';
+import { MyLogger } from './common/my.logger';
 
 @Module({
   imports: [
       HttpModule,
       ReposModule
   ],
+  exports: [MyLogger],
   controllers: [],
-  providers: [],
+  providers: [MyLogger],
 })
-export class AppModule {  }
+export class AppModule {}

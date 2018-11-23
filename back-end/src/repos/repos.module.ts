@@ -1,19 +1,29 @@
-import { Module } from '@nestjs/common';
-import { ReposController } from './repos.controller';
-import { ReposService } from './repos.service';
-import { ReposRepository } from './repos.repository';
-import { HttpModule } from '@nestjs/common';
+import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { RepositoriesController } from './repos.controller';
+import { GitHubRepositoriesService } from './repos.service';
+import { GitHubRepositoriesRepository } from './repos.repository';
 import { reposProviders } from './repos.providers';
 import { databaseProviders } from '../common/database.providers';
+import { LoggerMiddleware } from '../common/logger.middleware';
 
 @Module({
-    controllers: [ReposController],
+    controllers: [ RepositoriesController ],
     imports: [ HttpModule ],
     providers: [
-        ReposService,
-        ReposRepository,
+        GitHubRepositoriesService,
+        GitHubRepositoriesRepository,
         ...reposProviders,
         ...databaseProviders
     ]
 })
-export class ReposModule {}
+export class ReposModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(LoggerMiddleware)
+            .with('ReposModule', 'GET')
+            .exclude(
+                { path: 'repository', method: RequestMethod.ALL }
+            )
+            .forRoutes('/');
+    }
+}
