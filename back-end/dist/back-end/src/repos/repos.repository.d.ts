@@ -1,3 +1,4 @@
+/// <reference path="../../../../../node_modules/@types/mongoose/index.d.ts" />
 import { Model } from 'mongoose';
 import { Repo } from './interfaces/repo.interface';
 import { RepoDto } from './dto/repo.dto';

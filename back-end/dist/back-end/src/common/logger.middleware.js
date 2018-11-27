@@ -12,7 +12,7 @@ const dateFormat = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate(
 let LoggerMiddleware = class LoggerMiddleware {
     resolve(name, requestMethod) {
         return (req, res, next) => {
-            console.log(`[${name}]  - ${dateFormat}  [${requestMethod}] ${req.url} +${date.getMilliseconds()}ms`);
+            console.log(`[${name}]  - ${dateFormat}  [${requestMethod}] ${req.url}`);
             next();
         };
     }

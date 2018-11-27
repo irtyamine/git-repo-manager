@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const GitHubTokens = {
-    reposAccessToken: 'token 18b3a20aa696f2bb8f59da011df1fb4dd2b3130c',
+    reposAccessToken: 'token 789e73cab9fb90c21da1435801f9054cb665a38e',
 };
 exports.default = GitHubTokens;
 //# sourceMappingURL=API.github.keys.js.map

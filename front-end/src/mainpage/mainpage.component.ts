@@ -29,22 +29,6 @@ export class MainpageComponent implements OnInit {
     });
   }
 
-  public lastUpdateTime(timestamp) {
-    const lastTimeOfUpdate = Date.now() - timestamp;
-    const seconds = Math.round(lastTimeOfUpdate / 1000),
-      minutes = Math.round(lastTimeOfUpdate / (1000 * 60)),
-      hours = Math.round(lastTimeOfUpdate / (1000 * 60 * 60)),
-      days = Math.round(lastTimeOfUpdate / (1000 * 60 * 60 * 24));
-
-    return seconds < 60
-      ? seconds + ' sec'
-      : minutes < 60
-      ? minutes + ' min'
-      : hours < 24
-      ? hours + ' hrs'
-      : days + ' days';
-  }
-
   public setVersion(version, configVersion) {
     if (!!version && version) {
       return (

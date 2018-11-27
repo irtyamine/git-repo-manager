@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const repos_module_1 = require("./repos/repos.module");
-const my_logger_1 = require("./common/my.logger");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -17,9 +16,9 @@ AppModule = __decorate([
             common_1.HttpModule,
             repos_module_1.ReposModule
         ],
-        exports: [my_logger_1.MyLogger],
+        exports: [],
         controllers: [],
-        providers: [my_logger_1.MyLogger],
+        providers: [],
     })
 ], AppModule);
 exports.AppModule = AppModule;

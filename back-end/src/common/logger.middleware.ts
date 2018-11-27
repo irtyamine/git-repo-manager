@@ -7,7 +7,7 @@ const dateFormat = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate(
 export class LoggerMiddleware implements NestMiddleware {
     resolve(name: string, requestMethod): MiddlewareFunction {
         return (req, res, next) => {
-            console.log(`[${name}]  - ${dateFormat}  [${requestMethod}] ${req.url} +${date.getMilliseconds()}ms`);
+            console.log(`[${name}]  - ${dateFormat}  [${requestMethod}] ${req.url}`);
             next();
         };
     }
