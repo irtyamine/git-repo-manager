@@ -10,7 +10,7 @@ First of all You need to start MongoDB server:
 sudo mongod
 ```
 
-After that you can build frontend path:
+(If you start project first time)After that you can build frontend path:
 
 ```
 npm run build
