@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start:frontend": "cd front-end && ng serve",
-    "start:server": "cd back-end && ts-node -r tsconfig-paths/register src/main.ts",
+    "start": "ng serve",
+    "start:server": "cd server && ts-node -r tsconfig-paths/register src/main.ts",
     "build": "ng build",
     "test": "jest",
     "lint": "tslint -p tsconfig.json -c tslint.json",

@@ -1,6 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
+/helpers
+/server/dist
 /dist
 /tmp
 /out-tsc
@@ -9,8 +11,7 @@
 /node_modules
 
 # IDEs and editors
-helpers
-package-lock.json
+/package-lock.json
 /.idea
 .project
 .classpath
