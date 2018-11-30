@@ -11,7 +11,7 @@ import { ReposModule } from './repos/repos.module';
   controllers: [  ],
   providers: [],
 })
-export class AppModule implements NestModule {
+export class ServerModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {
         consumer
             .apply(FrontendMiddleware)

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import gitHubConfig from '../../helpers/github.repositories';
+import gitHubConfig from '../../../config/github.repositories';
 
 @Injectable()
 export class RepositoriesService {

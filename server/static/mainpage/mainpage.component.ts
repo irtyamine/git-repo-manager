@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RepositoriesService } from '../services/repositories.service';
-import gitHubConfig from '../../helpers/github.repositories';
+import gitHubConfig from '../../../config/github.repositories';
 import compareVersions from 'compare-versions';
 
 @Component({
-  selector: 'app-mainpage',
+  selector: 'mainpage',
   templateUrl: './mainpage.component.html',
   styleUrls: ['./mainpage.component.css'],
 })

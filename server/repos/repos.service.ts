@@ -2,7 +2,7 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { assign, pick, flatMap } from 'lodash';
 import { GitHubRepositoriesRepository } from './repos.repository';
 import { Repos } from './interfaces/repo.object.interface';
-import gitHubConfig from '../../../helpers/github.repositories';
+import gitHubConfig from '../../config/github.repositories';
 
 @Injectable()
 export class GitHubRepositoriesService {

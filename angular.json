@@ -4,8 +4,8 @@
   "newProjectRoot": "projects",
   "projects": {
     "front-end": {
-      "root": "",
-      "sourceRoot": "src",
+      "root": "server",
+      "sourceRoot": "server/static",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},
@@ -14,16 +14,16 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "index": "server/static/index.html",
+            "main": "server/static/main.ts",
+            "polyfills": "server/static/polyfills.ts",
+            "tsConfig": "server/static/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "server/static/favicon.ico",
+              "server/static/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "server/static/styles.css"
             ],
             "scripts": []
           },
@@ -31,8 +31,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "config/environments/environment.ts",
+                  "with": "config/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -67,17 +67,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
+            "main": "test.ts",
+            "polyfills": "server/static/polyfills.ts",
+            "tsConfig": "server/static/tsconfig.spec.json",
+            "karmaConfig": "server/static/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "server/static/styles.css"
             ],
             "scripts": [],
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "server/static/favicon.ico",
+              "server/static/assets"
             ]
           }
         },
@@ -85,8 +85,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "server/static/tsconfig.app.json",
+              "server/static/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -96,13 +96,13 @@
       }
     },
     "front-end-e2e": {
-      "root": "e2e/",
+      "root": "server/static",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
+            "protractorConfig": "server/static/e2e/protractor.conf.js",
             "devServerTarget": "front-end:serve"
           },
           "configurations": {
@@ -114,7 +114,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
+            "tsConfig": "server/static/e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
