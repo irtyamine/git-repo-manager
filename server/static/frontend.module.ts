@@ -2,23 +2,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { RepositoriesService } from './services/repositories.service';
+import { GetRepositoriesService } from './page/services/get.repositories.service';
 
-import { MainpageComponent } from './mainpage/mainpage.component';
+import { Page } from './page/page';
 
 @NgModule({
   declarations: [
-    MainpageComponent,
+    Page,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
   ],
   providers: [
-    RepositoriesService
+    GetRepositoriesService
   ],
   bootstrap: [
-    MainpageComponent
+    Page
   ]
 })
 

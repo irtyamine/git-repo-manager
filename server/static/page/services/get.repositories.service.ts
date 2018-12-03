@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import gitHubConfig from '../../../config/github.repositories';
+import gitHubConfig from '../../../../config/github.repositories';
 
 @Injectable()
-export class RepositoriesService {
+export class GetRepositoriesService {
   constructor(private http: HttpClient) {}
 
   getData(): Observable<any> {

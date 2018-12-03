@@ -1,11 +1,11 @@
 import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
-import { ReposModule } from './repos/repos.module';
+import { RepositoriesModule } from './repositories/repositories.module';
 
 @Module({
   imports: [
       HttpModule,
-      ReposModule
+      RepositoriesModule
   ],
   exports: [],
   controllers: [  ],

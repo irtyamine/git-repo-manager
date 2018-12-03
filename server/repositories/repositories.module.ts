@@ -1,10 +1,10 @@
 import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { RepositoriesController } from './repos.controller';
-import { GitHubRepositoriesService } from './repos.service';
-import { GitHubRepositoriesRepository } from './repos.repository';
-import { reposProviders } from './repos.providers';
+import { GitHubRepositoriesService } from './repositories.service';
+import { GitHubRepositoriesRepository } from './repositories.repository';
+import { repositoriesProviders } from './repositories.providers';
 import { databaseProviders } from '../common/database.providers';
 import { LoggerMiddleware } from '../middlewares/logger.middleware';
+import { RepositoriesController } from './repositories.controller';
 
 @Module({
     controllers: [ RepositoriesController ],
@@ -12,15 +12,15 @@ import { LoggerMiddleware } from '../middlewares/logger.middleware';
     providers: [
         GitHubRepositoriesService,
         GitHubRepositoriesRepository,
-        ...reposProviders,
+        ...repositoriesProviders,
         ...databaseProviders
     ]
 })
-export class ReposModule implements NestModule {
+export class RepositoriesModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(LoggerMiddleware)
-            .with('ReposModule', 'GET')
+            .with('RepositoriesModule', 'GET')
             .exclude(
                 { path: 'repository', method: RequestMethod.ALL }
             )

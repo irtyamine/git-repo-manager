@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { RepositoriesService } from '../services/repositories.service';
+import { GetRepositoriesService } from './services/get.repositories.service';
 import gitHubConfig from '../../../config/github.repositories';
 import compareVersions from 'compare-versions';
 
 @Component({
-  selector: 'mainpage',
-  templateUrl: './mainpage.component.html',
-  styleUrls: ['./mainpage.component.css'],
+  selector: 'page',
+  templateUrl: './page.html',
+  styleUrls: ['./page.css'],
 })
-export class MainpageComponent implements OnInit {
-  constructor(private repository: RepositoriesService) {}
+export class Page implements OnInit {
+  constructor(private repository: GetRepositoriesService) {}
 
   public repositories = [];
   public packagesVersions = gitHubConfig.recommendedAtValorVersions;

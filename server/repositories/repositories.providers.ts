@@ -1,7 +1,7 @@
 import { Connection } from 'mongoose';
 import { RepoSchema } from './schemas/repo.schema';
 
-export const reposProviders = [
+export const repositoriesProviders = [
   {
     provide: 'RepoModelToken',
     useFactory: (connection: Connection) =>

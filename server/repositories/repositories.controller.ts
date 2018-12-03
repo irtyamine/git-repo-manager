@@ -1,5 +1,5 @@
 import { Controller, Get, Res } from '@nestjs/common';
-import { GitHubRepositoriesService } from './repos.service';
+import { GitHubRepositoriesService } from './repositories.service';
 import * as path from 'path';
 
 @Controller('repositories')
