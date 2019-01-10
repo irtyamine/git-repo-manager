@@ -1,0 +1,62 @@
+<form>
+  <div class="versions_control">
+    <table align="center">
+      <tr>
+        <th rowspan="3">Repository name</th>
+        <th rowspan="3">Type of privacy</th>
+        <th rowspan="3">Last update</th>
+        <th colspan="16">Branches</th>
+      </tr>
+      <tr>
+        <th colspan="8">master</th>
+        <th colspan="8">development</th>
+      </tr>
+      <tr>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+        <th>name</th>
+        <th>version</th>
+        <th>description</th>
+        <th>lodash</th>
+        <th>tslint</th>
+        <th>typescript</th>
+        <th>express</th>
+        <th>@angular/common</th>
+      </tr>
+      <tr *ngFor="let repository of repositories">
+        <td>{{ repository.repoName }}</td>
+        <td [class]="repository.repoType === 'Public' ? 'publicRepos' : 'privateRepos'">{{ repository.repoType }}</td>
+        <td>{{ repository.timestamp }}</td>
+        <td class="error_alert" *ngIf='!repository.master && !!repository.development' colspan="8">There isn't 'master' branch at '{{ repository.repoName }}' repository</td>
+        <td class="error_alert" *ngIf='!repository.master && !repository.development' colspan="16">There aren't any branches at '{{ repository.repoName }}' repository</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.name }}</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.version }}</td>
+        <td *ngIf='!!repository.master'>{{ repository.master.description }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.master.lodash }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.master.tslint}}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.master.typescript }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.master.express }}</td>
+        <td *ngIf='!!repository.master' [class]="setVersion(repository.master['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.master['@angular/common'] }}</td>
+        <td class="error_alert" *ngIf='!repository.development && !!repository.master' colspan="8">There isn't 'development' branch at '{{ repository.repoName }}' repository</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.name }}</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.version }}</td>
+        <td *ngIf='!!repository.development'>{{ repository.development.description }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.development.lodash }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.development.tslint}}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.development.typescript }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.development.express }}</td>
+        <td *ngIf='!!repository.development' [class]="setVersion(repository.development['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.development['@angular/common'] }}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="btn-pos">
+    <button *ngIf="!condition" disabled class="button-btn-disabled">SYNCHRONIZE</button>
+    <button *ngIf="condition" class="button-btn" (click)="getReposData()">SYNCHRONIZE</button>
+  </div>
+</form>
