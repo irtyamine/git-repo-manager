@@ -1,13 +1,12 @@
 # compiled output
 /config
 /dist
-/.idea
 
 # dependencies
 /node_modules
 
 # IDEs and editors
-.idea
+/.idea
 
 # misc
 *.log
