@@ -23,6 +23,24 @@ export class Page implements OnInit {
     });
   }
 
+  public lastUpdate(time) {
+    let milliseconds = Date.now() - time;
+    let seconds = Math.floor(milliseconds / 1000),
+        minutes = Math.floor(milliseconds / (1000 * 60)),
+        hours = Math.floor(milliseconds / (1000 * 60 * 60)),
+        days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+
+    if (seconds < 60) {
+      return seconds + ' sec';
+    } else if (minutes < 60) {
+      return minutes + ' min';
+    } else if (hours < 24) {
+      return hours + ' hrs';
+    } else {
+      return days + ' d';
+    }
+  }
+
   public getReposData() {
     this.condition = false;
     return this.repository.getData().subscribe(res => {

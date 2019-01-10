@@ -32,6 +32,7 @@
     "core-js": "2.5.7",
     "cors": "2.8.4",
     "lodash": "4.17.11",
+    "moment": "2.23.0",
     "mongoose": "5.3.12",
     "prettier": "1.15.2",
     "request": "2.88.0",

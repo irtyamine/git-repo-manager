@@ -32,7 +32,7 @@
       <tr *ngFor="let repository of repositories">
         <td>{{ repository.repoName }}</td>
         <td [class]="repository.repoType === 'Public' ? 'publicRepos' : 'privateRepos'">{{ repository.repoType }}</td>
-        <td>{{ repository.timestamp }}</td>
+        <td>{{ lastUpdate(repository.timestamp) }}</td>
         <td class="error_alert" *ngIf='!repository.master && !!repository.development' colspan="8">There isn't 'master' branch at '{{ repository.repoName }}' repository</td>
         <td class="error_alert" *ngIf='!repository.master && !repository.development' colspan="16">There aren't any branches at '{{ repository.repoName }}' repository</td>
         <td *ngIf='!!repository.master'>{{ repository.master.name }}</td>

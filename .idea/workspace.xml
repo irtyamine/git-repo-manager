@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fdcfb7c7-1af6-4db6-95c8-2f402a689860" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/page/page.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/page/page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/static/page/page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/page/page.ts" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/static/page/page.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="644">
+              <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/static/page/page.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="555">
+              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="7" column="50" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="tsconfig.json" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>conso</find>
+      <find>Promise</find>
+      <find>webpack</find>
+      <find>module: {</find>
+      <find>m</find>
+      <find>console</find>
+      <find>console.</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/back-end/src/views/index.hbs" />
+        <option value="$PROJECT_DIR$/back-end/views/index.hbs" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/app.controller.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/github_repos.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/services/app.service.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/services/github_repos.service.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/app.component/app.component.html" />
+        <option value="$PROJECT_DIR$/front-end/src/app/app.component/app.component.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/not.found/not.found.component.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/app.routing.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/not.found/not.found.component.html" />
+        <option value="$PROJECT_DIR$/front-end/src/app/not.found/not.found.component.css" />
+        <option value="$PROJECT_DIR$/front-end/src/app/app.module.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/services/app.service.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app/mainpage/mainpage.component.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/config/versions.config.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/mainpage.css.d.ts" />
+        <option value="$PROJECT_DIR$/back-end/services/github.repos.service.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/schema/repo.data.schema.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/repo.provider.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/repo.module.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/database/database.module.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/app.module.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/database/database.providers.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/packages.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/getData.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/tsconfig.json" />
+        <option value="$PROJECT_DIR$/front-end/src/services/app.service.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/schemas/repo.data.schema.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/dto/create-repo.dto.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/interfaces/repo.interface.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.css" />
+        <option value="$PROJECT_DIR$/back-end/src/main.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.spec.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/app.module.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.html" />
+        <option value="$PROJECT_DIR$/front-end/src/app.routing.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.ts" />
+        <option value="$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.html" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/repositories.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/branches.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/tsconfig.json" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/aaa.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/parameters/repo_data_config.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/controllers/github.repos.ts" />
+        <option value="$PROJECT_DIR$/back-end/src/services/github.repos.service.ts" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/src/static/page/page.html" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/static/page/page.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="width" value="1906" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Angular</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="pj_GitControl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="pj_GitControl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="pj_GitControl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="static" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="pj_GitControl" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="static" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GitHubControl_Project" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.tslint" value="$USER_HOME$/.nvm/versions/node/v10.2.1/bin/node" />
+    <property name="node.js.selected.package.tslint" value="$PROJECT_DIR$/node_modules/tslint" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/back-end/src" />
+      <recent name="$PROJECT_DIR$/back-end" />
+      <recent name="$PROJECT_DIR$/front-end/src/app" />
+      <recent name="$PROJECT_DIR$/front-end/src" />
+      <recent name="$PROJECT_DIR$/front-end/src/app/app.component" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="npm.Angular CLI Server">
+    <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular CLI Server" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fdcfb7c7-1af6-4db6-95c8-2f402a689860" name="Default Changelist" comment="" />
+      <created>1538559534215</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1538559534215</updated>
+      <workItem from="1538559536215" duration="4993000" />
+      <workItem from="1538570769750" duration="1327000" />
+      <workItem from="1538636627827" duration="3314000" />
+      <workItem from="1538640097557" duration="14803000" />
+      <workItem from="1538662787019" duration="369000" />
+      <workItem from="1538663280357" duration="90000" />
+      <workItem from="1538663460153" duration="116000" />
+      <workItem from="1538663643020" duration="543000" />
+      <workItem from="1538664196947" duration="5400000" />
+      <workItem from="1538722956990" duration="11704000" />
+      <workItem from="1538738377461" duration="8408000" />
+      <workItem from="1538746799957" duration="1052000" />
+      <workItem from="1538747866086" duration="879000" />
+      <workItem from="1538748758241" duration="579000" />
+      <workItem from="1538749401094" duration="452000" />
+      <workItem from="1538749863136" duration="63000" />
+      <workItem from="1538750036994" duration="533000" />
+      <workItem from="1538750641202" duration="838000" />
+      <workItem from="1538751766844" duration="57000" />
+      <workItem from="1538752020098" duration="147000" />
+      <workItem from="1538752278518" duration="74000" />
+      <workItem from="1538752423570" duration="174000" />
+      <workItem from="1538752715648" duration="8956000" />
+      <workItem from="1539006675081" duration="9407000" />
+      <workItem from="1539017355747" duration="10637000" />
+      <workItem from="1539080185516" duration="18778000" />
+      <workItem from="1539102394761" duration="2974000" />
+      <workItem from="1539105759687" duration="197245000" />
+      <workItem from="1540215037755" duration="27920000" />
+      <workItem from="1540370505538" duration="14874000" />
+      <workItem from="1547132612287" duration="41000" />
+      <workItem from="1547132670030" duration="14000" />
+      <workItem from="1547133071205" duration="1392000" />
+      <workItem from="1547134482717" duration="1793000" />
+      <workItem from="1547136291248" duration="843000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="350789000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="0" width="1922" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32939914" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3293348" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="9" weight="0.35515022" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.14377682" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32897604" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24986821" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32939914" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" order="9" weight="0.35515022" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.14377682" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32897604" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand>
+      <path>
+        <item name="GitHubControl_Project" type="b2602c69:ProjectViewProjectNode" />
+        <item name="GitHubControl_Project" type="462c0819:PsiDirectoryNode" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/front-end/src/app/app.component.html" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/not.found/not.found.component.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/not.found/not.found.component.css" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/not.found/not.found.component.html" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/services/app.service.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/tslint.json" />
+    <entry file="file://$PROJECT_DIR$/front-end/tsconfig.json" />
+    <entry file="file://$PROJECT_DIR$/front-end/angular.json" />
+    <entry file="file://$PROJECT_DIR$/front-end/package-lock.json" />
+    <entry file="file://$PROJECT_DIR$/front-end/package.json" />
+    <entry file="file://$PROJECT_DIR$/back-end/node_modules/semver/package.json" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/mainpage.css.d.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/package.json" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/controllers/repo.module.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/database/database.providers.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/tsconfig.json" />
+    <entry file="file://$PROJECT_DIR$/searchGithub/package-lock.json" />
+    <entry file="file://$PROJECT_DIR$/searchGithub/getData.js" />
+    <entry file="file://$PROJECT_DIR$/searchGithub/generalSearchInfo.js" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/getData.ts" />
+    <entry file="file://$PROJECT_DIR$/searchGithub/createLink.js" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/database/database.module.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/app.module.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/services/app.service.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/config/versions.config.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/packages.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.css" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.spec.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.css" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/app.module.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/app.routing.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.ts" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/mainpage.component.html" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.html" />
+    <entry file="file://$PROJECT_DIR$/front-end/src/mainpage/repo.info/repo.info.component.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/controllers/repo.provider.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/branches.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/repositories.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/controllers/tsconfig.json" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/controllers/aaa.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/services/github.repos.service.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/parameters/repo_data_config.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/interfaces/repo.interface.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/dto/create-repo.dto.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/schemas/repo.data.schema.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/controllers/github.repos.ts" />
+    <entry file="file://$PROJECT_DIR$/back-end/src/main.ts" />
+    <entry file="file://$PROJECT_DIR$/config/github.repositories.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="70" lean-forward="true" selection-start-line="10" selection-start-column="70" selection-end-line="10" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/static/page/page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="7" column="50" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/static/page/page.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
