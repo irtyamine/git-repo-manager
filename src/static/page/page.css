@@ -1,69 +1,108 @@
 .versions_control, .branches_not_found {
   margin-left: 20px;
-  margin-top: 10px;
+  margin-top: 50px;
   margin-bottom: 20px;
 }
 
-.old_version {
+.old_version div {
   font-family: Lucida, sans-serif;
   font-weight: bold;
+  width: border-box;
   background-color: #ce0000;
   color: white;
 }
 
-.publicRepos {
+.publicRepos div {
   font-family: Lucida, sans-serif;
   font-weight: bold;
   background-color: #2750af;
   color: white;
 }
 
-.privateRepos {
+.privateRepos div {
   font-family: Lucida, sans-serif;
   font-weight: bold;
   background-color: gray;
   color: white;
 }
 
-table, th, td {
+table {
   text-align: center;
   border-collapse: collapse;
   border: 1px solid black;
 }
 
-.button-btn {
-  position: absolute;
-  background-color: #2750af;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  padding: 20px;
+th {
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+  width: 125px;
+  border-collapse: collapse;
+  border: 1px solid black;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 8px;
+  text-overflow: ellipsis;
 }
 
-.button-btn-disabled {
-  position: absolute;
-  background-color: #7fd2ff;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  padding: 20px;
+td div {
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+  width: 126px;
+  border-collapse: collapse;
+  border: 1px solid black;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 8px;
+  text-overflow: ellipsis
 }
 
 .error_alert {
-  font-family: Lucida, sans-serif;
   font-weight: bolder;
-  background-color: #ce0000;
+  color: #ce0000;
+}
+
+.btn-pos {
+  text-align: center;
+}
+
+.btn-main-properties {
+  border-radius: 2px;
+  border: none;
+  padding: 20px;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.button-get {
+  background-color: #2750af;
   color: white;
+  cursor: pointer;
+}
+
+.button-get-disabled {
+  background-color: #7fd2ff;
+  color: white;
+  cursor: default;
+}
+
+.button-upd {
+  background-color: #119d00;
+  color: white;
+  cursor: pointer;
+}
+
+.button-upd-disabled {
+  background-color: #59ff5f;
+  color: white;
+  cursor: progress;
+}
+
+.attention-alert {
+  text-align: center;
+  border: 3px solid #810001;
+  background-color: aliceblue;
+  color: #810001;
+  border-radius: 4px;
+  padding: 30px;
+  cursor: default;
 }

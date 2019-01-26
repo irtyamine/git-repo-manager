@@ -1,6 +1,7 @@
 import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
 import { RepositoriesModule } from './repositories/repositories.module';
+import { FrontendController } from './frontend.controller';
 
 @Module({
   imports: [
@@ -8,8 +9,10 @@ import { RepositoriesModule } from './repositories/repositories.module';
       RepositoriesModule
   ],
   exports: [],
-  controllers: [  ],
-  providers: [],
+  controllers: [
+    FrontendController
+  ],
+  providers: [  ],
 })
 export class ServerModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {

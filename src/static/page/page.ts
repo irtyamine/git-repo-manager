@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GetRepositoriesService } from '../services/get.repositories.service';
-import gitHubConfig from '../../../config/github.repositories';
 import * as compareVersions from 'compare-versions';
+import { CronJob } from 'cron';
 
 @Component({
   selector: 'app-page',
@@ -10,42 +10,70 @@ import * as compareVersions from 'compare-versions';
 })
 
 export class Page implements OnInit {
-  constructor(private repository: GetRepositoriesService) {}
 
+  public requestStatus: boolean = false;
   public repositories = [];
-  public packagesVersions = gitHubConfig.recommendedAtValorVersions;
-  public condition = true;
+  public repoNames: any;
+  private config: any;
+  public packagesVersions: any;
 
-  ngOnInit() {
-    this.repository.getAllRepositories().subscribe(res => {
-      console.log(res);
-      this.repositories = res;
-    });
+  constructor(private repository: GetRepositoriesService) {
+     this.config = this.repository.getConfigurationFile();
+     this.packagesVersions = this.config.recommendedAtValorVersions;
   }
 
-  public lastUpdate(time) {
-    let milliseconds = Date.now() - time;
-    let seconds = Math.floor(milliseconds / 1000),
-        minutes = Math.floor(milliseconds / (1000 * 60)),
-        hours = Math.floor(milliseconds / (1000 * 60 * 60)),
-        days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+  ngOnInit() {
+    this.getRepositoriesNames();
+  }
 
-    if (seconds < 60) {
-      return seconds + ' sec';
-    } else if (minutes < 60) {
-      return minutes + ' min';
-    } else if (hours < 24) {
-      return hours + ' hrs';
+  public checkBranch(branchData, branchName) {
+    if (branchData) {
+      return branchName;
     } else {
-      return days + ' d';
+      return '';
     }
   }
 
-  public getReposData() {
-    this.condition = false;
-    return this.repository.getData().subscribe(res => {
-      this.condition = true;
-      this.repositories = res;
+  public checkValue(branch, item) {
+    if (branch) {
+      if (!branch[item]) {
+        return '(none)';
+      } else {
+        return branch[item];
+      }
+    } else {
+      return '(none)';
+    }
+  }
+
+  public lastUpdate(time) {
+    let milliseconds = Date.now() - time,
+      seconds = Math.floor(milliseconds / 1000),
+      minutes = Math.floor(milliseconds / (1000 * 60)),
+      hours = Math.floor(milliseconds / (1000 * 60 * 60)),
+      days = Math.floor(milliseconds / (1000 * 60 * 60 * 24)),
+      result = '';
+
+    seconds < 60 ? result += seconds + ' sec'
+      : minutes < 60 ? result += minutes + ' min'
+      : hours < 24 ? result += hours + ' hrs' : result += days + ' d';
+    return result;
+  }
+
+  private getRepositoriesNames() {
+    return this.repository.getRepositoryNames()
+      .subscribe(result => {
+        this.repoNames = result;
+        for (let element of this.repoNames) {
+          this.getReposData(element.repoName);
+        }
+      });
+  }
+
+  private getReposData(param) {
+    return this.repository.getAllRepositories(param).subscribe((res) => {
+      console.log(res);
+      this.repositories.push(res);
     });
   }
 

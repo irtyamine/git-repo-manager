@@ -7,23 +7,31 @@ import { Repo } from './interfaces/repo.interface';
 export class GitHubRepositoriesRepository {
   constructor(@Inject('RepoModelToken') private repoModel: Model<Repo&Document>) {}
 
-  async insertToDB(item: RepoDto) {
-    let repositoryObject = new this.repoModel(item);
+  public firsInsertToDB(item: RepoDto, parameter?: string) {
+    let newRepositoryObject = new this.repoModel(item);
     this.repoModel.findOneAndUpdate(
+      { repoName: parameter },
+      { $set: newRepositoryObject },
+      { upsert: true },
+      (err, res) => {
+        if (err) throw err;
+      }
+    );
+  }
+
+  public async insertToDB(item: RepoDto) {
+    let repositoryObject = new this.repoModel(item);
+    await this.repoModel.findOneAndUpdate(
         { repoName: repositoryObject.repoName },
-        { $set: repositoryObject,  },
-        {
-          upsert: true
-        },
-        (err) => {
+        { $set: repositoryObject },
+        { upsert: true },
+        (err, res) => {
           if (err) throw err;
-          console.log('Upload');
-        },
-      );
+        }
+    );
   }
 
-    findRepositoriesData() {
-      return this.repoModel.find();
+  public findRepositoriesData(parameter) {
+    return this.repoModel.findOne( { repoName: parameter });
   }
-
 }

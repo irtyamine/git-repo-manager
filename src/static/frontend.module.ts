@@ -12,7 +12,7 @@ import { Page } from './page/page';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [
     GetRepositoriesService
