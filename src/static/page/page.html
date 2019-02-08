@@ -1,128 +1,173 @@
-<form>
-  <div class="versions_control">
-    <table align="center">
-      <tr>
-        <th><div>Repository name</div></th>
-        <th>Type of privacy</th>
-        <th>Last update</th>
-        <th>Branches</th>
-        <th>name</th>
-        <th>version</th>
-        <th>description</th>
-        <th>lodash</th>
-        <th>tslint</th>
-        <th>typescript</th>
-        <th>express</th>
-        <th>@angular/common</th>
-      </tr>
-      <tr *ngFor="let repository of repositories">
-        <td><div title="{{ repository.repoName }}">{{ repository.repoName }}</div></td>
-        <td [className]="repository.repoType === 'Public' ? 'publicRepos' : 'privateRepos'"><div>{{ repository.repoType }}</div></td>
-        <td><div>{{ lastUpdate(repository.timestamp) }}</div></td>
-        <td [className]="!checkBranch(repository.branches.master, 'master') ? 'old_version' : !checkBranch(repository.branches.development, 'development') ? 'old_version' : '' ">
-          <div title="{{ checkBranch(repository.branches.master, 'master') }} &rarr; {{ checkBranch(repository.branches.development, 'development') }}">
-          {{ checkBranch(repository.branches.master, 'master') }}
-          <a *ngIf="checkBranch(repository.branches.master, 'master') && checkBranch(repository.branches.development, 'development')">&rarr;</a>
-          {{ checkBranch(repository.branches.development, 'development') }}
-        </div></td>
-        <td><div title="{{ checkValue(repository.branches.master, 'name') }} &rarr; {{ checkValue(repository.branches.development, 'name') }}">
-          <a [className]="checkValue(repository.branches.master, 'name') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.master, 'name') }}</a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'name') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.development , 'name') }}</a>
-        </div></td>
-        <td><div title="{{ checkValue(repository.branches.master, 'version') }} &rarr; {{ checkValue(repository.branches.development, 'version') }}">
-          <a [className]="checkValue(repository.branches.master, 'version') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.master, 'version') }}</a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'version') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.development , 'version') }}</a>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'description') === '(none)' && checkValue(repository.branches.development, 'description') === '(none)'" class="old_version"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'description') !== '(none)' || checkValue(repository.branches.development, 'description') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, 'description') }} &rarr; {{ checkValue(repository.branches.development, 'description') }}">
-          <a [className]="checkValue(repository.branches.master, 'description') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.master, 'description') }}</a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'description') !== '(none)' ? '' : 'error_alert'">{{ checkValue(repository.branches.development , 'description') }}</a>
-          <span class="tooltiptext">{{ checkValue(repository.branches.master, 'description') }} &rarr; {{ checkValue(repository.branches.development, 'description') }}</span>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'lodash') === '(none)' && checkValue(repository.branches.development, 'lodash') === '(none)'"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'lodash') !== '(none)' || checkValue(repository.branches.development, 'lodash') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, 'lodash') }} &rarr; {{ checkValue(repository.branches.development, 'lodash') }}">
-          <a [className]="checkValue(repository.branches.master, 'lodash') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.master, 'lodash'), packagesVersions.lodash) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.master, 'lodash') }}
-          </a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'lodash') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.development, 'lodash'), packagesVersions.lodash) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.development , 'lodash') }}
-          </a>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'tslint') === '(none)' && checkValue(repository.branches.development, 'tslint') === '(none)'" class="old_version"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'tslint') !== '(none)' || checkValue(repository.branches.development, 'tslint') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, 'tslint') }} &rarr; {{ checkValue(repository.branches.development, 'tslint') }}">
-          <a [className]="checkValue(repository.branches.master, 'tslint') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.master, 'tslint'), packagesVersions.tslint) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.master, 'tslint') }}
-          </a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'tslint') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.development, 'tslint'), packagesVersions.tslint) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.development , 'tslint') }}
-          </a>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'typescript') === '(none)' && checkValue(repository.branches.development, 'typescript') === '(none)'" class="old_version"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'typescript') !== '(none)' || checkValue(repository.branches.development, 'typescript') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, 'typescript') }} &rarr; {{ checkValue(repository.branches.development, 'typescript') }}">
-          <a [className]="checkValue(repository.branches.master, 'typescript') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.master, 'typescript'), packagesVersions.typescript) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.master, 'typescript') }}
-          </a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'typescript') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.development , 'typescript'), packagesVersions.typescript) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.development , 'typescript') }}
-          </a>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'express') === '(none)' && checkValue(repository.branches.development, 'express') === '(none)'"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, 'express') !== '(none)' || checkValue(repository.branches.development, 'express') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, 'express') }} &rarr; {{ checkValue(repository.branches.development, 'express') }}">
-          <a [className]="checkValue(repository.branches.master, 'express') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.master, 'express'), packagesVersions.express) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.master, 'express') }}
-          </a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, 'express') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.development , 'express'), packagesVersions.express) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.development , 'express') }}
-          </a>
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, '@angular/common') === '(none)' && checkValue(repository.branches.development, '@angular/common') === '(none)'"><div>
-          (none)
-        </div></td>
-        <td *ngIf="checkValue(repository.branches.master, '@angular/common') !== '(none)' || checkValue(repository.branches.development, '@angular/common') !== '(none)'">
-          <div title="{{ checkValue(repository.branches.master, '@angular/common') }} &rarr; {{ checkValue(repository.branches.development, '@angular/common') }}">
-          <a [className]="checkValue(repository.branches.master, '@angular/common') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.master, '@angular/common'), packagesVersions['@angular/common']) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.master, '@angular/common') }}
-          </a>
-          &rarr;
-          <a [className]="checkValue(repository.branches.development, '@angular/common') === '(none)' ? 'error_alert'
-          : setVersion(checkValue(repository.branches.development , '@angular/common'), packagesVersions['@angular/common']) ? 'error_alert' : ''">
-            {{ checkValue(repository.branches.development , '@angular/common') }}
-          </a>
-        </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-</form>
-простой html
+<div class="table-position">
+  <table class="table table-bordered table-active">
+    <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
+    <thead class="thead-dark">
+    <tr>
+      <th class="text"><span>Repository name</span></th>
+      <th class="text"><span>Type of privacy</span></th>
+      <th class="text"><span>Branches</span></th>
+      <th class="text"><span>package name</span></th>
+      <th class="text"><span>version</span></th>
+      <th class="text"><span>description</span></th>
+      <th class="text"><span>lodash</span></th>
+      <th class="text"><span>tslint</span></th>
+      <th class="text"><span>typescript</span></th>
+      <th class="text"><span>express</span></th>
+      <th class="text"><span>@angular/common</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Repository name" aria-label="Username" (keyup)="filtration('repoName', $event)">
+      </div></td>
+      <td><div class="select">
+        <label>
+          <select (change)="filterByPrivacy($event.target.value)" >
+            <option disabled selected hidden>Filter by privacy</option>
+            <option value="default">Filter by privacy</option>
+            <option value="Private">Only private</option>
+            <option value="Public">Only public</option>
+          </select>
+        </label>
+      </div></td>
+      <td><div class="select">
+        <label>
+          <select (change)="filterBranches($event.target.value)">
+            <option disabled selected hidden>Filter by branches</option>
+            <option value="default">Filter by branches</option>
+            <option value="development">Only master</option>
+            <option value="master">Only development</option>
+            <option value="none">No branches</option>
+          </select>
+        </label>
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="package name" aria-label="Username">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="version" aria-label="Username" (keyup)="filtration('version', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="description" aria-label="Username" (keyup)="filtration('description', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="lodash" aria-label="Username" (keyup)="filtration('lodash', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="tslint" aria-label="Username" (keyup)="filtration('tslint', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="typescript" aria-label="Username" (keyup)="filtration('typescript', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="express" aria-label="Username" (keyup)="filtration('express', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="@angular/common" aria-label="Username" (keyup)="filtration('@angular/common', $event)">
+      </div></td>
+    </tr>
+    <tr *ngFor="let repository of (repositoriesData | async)">
+      <!--REPOSITORY NAME AND REPOSITORY TYPE-->
+      <td class="repository-name"><span>{{ repository.repoName }}</span></td>
+      <td class="text" [ngClass]="repository.repoType === 'Public' ? 'bg-primary text-white h5' : 'bg-secondary text-white h5'"><span>{{ repository.repoType }}</span></td>
+
+      <!--BRANCHES-->
+      <td *ngIf="!repository.branches.development" class="text bg-danger text-white h5"><span>master</span></td>
+      <td *ngIf="!repository.branches.master" class="text bg-danger text-white h5"><span>development</span></td>
+      <td *ngIf="!repository.branches.master && !repository.branches.development" class="text bg-danger text-white h5"><span>(none)</span></td>
+      <td *ngIf="!!repository.branches.master && !!repository.branches.development" class="text" data-container="body" tooltip="master &rarr; development"><span>
+      master &rarr; development
+      </span></td>
+
+      <!--NAME-->
+      <td class="text bg-danger text-white h5" *ngIf="!repository.branches.master?.name && !repository.branches.development?.name"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.name}}" *ngIf="!repository.branches.master?.name && !!repository.branches.development?.name"><span><a class="text-danger">(none)</a> &rarr; {{repository.branches.development?.name}}</span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.name}} &rarr; (none)" *ngIf="!!repository.branches.master?.name && !repository.branches.development?.name"><span>{{repository.branches.master?.name}} &rarr; <a class="text-danger">(none)</a></span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.name}} &rarr; {{repository.branches.development?.name}}" *ngIf="!!repository.branches.master?.name && !!repository.branches.development?.name"><span>{{repository.branches.master?.name}} &rarr; {{repository.branches.development?.name}}</span></td>
+
+      <!--VERSION-->
+      <td class="text bg-danger text-white h5" *ngIf="!repository.branches.master?.version && !repository.branches.development?.version"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.version}}" *ngIf="!repository.branches.master?.version && !!repository.branches.development?.version"><span><a class="text-danger">(none)</a> &rarr; {{repository.branches.development?.version}}</span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.version}} &rarr; (none)" *ngIf="!!repository.branches.master?.version && !repository.branches.development?.version"><span>{{repository.branches.master?.version}} &rarr; <a class="text-danger">(none)</a></span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.version}} &rarr; {{repository.branches.development?.version}}" *ngIf="!!repository.branches.master?.version && !!repository.branches.development?.version"><span>{{repository.branches.master?.version}} &rarr; {{repository.branches.development?.version}}</span></td>
+
+      <!--DESCRIPTION-->
+      <td class="text bg-danger text-white h5" *ngIf="!repository.branches.master?.description && !repository.branches.development?.description"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.description}}" *ngIf="!repository.branches.master?.description && !!repository.branches.development?.description"><span><a class="text-danger">(none)</a> &rarr; {{repository.branches.development?.description}}</span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.description}} &rarr; (none)" *ngIf="!!repository.branches.master?.description && !repository.branches.development?.description"><span>{{repository.branches.master?.description}} &rarr; <a class="text-danger">(none)</a></span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.description}} &rarr; {{repository.branches.development?.description}}" *ngIf="!!repository.branches.master?.description && !!repository.branches.development?.description"><span>{{repository.branches.master?.description}} &rarr; {{repository.branches.development?.description}}</span></td>
+
+      <!--LODASH-->
+      <td class="text" *ngIf="!repository.branches.master?.lodash && !repository.branches.development?.lodash"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.lodash}}" *ngIf="!repository.branches.master?.lodash && !!repository.branches.development?.lodash"><span>
+        <a class="text-danger">(none)</a> &rarr; <a [ngClass]="setVersion(repository.branches.development?.lodash, packagesVersions.lodash) ? 'text-danger' : ''">{{repository.branches.development?.lodash}}</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.lodash}} &rarr; (none)" *ngIf="!!repository.branches.master?.lodash && !repository.branches.development?.lodash"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.lodash, packagesVersions.lodash) ? 'text-danger' : ''">{{repository.branches.master?.lodash}}</a> &rarr; <a class="text-danger">(none)</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.lodash}} &rarr; {{repository.branches.development?.lodash}}" *ngIf="!!repository.branches.master?.lodash && !!repository.branches.development?.lodash"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.lodash, packagesVersions.lodash) ? 'text-danger' : ''">{{repository.branches.master?.lodash}}</a>
+        &rarr;
+        <a [ngClass]="setVersion(repository.branches.development?.lodash, packagesVersions.lodash) ? 'text-danger' : ''">{{repository.branches.development?.lodash}}</a>
+      </span></td>
+
+      <!--TSLINT-->
+      <td class="text bg-danger text-white h5" *ngIf="!repository.branches.master?.tslint && !repository.branches.development?.tslint"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.tslint}}" *ngIf="!repository.branches.master?.tslint && !!repository.branches.development?.tslint"><span>
+        <a class="text-danger">(none)</a> &rarr; <a [ngClass]="setVersion(repository.branches.development?.tslint, packagesVersions.tslint) ? 'text-danger' : ''">{{repository.branches.development?.tslint}}</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.tslint}} &rarr; (none)" *ngIf="!!repository.branches.master?.tslint && !repository.branches.development?.tslint"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.tslint, packagesVersions.tslint) ? 'text-danger' : ''">{{repository.branches.master?.tslint}}</a> &rarr; <a class="text-danger">(none)</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.tslint}} &rarr; {{repository.branches.development?.tslint}}" *ngIf="!!repository.branches.master?.tslint && !!repository.branches.development?.tslint"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.tslint, packagesVersions.tslint) ? 'text-danger' : ''">{{repository.branches.master?.tslint}}</a>
+        &rarr;
+        <a [ngClass]="setVersion(repository.branches.development?.tslint, packagesVersions.tslint) ? 'text-danger' : ''">{{repository.branches.development?.tslint}}</a>
+      </span></td>
+
+      <!--TYPESCRIPT-->
+      <td class="text bg-danger text-white h5" *ngIf="!repository.branches.master?.typescript && !repository.branches.development?.typescript"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.typescript}}" *ngIf="!repository.branches.master?.typescript && !!repository.branches.development?.typescript"><span>
+        <a class="text-danger">(none)</a> &rarr; <a [ngClass]="setVersion(repository.branches.development?.typescript, packagesVersions.typescript) ? 'text-danger' : ''">{{repository.branches.development?.typescript}}</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.typescript}} &rarr; (none)" *ngIf="!!repository.branches.master?.typescript && !repository.branches.development?.typescript"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.typescript, packagesVersions.typescript) ? 'text-danger' : ''">{{repository.branches.master?.typescript}}</a> &rarr; <a class="text-danger">(none)</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.typescript}} &rarr; {{repository.branches.development?.typescript}}" *ngIf="!!repository.branches.master?.typescript && !!repository.branches.development?.typescript"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.typescript, packagesVersions.typescript) ? 'text-danger' : ''">{{repository.branches.master?.typescript}}</a>
+        &rarr;
+        <a [ngClass]="setVersion(repository.branches.development?.typescript, packagesVersions.typescript) ? 'text-danger' : ''">{{repository.branches.development?.typescript}}</a>
+      </span></td>
+
+      <!--EXPRESS-->
+      <td class="text" *ngIf="!repository.branches.master?.express && !repository.branches.development?.express"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{repository.branches.development?.express}}" *ngIf="!repository.branches.master?.express && !!repository.branches.development?.express"><span>
+        <a class="text-danger">(none)</a> &rarr; <a [ngClass]="setVersion(repository.branches.development?.express, packagesVersions.express) ? 'text-danger' : ''">{{repository.branches.development?.express}}</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.express}} &rarr; (none)" *ngIf="!!repository.branches.master?.express && !repository.branches.development?.express"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.typescript, packagesVersions.express) ? 'text-danger' : ''">{{repository.branches.master?.express}}</a> &rarr; <a class="text-danger">(none)</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{repository.branches.master?.express}} &rarr; {{repository.branches.development?.express}}" *ngIf="!!repository.branches.master?.express && !!repository.branches.development?.express"><span>
+        <a [ngClass]="setVersion(repository.branches.master?.express, packagesVersions.express) ? 'text-danger' : ''">{{repository.branches.master?.express}}</a>
+        &rarr;
+        <a [ngClass]="setVersion(repository.branches.development?.express, packagesVersions.express) ? 'text-danger' : ''">{{repository.branches.development?.express}}</a>
+      </span></td>
+
+      <!--@ANGULAR/COMMON-->
+      <td class="text" *ngIf="!getDataFromObject(repository.branches.master, '@angular/common') && !getDataFromObject(repository.branches.development, '@angular/common')"><span>(none)</span></td>
+      <td class="text" data-container="body" tooltip="(none) &rarr; {{getDataFromObject(repository.branches.development, '@angular/common')}}" *ngIf="!getDataFromObject(repository.branches.master, '@angular/common') && !!getDataFromObject(repository.branches.development, '@angular/common')"><span>
+        <a class="text-danger">(none)</a> &rarr; <a [ngClass]="setVersion(getDataFromObject(repository.branches.development, '@angular/common'), packagesVersions['@angular/common']) ? 'text-danger' : ''">{{getDataFromObject(repository.branches.development, '@angular/common')}}</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{getDataFromObject(repository.branches.master, '@angular/common')}} &rarr; (none)" *ngIf="!!getDataFromObject(repository.branches.master, '@angular/common') && !getDataFromObject(repository.branches.development, '@angular/common')"><span>
+        <a [ngClass]="setVersion(getDataFromObject(repository.branches.master, '@angular/common'), packagesVersions['@angular/common']) ? 'text-danger' : ''">{{getDataFromObject(repository.branches.master, '@angular/common')}}</a> &rarr; <a class="text-danger">(none)</a>
+      </span></td>
+      <td class="text" data-container="body" tooltip="{{ getDataFromObject(repository.branches.master, '@angular/common') }} &rarr; {{ getDataFromObject(repository.branches.development, '@angular/common') }}" *ngIf="getDataFromObject(repository.branches.master, '@angular/common') && getDataFromObject(repository.branches.development, '@angular/common')"><span>
+        <a [ngClass]="setVersion(getDataFromObject(repository.branches.master, '@angular/common'), packagesVersions['@angular/common']) ? 'text-danger' : ''">{{ getDataFromObject(repository.branches.master, '@angular/common') }}</a>
+        &rarr;
+        <a [ngClass]="setVersion(getDataFromObject(repository.branches.development, '@angular/common'), packagesVersions['@angular/common']) ? 'text-danger' : ''">{{ getDataFromObject(repository.branches.development, '@angular/common') }}</a>
+      </span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>

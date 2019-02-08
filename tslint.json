@@ -57,6 +57,7 @@
     "align": false,
     "object-literal-shorthand": false,
     "no-string-literal": false,
-    "prefer-for-of": false
+    "prefer-for-of": false,
+    "whitespace": false
   }
 }

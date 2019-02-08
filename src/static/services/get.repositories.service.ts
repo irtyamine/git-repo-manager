@@ -2,24 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { ConfigService } from '../../../config/config.service';
+import { FrontendConfigService } from '../frontend-config/frontend-config.service';
 
 @Injectable()
 
 export class GetRepositoriesService {
 
-  public config: any;
-  constructor(private http: HttpClient, public configFile: ConfigService) {
-    this.config = this.configFile.config;
-  }
+  constructor(private http: HttpClient, public configFile: FrontendConfigService) {}
 
-  getConfigurationFile() {
-    return this.config;
+  get getConfigurationFile() {
+    return this.configFile.frontendConfig;
   }
 
   getRepositoryNames() {
     return this.http
-      .get(`${this.config.url.localhost}/repositories/names`)
+      .get(`${this.configFile.frontendConfig.url.localhost}/repositories/names`)
       .pipe(
         catchError(err =>
         err.code === 404 ? throwError('Not Found') : throwError(err))
@@ -30,7 +27,7 @@ export class GetRepositoriesService {
     const options = repoName ?
       { params: new HttpParams().set('repositoryName', repoName) } : {};
     return this.http
-      .get(`${this.config.url.localhost}/repositories/all-repositories`, options)
+      .get(`${this.configFile.frontendConfig.url.localhost}/repositories/all-repositories`, options)
       .pipe(
         catchError(err =>
           err.code === 404 ? throwError('Not found') : throwError(err),

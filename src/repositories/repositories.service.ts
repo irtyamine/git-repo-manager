@@ -9,9 +9,6 @@ import { CronJob } from 'cron';
 @Injectable()
 export class GitHubRepositoriesService {
 
-  public repositoryData: any = {};
-  public repositoryBranchDataObject: any = {};
-
   constructor(
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepository,
@@ -21,7 +18,7 @@ export class GitHubRepositoriesService {
   }
 
   public updateTime() {
-    new CronJob('00 08 13 * * 1-6', () => {
+    new CronJob('00 00 11 * * 1-5', () => {
       this.makeRequestToGitHubLink();
     }, null, true, 'Europe/Kiev');
   }
@@ -41,15 +38,20 @@ export class GitHubRepositoriesService {
 
   private async makeRequestToGitHubLink() {
     for (let repository of this.configFile.config.repositories) {
-      await this.createGithubLinkAndGetDataFromGitHub(repository, 'master');
-      await this.createGithubLinkAndGetDataFromGitHub(repository, 'development');
-      this.repoDB.firsInsertToDB(this.repositoryData, repository.name);
-      this.repositoryBranchDataObject = {};
-      this.repositoryData = {};
+      const branch = {},
+        masterSearch = await  this.createGithubLinkAndGetDataFromGitHub(repository, {}, branch, 'master'),
+        developmentSearch = await this.createGithubLinkAndGetDataFromGitHub(repository, {}, branch, 'development'),
+        repositoryData = assign({}, masterSearch, developmentSearch);
+      this.repoDB.insertToDB(repositoryData);
+      this.countUpdatedRepositories(this.configFile.config.repositories.indexOf(repository) + 1);
     }
   }
 
-  private async createGithubLinkAndGetDataFromGitHub(repositoryData, branchAlias) {
+  private countUpdatedRepositories(count) {
+    console.log(count);
+  }
+
+  private async createGithubLinkAndGetDataFromGitHub(repositoryData, dataObject, branchObject, branchAlias) {
     for (let branch of this.configFile.config.aliasesOfBranch[branchAlias]) {
 
       const link = `https://raw.githubusercontent.com/${repositoryData.name}/${branch}/package.json`,
@@ -57,18 +59,18 @@ export class GitHubRepositoriesService {
       if (keys(gitHubData).length === 0) break;
 
       const branches: RepoBranchesDataObjectInterface = { [branchAlias]: gitHubData };
-      assign(this.repositoryBranchDataObject, branches);
+      assign(branchObject, branches);
 
       const repository: Repo = {
         repoName: repositoryData.name,
         repoType: repositoryData.repoType,
         timestamp: Date.now(),
-        branches: this.repositoryBranchDataObject
+        branches: branchObject
       };
-      assign(this.repositoryData, repository);
+      assign(dataObject, repository);
     }
 
-    return this.repositoryData;
+    return dataObject;
   }
 
   private async getRepositoryData(route: string, accessToken: string) {
@@ -105,7 +107,7 @@ export class GitHubRepositoriesService {
         assign(resultData, staticRepoData, dependenciesRepo);
       })
       .catch(error => {
-        if (error.response.data === 'Not found\n') { return null; }
+        if (error.response.status === 404) { return null; }
         else { throw error; }
       });
      return resultData;

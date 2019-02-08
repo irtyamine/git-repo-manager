@@ -1,108 +1,54 @@
-.versions_control, .branches_not_found {
-  margin-left: 20px;
-  margin-top: 50px;
-  margin-bottom: 20px;
+.table-position {
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+caption {
+    caption-side: top;
+}
+th, td {
+    width: 90px;
+    padding: 8px;
+}
+.table .repository-name {
+    text-align: center;
+    width: 100px;
+}
+.table .text {
+    position: relative;
+}
+.table .text span {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.text:before {
+    content: '';
+    display: inline-block;
 }
 
-.old_version div {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  width: border-box;
-  background-color: #ce0000;
-  color: white;
+.select-disabled select {
+    width: 100%;
+    color: #495057;
+    height: calc(2.25rem + 2px);
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #c5c5c5;
 }
-
-.publicRepos div {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  background-color: #2750af;
-  color: white;
+.select select {
+    width: 100%;
+    color: #495057;
+    height: calc(2.25rem + 2px);
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
 }
-
-.privateRepos div {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  background-color: gray;
-  color: white;
-}
-
-table {
-  text-align: center;
-  border-collapse: collapse;
-  border: 1px solid black;
-}
-
-th {
-  text-align: center;
-  width: 125px;
-  border-collapse: collapse;
-  border: 1px solid black;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 8px;
-  text-overflow: ellipsis;
-}
-
-td div {
-  text-align: center;
-  width: 126px;
-  border-collapse: collapse;
-  border: 1px solid black;
-  white-space: nowrap;
-  overflow: hidden;
-  padding: 8px;
-  text-overflow: ellipsis
-}
-
-.error_alert {
-  font-weight: bolder;
-  color: #ce0000;
-}
-
-.btn-pos {
-  text-align: center;
-}
-
-.btn-main-properties {
-  border-radius: 2px;
-  border: none;
-  padding: 20px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-}
-
-.button-get {
-  background-color: #2750af;
-  color: white;
-  cursor: pointer;
-}
-
-.button-get-disabled {
-  background-color: #7fd2ff;
-  color: white;
-  cursor: default;
-}
-
-.button-upd {
-  background-color: #119d00;
-  color: white;
-  cursor: pointer;
-}
-
-.button-upd-disabled {
-  background-color: #59ff5f;
-  color: white;
-  cursor: progress;
-}
-
-.attention-alert {
-  text-align: center;
-  border: 3px solid #810001;
-  background-color: aliceblue;
-  color: #810001;
-  border-radius: 4px;
-  padding: 30px;
-  cursor: default;
+.select select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }

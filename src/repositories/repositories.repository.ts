@@ -19,9 +19,9 @@ export class GitHubRepositoriesRepository {
     );
   }
 
-  public async insertToDB(item: RepoDto) {
+  public insertToDB(item: RepoDto) {
     let repositoryObject = new this.repoModel(item);
-    await this.repoModel.findOneAndUpdate(
+    this.repoModel.findOneAndUpdate(
         { repoName: repositoryObject.repoName },
         { $set: repositoryObject },
         { upsert: true },
