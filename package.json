@@ -8,7 +8,7 @@
     "start:frontend": "cd src/static && ng serve",
     "start": "cd src && ts-node -r tsconfig-paths/register main.ts",
     "build": "cd src/static && ng build",
-    "build:watcher": "cd src/static && ng build --output-path dist --watch",
+    "build:watcher": "cd src/static && ng build && nodemon --output-path dist --watch",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start:prod": "node dist/main.js"
@@ -39,6 +39,7 @@
     "moment": "2.23.0",
     "mongoose": "5.3.12",
     "ngx-bootstrap": "3.2.0",
+    "nodemon": "1.18.10",
     "prettier": "1.15.2",
     "request": "2.88.0",
     "rxjs": "6.3.3",

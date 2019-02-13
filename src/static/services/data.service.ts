@@ -12,6 +12,13 @@ export class DataService {
     this.getRepositoriesNames();
   }
 
+  private getReposData(param) {
+    return this.repositoryService.getAllRepositories(param).subscribe((res) => {
+      this.repositories.push(res);
+      this.repositoriesSubject.next(this.repositories);
+    });
+  }
+
   private getRepositoriesNames() {
     return this.repositoryService.getRepositoryNames()
       .subscribe(result => {
@@ -22,37 +29,48 @@ export class DataService {
       });
   }
 
-  private getReposData(param) {
-    return this.repositoryService.getAllRepositories(param).subscribe((res) => {
-      this.repositories.push(res);
-      this.repositoriesSubject.next(this.repositories);
-    });
-  }
-
   public filterByPrivacyAndBranches(value: string) {
     const result = this.repositories.filter(item =>
       item.repoType === value
-      || value === 'master' && !item.branches[value]
-      || value === 'development' && !item.branches[value]
-      || value === 'none' && !item.branches
+      || (value === 'master' && !item.branches[value])
+      || (value === 'development' && !item.branches[value])
+      || (value === 'none' && !item.branches)
       || value === 'default');
     this.repositoriesSubject.next(result);
   }
 
   public filterByPackages(value: any) {
-      const result = this.repositories.filter(item =>
-        DataService.getDataFromObject(item.branches.master, value.packageName) === value.version
-        || DataService.getDataFromObject(item.branches.development, value.packageName) === value.version
-        || !DataService.getDataFromObject(item.branches.master, value.packageName)
-        && !DataService.getDataFromObject(item.branches.development, value.packageName)
-        && value.version === 'none'
-        || item[value.packageName] === value.version
-        || !value.version);
+    const result = this.repositories.filter(item =>
+        item.repoName.toLowerCase().indexOf(value.version, 0) >= 0
+        || DataService.getDataFromObject(item.branches.master, value.packageName, value.version)
+        || DataService.getDataFromObject(item.branches.development, value.packageName, value.version)
+        || DataService.isNone(item.branches, value.packageName, value.version));
     this.repositoriesSubject.next(result);
   }
 
-  private static getDataFromObject(branch, packageName) {
-    if (branch) return branch[packageName];
+  private static isNone(item, packageName, value) {
+    if (Object.keys(item).length === 2) {
+      if (packageName === 'repoName') {
+        return false;
+      } else if (!item.master[packageName] && !item.development[packageName] && value === 'none') {
+        return true;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  private static getDataFromObject(branch, packageName, version?) {
+    if (branch) {
+      if(branch[packageName]) {
+        const str = branch[packageName];
+        if (str.indexOf(version, 0) >= 0) {
+          return branch[packageName];
+        }
+      }
+    } else {
+      return null;
+    }
   }
 
   get subject() {

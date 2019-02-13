@@ -29,7 +29,7 @@ export class Page implements OnInit {
           const packageName = event.pack;
           return { version, packageName };
         }),
-        debounceTime(500),
+        debounceTime(150),
         distinctUntilChanged()
       ).subscribe(text => {
       this.repositoriesDataService.filterByPackages(text);
@@ -52,8 +52,54 @@ export class Page implements OnInit {
     this.repositoriesDataService.filterByPrivacyAndBranches(value);
   }
 
-  public getDataFromObject(branch, packageName) {
-    if (branch) return branch[packageName];
+  public isBranch(path) {
+    if (Object.keys(path).length === 1) {
+      return true;
+    }
+  }
+
+  public getBranch(repository, branchName) {
+    if (repository[branchName]) {
+      return branchName;
+    } else {
+      return null;
+    }
+  }
+
+  public getStyleClassForVersion(path, target) {
+    if (!path) {
+      return true;
+    } else if (!path[target]) {
+      return true;
+    } else if (Page.setVersion(path[target], this.packagesVersions[target])) {
+      return true;
+    }
+  }
+
+  public getStyleClassForText(path, target) {
+    if (!path) {
+      return true;
+    } else if (!path[target]) {
+      return true;
+    }
+  }
+
+  public isNone(path, target) {
+    const master = this.getPackageValue(path.master, target);
+    const development = this.getPackageValue(path.development, target);
+    if(master === '(none)' && development === '(none)') {
+      return true;
+    }
+  }
+
+  public getPackageValue(repository, packageName) {
+    if (!repository) {
+      return '(none)';
+    } if (repository[packageName]) {
+      return repository[packageName];
+    } else {
+      return '(none)';
+    }
   }
 
   public lastUpdate(time) {
@@ -70,7 +116,7 @@ export class Page implements OnInit {
     return result;
   }
 
-  public setVersion(version, configVersion) {
+  private static setVersion(version, configVersion) {
     if (!!version && version) {
       return (
         compareVersions(

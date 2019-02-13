@@ -7,12 +7,12 @@ caption {
     caption-side: top;
 }
 th, td {
-    width: 90px;
+    width: 70px;
     padding: 8px;
 }
 .table .repository-name {
-    text-align: center;
-    width: 100px;
+    width: 70px;
+    text-align: left;
 }
 .table .text {
     position: relative;
@@ -29,15 +29,6 @@ th, td {
 .text:before {
     content: '';
     display: inline-block;
-}
-
-.select-disabled select {
-    width: 100%;
-    color: #495057;
-    height: calc(2.25rem + 2px);
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: #c5c5c5;
 }
 .select select {
     width: 100%;
