@@ -12,14 +12,14 @@ export class DataService {
     this.getRepositoriesNames();
   }
 
-  private getReposData(param) {
+  public getReposData(param) {
     return this.repositoryService.getAllRepositories(param).subscribe((res) => {
       this.repositories.push(res);
       this.repositoriesSubject.next(this.repositories);
     });
   }
 
-  private getRepositoriesNames() {
+  public getRepositoriesNames() {
     return this.repositoryService.getRepositoryNames()
       .subscribe(result => {
         this.repoNames = result;
