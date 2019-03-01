@@ -4,26 +4,24 @@ import { GetRepositoriesService } from './get.repositories.service';
 
 @Injectable()
 export class DataService {
-  private repositories: any[] = [];
-  private repoNames: any;
-  private repositoriesSubject = new BehaviorSubject([]);
+  protected repositories: any[] = [];
+  protected repositoriesSubject = new BehaviorSubject([]);
 
-  constructor(private repositoryService: GetRepositoriesService) {
-    this.getRepositoriesNames();
+  constructor(protected repositoryService: GetRepositoriesService) {
+    this.getNames();
   }
 
-  public getReposData(param) {
+  protected getReposData(param) {
     return this.repositoryService.getAllRepositories(param).subscribe((res) => {
       this.repositories.push(res);
       this.repositoriesSubject.next(this.repositories);
     });
   }
 
-  public getRepositoriesNames() {
+  protected getNames() {
     return this.repositoryService.getRepositoryNames()
       .subscribe(result => {
-        this.repoNames = result;
-        for (let element of this.repoNames) {
+        for (let element of result) {
           this.getReposData(element.repoName);
         }
       });
@@ -32,10 +30,10 @@ export class DataService {
   public filterByPrivacyAndBranches(value: string) {
     const result = this.repositories.filter(item =>
       item.repoType === value
-      || (value === 'master' && !item.branches[value])
-      || (value === 'development' && !item.branches[value])
-      || (value === 'none' && !item.branches)
-      || value === 'default');
+        || (value === 'master' && !item.branches[value])
+        || (value === 'development' && !item.branches[value])
+        || (value === 'none' && !item.branches)
+        || value === 'default');
     this.repositoriesSubject.next(result);
   }
 

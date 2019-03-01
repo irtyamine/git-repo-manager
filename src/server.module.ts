@@ -5,8 +5,8 @@ import { FrontendController } from './frontend.controller';
 
 @Module({
   imports: [
-      HttpModule,
-      RepositoriesModule
+    HttpModule,
+    RepositoriesModule
   ],
   exports: [],
   controllers: [

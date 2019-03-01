@@ -5,7 +5,6 @@ import { repositoriesProviders } from './repositories.providers';
 import { databaseProviders } from '../common/database.providers';
 import { LoggerMiddleware } from '../middlewares/logger.middleware';
 import { RepositoriesController } from './repositories.controller';
-import { ConfigService } from '../../config/config.service';
 
 @Module({
     controllers: [
@@ -13,21 +12,20 @@ import { ConfigService } from '../../config/config.service';
     ],
     imports: [ HttpModule ],
     providers: [
-        ConfigService,
         GitHubRepositoriesService,
         GitHubRepositoriesRepository,
         ...repositoriesProviders,
         ...databaseProviders
     ]
 })
-export class RepositoriesModule {
-    // configure(consumer: MiddlewareConsumer) {
-    //     consumer
-    //         .apply(LoggerMiddleware)
-    //         .with('RepositoriesModule', 'GET')
-    //         .exclude(
-    //             { path: 'repository', method: RequestMethod.ALL }
-    //         )
-    //         .forRoutes('/');
-    // }
+export class RepositoriesModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(LoggerMiddleware)
+            .with('RepositoriesModule', 'GET')
+            .exclude(
+                { path: 'repository', method: RequestMethod.ALL }
+            )
+            .forRoutes('/');
+    }
 }

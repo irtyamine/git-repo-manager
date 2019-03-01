@@ -3,7 +3,7 @@ import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepository } from './repositories.repository';
 import { RepoBranchesDataObjectInterface } from './interfaces/repo-branches-data.object.interface';
 import { Repo } from './interfaces/repo.interface';
-import { ConfigService } from '../../config/config.service';
+let configFile = require('../../config/github-repositories-config.json');
 import { CronJob } from 'cron';
 
 @Injectable()
@@ -12,47 +12,47 @@ export class GitHubRepositoriesService {
   constructor(
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepository,
-    private readonly configFile: ConfigService
   ) {
-    this.updateTime();
+    this.updateTimeMorning();
+    this.updateTimeEvening();
   }
 
-  public updateTime() {
-    new CronJob('00 00 11 * * 1-5', () => {
+  public updateTimeMorning() {
+    new CronJob('00 00 09 * * 1-5', () => {
+      this.makeRequestToGitHubLink();
+    }, null, true, 'Europe/Kiev');
+  }
+
+  public updateTimeEvening() {
+    new CronJob('00 00 19 * * 1-5', () => {
       this.makeRequestToGitHubLink();
     }, null, true, 'Europe/Kiev');
   }
 
   public getNamesFromDB() {
-    let arrayOfRepositoriesNames = [];
-    for (let repository of this.configFile.config.repositories) {
+    for (let repository of configFile.repositories) {
       const initialRepositoriesObject = {
         repoName: repository.name,
         repoType: repository.repoType
       };
-      arrayOfRepositoriesNames.push(initialRepositoriesObject);
       this.repoDB.firsInsertToDB(initialRepositoriesObject, initialRepositoriesObject.repoName);
     }
-    return arrayOfRepositoriesNames;
+    return this.repoDB.findRepositoriesNames();
   }
 
   private async makeRequestToGitHubLink() {
-    for (let repository of this.configFile.config.repositories) {
+    for (let repository of configFile.repositories) {
       const branch = {},
         masterSearch = await  this.createGithubLinkAndGetDataFromGitHub(repository, {}, branch, 'master'),
         developmentSearch = await this.createGithubLinkAndGetDataFromGitHub(repository, {}, branch, 'development'),
         repositoryData = assign({}, masterSearch, developmentSearch);
       this.repoDB.insertToDB(repositoryData);
-      this.countUpdatedRepositories(this.configFile.config.repositories.indexOf(repository) + 1);
+      console.log('Updated');
     }
   }
 
-  private countUpdatedRepositories(count) {
-    console.log(count);
-  }
-
   private async createGithubLinkAndGetDataFromGitHub(repositoryData, dataObject, branchObject, branchAlias) {
-    for (let branch of this.configFile.config.aliasesOfBranch[branchAlias]) {
+    for (let branch of configFile.aliasesOfBranch[branchAlias]) {
 
       const link = `https://raw.githubusercontent.com/${repositoryData.name}/${branch}/package.json`,
         gitHubData = await this.getRepositoryData(link, repositoryData.token);
@@ -92,23 +92,27 @@ export class GitHubRepositoriesService {
         );
 
         const staticRepoData = pick(result.data, [
-          this.configFile.config.staticRepoData.version,
-          this.configFile.config.staticRepoData.name,
-          this.configFile.config.staticRepoData.description
+          configFile.dependencies.version,
+          configFile.dependencies.name,
+          configFile.dependencies.description
         ]);
 
         const dependenciesRepo = pick(dependencies, [
-          this.configFile.config.objectPackages.express,
-          this.configFile.config.objectPackages.lodash,
-          this.configFile.config.objectPackages.tslint,
-          this.configFile.config.objectPackages.typescript,
-          this.configFile.config.objectPackages.angular
+          configFile.devDependencies.express,
+          configFile.devDependencies.lodash,
+          configFile.devDependencies.tslint,
+          configFile.devDependencies.typescript,
+          configFile.devDependencies.angular
         ]);
         assign(resultData, staticRepoData, dependenciesRepo);
       })
       .catch(error => {
-        if (error.response.status === 404) { return null; }
-        else { throw error; }
+        if (error.response.status === 404) {
+          return null;
+        }
+        else {
+          throw error;
+        }
       });
      return resultData;
   }

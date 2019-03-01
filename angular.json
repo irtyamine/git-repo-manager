@@ -31,8 +31,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "config/environments/environment.ts",
-                  "with": "config/environments/environment.prod.ts"
+                  "replace": "src/static/environments/environment.ts",
+                  "with": "src/static/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -69,7 +69,7 @@
           "options": {
             "main": "src/static/test.ts",
             "polyfills": "src/static/polyfills.ts",
-            "tsConfig": "src/tsconfig.json",
+            "tsConfig": "src/static/tsconfig.spec.json",
             "karmaConfig": "src/static/karma.conf.js",
             "styles": [
               "src/static/styles.css"
@@ -85,7 +85,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.json"
+              "src/tsconfig.json",
+              "src/static/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -95,7 +96,7 @@
       }
     },
     "front-end-e2e": {
-      "root": "src/static",
+      "root": "src/static/e2e/",
       "projectType": "application",
       "architect": {
         "e2e": {
@@ -113,6 +114,7 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
+            "tsConfig": "src/static/e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

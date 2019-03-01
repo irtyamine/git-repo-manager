@@ -18,10 +18,9 @@ export class Page implements OnInit {
   public packagesVersions: any;
 
   constructor(
-    private repository: GetRepositoriesService,
+    private reposService: GetRepositoriesService,
     private repositoriesDataService: DataService
   ) {
-    this.packagesVersions = this.repository.getConfigurationFile.recommendedAtValorVersions;
     this.keyUp
       .pipe(
         map(event => {
@@ -37,7 +36,14 @@ export class Page implements OnInit {
   }
 
   ngOnInit() {
+    this.getRecommendVersions();
     this.repositoriesData = this.repositoriesDataService.subject;
+  }
+
+  public getRecommendVersions() {
+    this.reposService.getRecommendVersionDataConfig().subscribe(data => {
+      this.packagesVersions = data;
+    });
   }
 
   public filtration(packageName: string, event: any) {
@@ -88,6 +94,16 @@ export class Page implements OnInit {
     const master = this.getPackageValue(path.master, target);
     const development = this.getPackageValue(path.development, target);
     if(master === '(none)' && development === '(none)') {
+      return true;
+    }
+  }
+
+  public isNoneOrSame(path, target) {
+    const master = this.getPackageValue(path.master, target);
+    const development = this.getPackageValue(path.development, target);
+    if(master === '(none)' && development === '(none)') {
+      return true;
+    } else if (master === development) {
       return true;
     }
   }

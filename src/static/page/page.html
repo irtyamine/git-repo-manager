@@ -6,12 +6,12 @@
       <th class="repository-name text-center">Repository name</th>
       <th class="text"><span>Type of privacy</span></th>
       <th class="text"><span>Branches</span></th>
-      <th class="text"><span>package name</span></th>
-      <th class="text"><span>version</span></th>
-      <th class="text"><span>description</span></th>
+      <th class="text"><span>package name<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>version<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>description<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
       <th class="text"><span>lodash</span></th>
-      <th class="text"><span>tslint</span></th>
-      <th class="text"><span>typescript</span></th>
+      <th class="text"><span>tslint<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>typescript<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
       <th class="text"><span>express</span></th>
       <th class="text"><span>@angular/common</span></th>
     </tr>
@@ -93,7 +93,7 @@
 
       <!--PACKAGE NAME-->
       <td [ngClass]="isNone(repository.branches, 'name') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
-        <span *ngIf="!isNone(repository.branches, 'name'); else packageName"
+        <span *ngIf="!isNoneOrSame(repository.branches, 'name'); else packageName"
               tooltip="{{getPackageValue(repository.branches.master, 'name')}}
                 &rarr; {{getPackageValue(repository.branches.development, 'name')}}">
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
@@ -105,7 +105,9 @@
           </a>
         </span>
         <ng-template #packageName>
-          <span>(none)</span>
+          <span tooltip="{{getPackageValue(repository.branches.master, 'name')}}">
+              {{ getPackageValue(repository.branches.master, 'name') }}
+          </span>
         </ng-template>
       </td>
 
@@ -127,7 +129,7 @@
 
       <!--DESCRIPTION-->
       <td [ngClass]="isNone(repository.branches, 'description') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
-        <span *ngIf="!isNone(repository.branches, 'description'); else description"
+        <span *ngIf="!isNoneOrSame(repository.branches, 'description'); else description"
                      tooltip="{{getPackageValue(repository.branches.master, 'description')}}
                        &rarr; {{getPackageValue(repository.branches.development, 'description')}}">
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'description')}">
@@ -139,13 +141,18 @@
           </a>
         </span>
         <ng-template #description>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'description'); else description2">(none)</span>
+          <ng-template #description2>
+            <span tooltip="{{getPackageValue(repository.branches.master, 'description')}}">
+              {{ getPackageValue(repository.branches.master, 'description') }}
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 
       <!--LODASH-->
       <td class="text">
-        <span *ngIf="!isNone(repository.branches, 'lodash'); else lodash">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'lodash'); else lodash">
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'lodash')}">
             {{ getPackageValue(repository.branches.master, 'lodash') }}
           </a>
@@ -155,13 +162,20 @@
           </a>
         </span>
         <ng-template #lodash>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'lodash'); else lodash2">(none)</span>
+          <ng-template #lodash2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'lodash')}">
+                {{ getPackageValue(repository.branches.master, 'lodash') }}
+              </a>
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 
       <!--TSLINT-->
       <td [ngClass]="isNone(repository.branches, 'tslint') ? 'text bg-danger text-white h5' : 'text'">
-      <span *ngIf=" !isNone(repository.branches, 'tslint'); else tslint">
+      <span *ngIf=" !isNoneOrSame(repository.branches, 'tslint'); else tslint">
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'tslint')}">
             {{ getPackageValue(repository.branches.master, 'tslint') }}
           </a>
@@ -171,13 +185,20 @@
           </a>
         </span>
         <ng-template #tslint>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'tslint'); else tslint2">(none)</span>
+          <ng-template #tslint2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'tslint')}">
+                {{ getPackageValue(repository.branches.master, 'tslint') }}
+              </a>
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 
       <!--TYPESCRIPT-->
       <td [ngClass]="isNone(repository.branches, 'typescript') ? 'text bg-danger text-white h5' : 'text'">
-        <span *ngIf="!isNone(repository.branches, 'typescript'); else typescript">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'typescript'); else typescript">
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'typescript')}">
             {{ getPackageValue(repository.branches.master, 'typescript') }}
           </a>
@@ -187,13 +208,20 @@
           </a>
         </span>
         <ng-template #typescript>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'typescript'); else typescript2">(none)</span>
+          <ng-template #typescript2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'typescript')}">
+                {{ getPackageValue(repository.branches.master, 'typescript') }}
+              </a>
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 
       <!--EXPRESS-->
       <td class="text">
-        <span *ngIf="!isNone(repository.branches, 'express'); else express">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'express'); else express">
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'express')}">
             {{ getPackageValue(repository.branches.master, 'express') }}
           </a>
@@ -203,13 +231,20 @@
           </a>
         </span>
         <ng-template #express>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'express'); else express2">(none)</span>
+          <ng-template #express2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'express')}">
+                {{ getPackageValue(repository.branches.master, 'express') }}
+              </a>
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 
       <!--@ANGULAR/COMMON-->
       <td class="text">
-        <span *ngIf="!isNone(repository.branches, '@angular/common'); else angular">
+        <span *ngIf="!isNoneOrSame(repository.branches, '@angular/common'); else angular">
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, '@angular/common')}">
             {{ getPackageValue(repository.branches.master, '@angular/common') }}
           </a>
@@ -219,7 +254,14 @@
           </a>
         </span>
         <ng-template #angular>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, '@angular/common'); else angular2">(none)</span>
+          <ng-template #angular2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, '@angular/common')}">
+                {{ getPackageValue(repository.branches.master, '@angular/common') }}
+              </a>
+            </span>
+          </ng-template>
         </ng-template>
       </td>
     </tr>

@@ -31,7 +31,11 @@ export class GitHubRepositoriesRepository {
     );
   }
 
-  public findRepositoriesData(parameter) {
+  public findRepositoriesNames() {
+    return this.repoModel.find().select({'repoName': 1, '_id': 0});
+  }
+
+  public  findRepositoriesData(parameter) {
     return this.repoModel.findOne( { repoName: parameter });
   }
 }
