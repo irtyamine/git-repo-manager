@@ -1,26 +1,51 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+const path = require('path');
+
 module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-jasmine-html-reporter',
+      '@angular-devkit/build-angular/plugins/karma',
+      'karma-coverage-istanbul-reporter'
     ],
-    client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
+    reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, '../coverage'),
-      reports: ['html', 'lcovonly'],
-      fixWebpackSourcePaths: true
+      reports: ['html', 'lcovonly', 'text-summary'],
+      dir: path.join(__dirname, '../coverage'),
+      combineBrowserReports: true,
+      fixWebpackSourcePaths: true,
+      skipFilesWithNoCoverage: false,
+      'report-config': {
+        html: {
+          subdir: 'html'
+        }
+      },
+      thresholds: {
+        emitWarning: false,
+        global: {
+          statements: 80,
+          lines: 80,
+          branches: 80,
+          functions: 80
+        },
+        each: {
+          statements: 80,
+          lines: 80,
+          branches: 80,
+          functions: 80
+        }
+      },
+      verbose: false
     },
-    reporters: ['progress', 'kjhtml'],
+    client: {
+      clearContext: false
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

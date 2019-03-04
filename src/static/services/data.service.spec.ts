@@ -188,7 +188,7 @@ describe('Service: DataService', () => {
 
       const dummyData = [
         {
-          repoName: 'RepoName/noBranches',
+          repoName: 'RepoName/noBranches'
         },
         {
           repoName: 'RepoName/allBranches',

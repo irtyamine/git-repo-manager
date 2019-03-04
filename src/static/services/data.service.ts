@@ -4,7 +4,7 @@ import { GetRepositoriesService } from './get.repositories.service';
 
 @Injectable()
 export class DataService {
-  protected repositories: any[] = [];
+  protected repositories = [];
   protected repositoriesSubject = new BehaviorSubject([]);
 
   constructor(protected repositoryService: GetRepositoriesService) {
