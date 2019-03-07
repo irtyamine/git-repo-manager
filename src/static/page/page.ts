@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GetRepositoriesService } from '../services/get.repositories.service';
 import { DataService } from '../services/data.service';
 import { Subject } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import * as compareVersions from 'compare-versions';
 
@@ -19,7 +20,8 @@ export class Page implements OnInit {
 
   constructor(
     private reposService: GetRepositoriesService,
-    private repositoriesDataService: DataService
+    private repositoriesDataService: DataService,
+    private auth: AuthService
   ) {
     this.keyUp
       .pipe(
@@ -130,6 +132,10 @@ export class Page implements OnInit {
       : minutes < 60 ? result += minutes + ' min'
       : hours < 24 ? result += hours + ' hrs' : result += days + ' d';
     return result;
+  }
+
+  public logOut() {
+    this.auth.logOut();
   }
 
   private static setVersion(version, configVersion) {

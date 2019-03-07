@@ -1,3 +1,4 @@
+<button type="button" class="btn btn-danger text-white" (click)="logOut()">Log Out</button>
 <div class="table-position">
   <table class="table table-bordered table-active">
     <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
