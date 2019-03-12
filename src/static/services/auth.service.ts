@@ -17,14 +17,14 @@ export class AuthService {
       .pipe(
         map((res: any) => {
           if (res) {
-            this.cookieService.set(this.cookieFileName, res.hashed_token);
+            this.cookieService.set(this.cookieFileName, res.authToken);
             return true;
           }
           return false;
         }),
         catchError(err =>
           err.code === 404 ? throwError('Not Found') :
-            err.code === 401 ? throwError('Unauthorized') :throwError(err.message))
+            err.code === 401 ? throwError('Unauthorized') : throwError(err.message))
       );
   }
 
