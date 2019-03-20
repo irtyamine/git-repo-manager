@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router} from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { GetRepositoriesService } from './get.repositories.service';
 
@@ -7,7 +8,7 @@ export class DataService {
   protected repositories = [];
   protected repositoriesSubject = new BehaviorSubject([]);
 
-  constructor(protected repositoryService: GetRepositoriesService) {
+  constructor(protected repositoryService: GetRepositoriesService, protected router: Router) {
     this.getNames();
   }
 

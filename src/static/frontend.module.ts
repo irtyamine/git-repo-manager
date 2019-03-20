@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: GithubAuthComponent },
   { path: 'table-repositories', component: Page, canActivate: [AuthGuard] },
-  { path: '**', component: NotFoundComponent }
+  // { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({
@@ -41,7 +41,7 @@ const routes: Routes = [
     DataService,
     AuthService,
     CookieService,
-    GetRepositoriesService
+    GetRepositoriesService,
   ],
   bootstrap: [
     AppComponent

@@ -1,4 +1,5 @@
-<button type="button" class="btn btn-danger text-white" (click)="logOut()">Log Out</button>
+<button type="button" class="btn btn-outline-danger btn-block" (click)="logOut()">Log Out</button>
+<!--<button type="button" class="btn btn-primary text-white" (click)="isAuthenticated()">Log Out</button>-->
 <div class="table-position">
   <table class="table table-bordered table-active">
     <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
@@ -114,7 +115,7 @@
 
       <!--VERSION-->
       <td [ngClass]="isNone(repository.branches, 'version') ? ' text bg-danger text-white h5' : 'text'">
-        <span *ngIf="!isNone(repository.branches, 'version'); else version">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'version'); else version">
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
             {{ getPackageValue(repository.branches.master, 'version') }}
           </a>
@@ -124,7 +125,12 @@
           </a>
         </span>
         <ng-template #version>
-          <span>(none)</span>
+          <span *ngIf="isNone(repository.branches, 'version'); else version2">(none)</span>
+          <ng-template #version2>
+            <span>
+              {{ getPackageValue(repository.branches.master, 'version') }}
+            </span>
+          </ng-template>
         </ng-template>
       </td>
 

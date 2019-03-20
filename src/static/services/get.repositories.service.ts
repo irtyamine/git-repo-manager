@@ -16,7 +16,8 @@ export class GetRepositoriesService {
       .get(`${this.API_URL}/repositories/recommend-versions`)
       .pipe(
         catchError(err =>
-        err.code === 404 ? throwError('Not Found') : throwError(err))
+        err.code === 404 ? throwError('Not Found') :
+          err.code === 401 ? throwError('Unauthorized') : throwError(err))
       );
   }
 
@@ -25,7 +26,8 @@ export class GetRepositoriesService {
       .get(`${this.API_URL}/repositories/names`)
       .pipe(
         catchError(err =>
-        err.code === 404 ? throwError('Not Found') : throwError(err))
+        err.code === 404 ? throwError('Not Found') :
+          err.code === 401 ? throwError('Unauthorized') : throwError(err))
       );
   }
 
@@ -36,7 +38,8 @@ export class GetRepositoriesService {
       .get(`${this.API_URL}/repositories/all-repositories`, options)
       .pipe(
         catchError(err =>
-          err.code === 404 ? throwError('Not found') : throwError(err),
+          err.code === 404 ? throwError('Not found') :
+            err.code === 401 ? throwError('Unauthorized') : throwError(err),
         ),
       );
   }

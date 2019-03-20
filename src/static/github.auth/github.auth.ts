@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-github-auth',
@@ -11,64 +9,16 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class GithubAuthComponent implements OnInit {
-  public condition: boolean = false;
-  public errorText: string;
-  public loading: boolean = true;
-  public errorAlertCondition: boolean = true;
-  private keyUp = new Subject<any>();
+  public condition: boolean = true;
 
-  constructor(private router: Router, private auth: AuthService) {
-    this.keyUp
-      .pipe(
-        map(event => {
-          const login = event.login;
-          const password = event.password;
-          return { login, password };
-        }),
-        debounceTime(100),
-        distinctUntilChanged()
-      ).subscribe(text => {
-      this.isEmpty(text.login, text.password);
-    });
-  }
+  constructor(private router: Router, private auth: AuthService) {}
 
-  ngOnInit() {
-    this.isEmpty('', '');
-  }
+  ngOnInit() {}
 
-  public checkInputValue(loginValue, passwordValue) {
-    this.keyUp.next({ login: loginValue, password: passwordValue });
-  }
 
-  public logIn(login, password) {
-    this.errorAlertCondition = true;
-    this.loading = false;
+  public goToGithubAuth() {
     this.condition = false;
-    this.auth.logIn({ login, password }).subscribe(res => {
-      this.router.navigate(['/table-repositories']);
-    }, err => {
-      if (err.indexOf('401 Unauthorized', 0) >= 0) {
-        this.errorText = 'Invalid login or password';
-        this.errorAlertCondition = false;
-        this.condition = true;
-        this.loading = true;
-      } else {
-        return true;
-      }
-    });
+    this.auth.gitLogin();
   }
 
-  public logOut() {
-    this.auth.githubAuthentication().subscribe(res => {
-      console.log(res);
-    });
-  }
-
-  private isEmpty(valueOfLogin: string, valueOfPassword: string) {
-    if (valueOfLogin.length === 0 || valueOfPassword.length === 0) {
-      this.condition = false;
-    } else {
-      this.condition = true;
-    }
-  }
 }

@@ -5,36 +5,11 @@
              <div class="h3">Well Come!</div>
          </div>
          <div class="card-body">
-             <div class="col-auto form-label-group">
-               <label class="sr-only" for="login">Username</label>
-               <div class="input-group mb-2">
-                 <div class="input-group-prepend">
-                   <div class="input-group-text">
-                     <i class="fas fa-user loginImg" tooltip="Use your GitHub e-mail or nickname"></i>
-                   </div>
-                 </div>
-                 <input #Login type="text" class="form-control" id="login" placeholder="E-mail or nickname" autocomplete="off" (keyup)="checkInputValue(Login.value, Password.value)">
-               </div>
-             </div>
-             <div class="col-auto form-label-group">
-               <label class="sr-only" for="password">Username</label>
-               <div class="input-group mb-2">
-                 <div class="input-group-prepend">
-                   <div class="input-group-text">
-                     <i class="fas fa-key loginImg" tooltip="Use your GitHub password"></i>
-                   </div>
-                 </div>
-                 <input #Password type="password" class="form-control" id="password" placeholder="Password" (keyup)="checkInputValue(Login.value, Password.value)">
-               </div>
-             </div>
-         </div>
-         <div [hidden]="errorAlertCondition" class="alert alert-danger" role="alert">{{errorText}}</div>
-         <div class="card-footer bg-dark">
-             <button [disabled]="!condition" type="button" class="btn btn-success btn-position" (click)="logIn(Login.value, Password.value)">
-                 <a [hidden]="!loading">Log In</a>
-                 <a [hidden]="loading">Loading...</a>
+             <button [disabled]="!condition" class="btn btn-outline-dark btn-block btn-lg h1" (click)="goToGithubAuth()">
+                 <i [hidden]="!condition" class="fab fa-github fa-2x img-pos"></i>
+                 <a [hidden]="!condition" class="h1">Login via Github</a>
+                 <a [hidden]="condition" class="h1">Loading...</a>
              </button>
-             <a href="https://github.com/password_reset" class="text-white link-position" target="_blank">Forgot password?</a>
          </div>
      </div>
   </fieldset>

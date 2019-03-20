@@ -31,3 +31,8 @@
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
 }
+
+.img-pos {
+    float: left;
+    position: center;
+}
