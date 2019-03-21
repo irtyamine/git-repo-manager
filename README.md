@@ -4,22 +4,29 @@ This project was created with [Angular CLI](https://github.com/angular/angular-c
 
 ## How to start?
 
-First of all You need to start MongoDB server:
+First of all - clone project repository:
+```
+git clone git@github.com:valor-software/git-repo-manager.git
+```
 
+Than make
+```
+npm install
+```
+
+Start MongoDB
 ```
 sudo mongod
 ```
 
-(If you start project first time)After that you can build frontend path:
-
+Run tests
 ```
-npm run build
-```
-
-And start the server:
-
-```
-npm run start:server
+npm run test
 ```
 
-And navigate to `http://loclhost:3000/`
+Run application
+```
+npm run start
+```
+
+Enjoy!
