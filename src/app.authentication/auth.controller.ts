@@ -19,7 +19,7 @@ export class AuthController {
   githubLoginCallback(@Req() req, @Res() res) {
     const authToken: string = req.user.jwt;
     if(authToken && req.user.organizationName === authKeys.organizations.ACCESS_GITHUB_ORGANIZATION) {
-      res.cookie('_auth_token', authToken, { maxAge: 5 * 60 * 60 * 1000 });
+      res.cookie('_auth_token', authToken, { maxAge: Date.now() + (3600 * 5 * 1000)});
       res.redirect(`${this.API_URL}/table-repositories`);
     } else {
       res.redirect(`${this.API_URL}/login`);
@@ -28,7 +28,7 @@ export class AuthController {
 
   @Get('isAuthenticated')
   isAuthenticated(@Req() req, @Res() res) {
-    this.githubrepository.deleteOldAuthTokens();
+    this.githubrepository.deleteOldAuthTokens(Date.now());
     if (!req.cookies['_auth_token']) {
       res.json(false);
     } else {

@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
       if (err.indexOf('401 Unauthorized', 0) >= 0) {
         this.router.navigateByUrl('/login');
         this.errorCondition = false;
-        this.errorAlert = 'Oops! Something went wrong during authentication process';
+        this.errorAlert = 'Oops! Something went wrong during authentication process or auth token expired';
       }
     });
   }

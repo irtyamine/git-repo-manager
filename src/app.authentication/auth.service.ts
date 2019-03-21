@@ -9,7 +9,7 @@ export class AuthService {
 
   public insertNewUserAccessData(date, accessToken, authToken) {
     const userProfileObject: GithubUserInterface = {
-      expiresDate: date + 180000,
+      expiresDate: date,
       accessToken: accessToken,
       authToken: authToken,
     };

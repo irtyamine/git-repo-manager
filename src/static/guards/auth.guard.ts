@@ -12,14 +12,12 @@ export class AuthGuard implements CanActivate {
     return this.auth.checkAuthTokenExists().pipe(
       map(res => {
         if(!res) {
-          this.router.navigateByUrl('/login');
           return false;
         } else {
           return true;
         }
       }, err => {
         if (err.indexOf('401 Unauthorized', 0) >= 0) {
-          this.router.navigateByUrl('/login');
           return false;
         }
       }),

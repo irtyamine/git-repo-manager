@@ -21,7 +21,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     }, (accessToken, refreshToken, profile, done)  => {
       try {
         const jwt: string = short.generate();
-        this.auth.insertNewUserAccessData(Date.now() + 180000, accessToken, jwt);
+        this.auth.insertNewUserAccessData(Date.now() + 18000000, accessToken, jwt);
         this.auth.getUserListOfOrganizations(accessToken).subscribe(res => {
           const result = res.data.filter(organization =>
              organization.login === authKeys.organizations.ACCESS_GITHUB_ORGANIZATION

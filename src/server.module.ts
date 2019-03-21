@@ -2,17 +2,19 @@ import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } fro
 import { FrontendMiddleware } from './middlewares/frontend.middleware';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { FrontendController } from './frontend.controller';
+import { AuthModule } from './app.authentication/auth.module';
 
 @Module({
   imports: [
     HttpModule,
-    RepositoriesModule
+    RepositoriesModule,
+    AuthModule
   ],
   exports: [],
   controllers: [
     FrontendController
   ],
-  providers: [  ],
+  providers: [],
 })
 export class ServerModule implements NestModule {
     configure(consumer: MiddlewareConsumer): void {

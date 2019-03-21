@@ -16,7 +16,7 @@ export class GithubRepository {
     return this.userModel.findOne({ authToken: authToken }).exec();
   }
 
-  public deleteOldAuthTokens() {
-    return this.userModel.deleteMany({ expiresDate: { $lte: Date.now() } }).exec();
+  public deleteOldAuthTokens(date: number) {
+    return this.userModel.deleteMany({ expiresDate: { $lt: date }}).exec();
   }
 }

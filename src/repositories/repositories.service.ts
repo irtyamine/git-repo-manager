@@ -18,7 +18,7 @@ export class GitHubRepositoriesService {
   }
 
   public updateTimeMorning() {
-    new CronJob('00 00 09 * * 1-5', () => {
+    new CronJob('00 00 9 * * 1-5', () => {
       this.makeRequestToGitHubLink();
     }, null, true, 'Europe/Kiev');
   }
