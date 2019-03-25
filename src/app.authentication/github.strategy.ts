@@ -25,9 +25,14 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
         this.auth.getUserListOfOrganizations(accessToken).subscribe(res => {
           const result = res.data.filter(organization =>
              organization.login === authKeys.organizations.ACCESS_GITHUB_ORGANIZATION
-          ),
-            organizationName = result[0].login,
-            user = {
+          );
+          let organizationName = '';
+          if (!result) {
+            organizationName = '';
+          } else {
+            organizationName = result[0].login;
+          }
+          const user = {
               organizationName,
               jwt
             };

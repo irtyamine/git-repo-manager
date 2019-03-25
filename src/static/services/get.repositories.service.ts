@@ -31,11 +31,11 @@ export class GetRepositoriesService {
       );
   }
 
-  getAllRepositories(repoName: string): Observable<any> {
+  getSingleRepository(repoName: string): Observable<any> {
     const options = repoName ?
       { params: new HttpParams().set('repositoryName', repoName) } : {};
     return this.http
-      .get(`${this.API_URL}/repositories/all-repositories`, options)
+      .get(`${this.API_URL}/repositories/repository`, options)
       .pipe(
         catchError(err =>
           err.code === 404 ? throwError('Not found') :

@@ -3,6 +3,7 @@ import { RepoBranchesDataObjectInterface } from './repo-branches-data.object.int
 export interface Repo {
   repoName: string;
   timestamp?: number;
+  reposNamesUpdateTime?: number;
   repoType: string;
   branches?: RepoBranchesDataObjectInterface;
 }

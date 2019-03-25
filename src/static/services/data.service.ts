@@ -13,9 +13,13 @@ export class DataService {
   }
 
   protected getReposData(param) {
-    return this.repositoryService.getAllRepositories(param).subscribe((res) => {
-      this.repositories.push(res);
-      this.repositoriesSubject.next(this.repositories);
+    return this.repositoryService.getSingleRepository(param).subscribe((res) => {
+      if(!res.repoName || !res.timestamp) {
+        return;
+      } else {
+        this.repositories.push(res);
+        this.repositoriesSubject.next(this.repositories);
+      }
     });
   }
 
@@ -60,13 +64,12 @@ export class DataService {
   }
 
   private static getDataFromObject(branch, packageName, version?) {
-    if (branch) {
-      if(branch[packageName]) {
+    if (branch && branch[packageName]) {
         const str = branch[packageName];
         if (str.indexOf(version, 0) >= 0) {
           return branch[packageName];
         }
-      }
+        return null;
     } else {
       return null;
     }

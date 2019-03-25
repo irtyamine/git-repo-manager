@@ -4,6 +4,7 @@ import { DataService } from '../services/data.service';
 import { Subject } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import * as compareVersions from 'compare-versions';
+import * as semver from 'semver';
 
 @Component({
   selector: 'app-page',
@@ -31,7 +32,7 @@ export class Page implements OnInit {
         debounceTime(150),
         distinctUntilChanged()
       ).subscribe(text => {
-      this.repositoriesDataService.filterByPackages(text);
+        this.repositoriesDataService.filterByPackages(text);
       });
   }
 
@@ -61,6 +62,8 @@ export class Page implements OnInit {
   public isBranch(path) {
     if (Object.keys(path).length === 1) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -73,20 +76,18 @@ export class Page implements OnInit {
   }
 
   public getStyleClassForVersion(path, target) {
-    if (!path) {
+    if (!path || !path[target] || Page.setVersion(path[target], this.packagesVersions[target])) {
       return true;
-    } else if (!path[target]) {
-      return true;
-    } else if (Page.setVersion(path[target], this.packagesVersions[target])) {
-      return true;
+    } else {
+      return false;
     }
   }
 
   public getStyleClassForText(path, target) {
-    if (!path) {
+    if (!path || !path[target]) {
       return true;
-    } else if (!path[target]) {
-      return true;
+    } else  {
+      return false;
     }
   }
 
@@ -95,6 +96,8 @@ export class Page implements OnInit {
     const development = this.getPackageValue(path.development, target);
     if(master === '(none)' && development === '(none)') {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -105,6 +108,8 @@ export class Page implements OnInit {
       return true;
     } else if (master === development) {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -137,13 +142,7 @@ export class Page implements OnInit {
   }
 
   private static setVersion(version, configVersion) {
-    if (!!version && version) {
-      return (
-        compareVersions(
-          version.replace(/[^]*[~]*([0-9].[0-9].[0-9])/, '$1'),
-          configVersion,
-        ) === -1
-      );
-    }
+    const clearVersion = semver.coerce(version);
+    return semver.lt(clearVersion.raw, configVersion);
   }
 }
