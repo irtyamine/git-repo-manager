@@ -16,7 +16,7 @@ module.exports = function (config) {
     ],
     reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
     coverageIstanbulReporter: {
-      reports: ['html', 'lcovonly', 'text-summary'],
+      reports: ['html', 'lcovonly'],
       dir: path.join(__dirname, '../coverage'),
       combineBrowserReports: true,
       fixWebpackSourcePaths: true,
@@ -31,13 +31,13 @@ module.exports = function (config) {
         global: {
           statements: 80,
           lines: 80,
-          branches: 80,
+          branches: 50,
           functions: 80
         },
         each: {
           statements: 80,
           lines: 80,
-          branches: 80,
+          branches: 50,
           functions: 80
         }
       },
@@ -51,6 +51,12 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: false
   });
 };

@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   public async getUserPersonalAccesstoken(authToken) {
-    if(!await this.dbService.getAuthToken(authToken)) {
+    if(!await this.dbService.getAccessToken(authToken)) {
       throw new UnauthorizedException(401);
     } else {
       return true;

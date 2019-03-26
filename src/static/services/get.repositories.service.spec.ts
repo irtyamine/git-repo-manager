@@ -138,11 +138,11 @@ describe('Service: GetRepositoriesService', () => {
         }
       };
 
-      service.getAllRepositories('TestName/One').subscribe(repository => {
+      service.getSingleRepository('TestName/One').subscribe(repository => {
         expect(repository).toBe(dummyData);
       });
 
-      const req = httpMock.expectOne(`${service.API_URL}/repositories/all-repositories?repositoryName=TestName/One`);
+      const req = httpMock.expectOne(`${service.API_URL}/repositories/repository?repositoryName=TestName/One`);
       expect(req.request.method).toBe('GET');
       req.flush(dummyData);
     });
@@ -150,28 +150,28 @@ describe('Service: GetRepositoriesService', () => {
     it ('should throw the 404 error', () => {
       const emsg = 'deliberate 404 error';
 
-      service.getAllRepositories('TestName/Two').subscribe(repository =>
+      service.getSingleRepository('TestName/Two').subscribe(repository =>
           fail('should have failed with the 404 error'),
         (err: HttpErrorResponse) => {
           expect(err.status).toEqual(404, 'status');
           expect(err.error).toEqual(emsg, 'message');
         });
 
-      const req = httpMock.expectOne(`${service.API_URL}/repositories/all-repositories?repositoryName=TestName/Two`);
+      const req = httpMock.expectOne(`${service.API_URL}/repositories/repository?repositoryName=TestName/Two`);
       req.flush(emsg, { status: 404, statusText: 'Not Found' });
     });
 
     it('should throw the 500 error', () => {
       const emsg = 'deliberate 500 error';
 
-      service.getAllRepositories('TestName/Three').subscribe(repository =>
+      service.getSingleRepository('TestName/Three').subscribe(repository =>
         fail('should have failed with the 500 error'),
         (err: HttpErrorResponse) => {
           expect(err.status).toEqual(500, 'status');
           expect(err.error).toEqual(emsg, 'message');
         });
 
-      const req = httpMock.expectOne(`${service.API_URL}/repositories/all-repositories?repositoryName=TestName/Three`);
+      const req = httpMock.expectOne(`${service.API_URL}/repositories/repository?repositoryName=TestName/Three`);
       req.flush(emsg, { status: 500, statusText: 'Internal Server Error' });
     });
   });

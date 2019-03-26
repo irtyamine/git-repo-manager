@@ -12,7 +12,7 @@ export class GithubRepository {
     return this.userModel.create(userObject);
   }
 
-  public getAuthToken(authToken) {
+  public getAccessToken(authToken) {
     return this.userModel.findOne({ authToken: authToken }).exec();
   }
 

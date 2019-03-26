@@ -52,9 +52,11 @@ export class GitHubRepositoriesService {
   public async getNamesFromDB(authToken) {
     this.repoDB.deleteFromDb();
     const updateReposNamesTime = await this.repoDB.getReposNamesUpdateTime(),
-      githubAccessToken = await this.githubUser.getAuthToken(authToken),
+      githubAccessToken = await this.githubUser.getAccessToken(authToken),
       milliseconds = Date.now() - updateReposNamesTime.reposNamesUpdateTime,
       hours = Math.floor(milliseconds / (1000 * 60 * 60));
+
+    console.log(hours + ' hrs');
 
     if (hours >= 24) {
       this.getRepositoriesNamesFromGit(githubAccessToken.accessToken);
@@ -139,7 +141,7 @@ export class GitHubRepositoriesService {
       .catch(error => {
         if (error.response.status === 404) {
           return null;
-        } else if (error.respose.status === 400) {
+        } else if (error.response.status === 400) {
           return null;
         }
         else {

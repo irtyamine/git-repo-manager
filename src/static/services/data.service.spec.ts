@@ -43,7 +43,7 @@ describe('Service: DataService', () => {
       }];
 
       mockService.getReposData('RepoName/One');
-      let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=RepoName/One`);
+      let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${dummyData[0].repoName}`);
       expect(req.request.method).toBe('GET');
       req.flush(dummyData[0]);
 
@@ -61,17 +61,19 @@ describe('Service: DataService', () => {
       let dummyData = [
         {
           repoName: 'RepoName/One',
+          timestamp: Date.now(),
           repoType: 'Public',
         },
         {
           repoName: 'RepoName/Two',
+          timestamp: Date.now(),
           repoType: 'Private',
         }
       ];
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -89,17 +91,19 @@ describe('Service: DataService', () => {
       let dummyData = [
         {
           repoName: 'RepoName/One',
+          timestamp: Date.now(),
           repoType: 'Public',
         },
         {
           repoName: 'RepoName/Two',
+          timestamp: Date.now(),
           repoType: 'Private',
         }
       ];
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -117,6 +121,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'RepoName/onlyMaster',
+          timestamp: Date.now(),
           branches: {
             master: {
               name: 'master'
@@ -125,6 +130,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'RepoName/onlyDevelopment',
+          timestamp: Date.now(),
           branches: {
             development: {
               name: 'development'
@@ -135,7 +141,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -153,6 +159,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'RepoName/onlyMaster',
+          timestamp: Date.now(),
           branches: {
             master: {
               name: 'master'
@@ -161,6 +168,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'RepoName/onlyDevelopment',
+          timestamp: Date.now(),
           branches: {
             development: {
               name: 'development'
@@ -171,7 +179,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -188,10 +196,12 @@ describe('Service: DataService', () => {
 
       const dummyData = [
         {
-          repoName: 'RepoName/noBranches'
+          repoName: 'RepoName/noBranches',
+          timestamp: Date.now(),
         },
         {
           repoName: 'RepoName/allBranches',
+          timestamp: Date.now(),
           branches: {
             master: {
               name: 'master'
@@ -205,7 +215,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -223,9 +233,11 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'RepoName/noBranches',
+          timestamp: Date.now()
         },
         {
           repoName: 'RepoName/onlyMaster',
+          timestamp: Date.now(),
           branches: {
             master: {
               name: 'master'
@@ -234,6 +246,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'RepoName/onlyDevelopment',
+          timestamp: Date.now(),
           branches: {
             development: {
               name: 'development'
@@ -242,6 +255,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'RepoName/allBranches',
+          timestamp: Date.now(),
           branches: {
             master: {
               name: 'master'
@@ -255,7 +269,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -275,21 +289,27 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
-          branches: {}
+          timestamp: Date.now(),
+          branches: {
+            master: {}
+          }
         },
         {
           repoName: 'Repo/miss',
-          branches: {}
+          timestamp: Date.now(),
+          branches: {
+            master: {}
+          }
         }
       ];
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'repoName', version: 'fi' });
+      mockService.filterByPackages({ packageName: 'repoName', version: 'fin' });
 
       mockService.subject.subscribe(result => {
         expect(result).toEqual([dummyData[0]]);
@@ -303,19 +323,27 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           name: 'Package/find',
-          branches: {}
+          branches: {
+            master: {},
+            development: {}
+          }
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           name: 'Package/miss',
-          branches: {}
+          branches: {
+            master: {},
+            development: {}
+          }
         }
       ];
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -333,6 +361,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               version: '0.0.1'
@@ -344,6 +373,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             master: {
               version: '1.0.0'
@@ -354,7 +384,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -370,6 +400,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               description: 'Test master description'
@@ -378,6 +409,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               description: 'Test development description'
@@ -388,7 +420,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -406,6 +438,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               lodash: '4*'
@@ -414,6 +447,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               lodash: '3.16.5'
@@ -424,7 +458,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -442,6 +476,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               tslint: '2.3.2'
@@ -450,6 +485,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               tslint: '3.1.5'
@@ -460,7 +496,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -478,6 +514,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               typescript: '2.3.2'
@@ -486,6 +523,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               typescript: '3.1.5'
@@ -496,7 +534,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -514,6 +552,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               express: '4.15.3'
@@ -522,6 +561,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               express: '4.16.3'
@@ -532,7 +572,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -550,6 +590,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               '@angular/common': '^2.4.2'
@@ -558,6 +599,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             development: {
               '@angular/common': '4.3.6'
@@ -568,7 +610,7 @@ describe('Service: DataService', () => {
 
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
@@ -586,6 +628,7 @@ describe('Service: DataService', () => {
       const dummyData = [
         {
           repoName: 'Repo/find',
+          timestamp: Date.now(),
           branches: {
             master: {
               '@angular/common': '^2.4.2'
@@ -597,6 +640,7 @@ describe('Service: DataService', () => {
         },
         {
           repoName: 'Repo/miss',
+          timestamp: Date.now(),
           branches: {
             master: {
               lodash: '4.17.1'
@@ -610,7 +654,7 @@ describe('Service: DataService', () => {
       
       for (let repo of dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/all-repositories?repositoryName=${repo.repoName}`);
+        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
       }
 
