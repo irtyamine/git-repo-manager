@@ -1,9 +1,6 @@
-dist: trusty
 sudo: false
 stages:
-  - Unit tests
-  - name: Deploy to Github Pages
-    if: branch = master
+  - name: Unit tests
 
 language: node_js
 node_js: 10.2.1
