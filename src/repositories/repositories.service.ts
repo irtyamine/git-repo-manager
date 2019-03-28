@@ -3,7 +3,8 @@ import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepository } from './repositories.repository';
 import { RepoBranchesDataObjectInterface } from './interfaces/repo-branches-data.object.interface';
 import { Repo } from './interfaces/repo.interface';
-let configFile = require('../../config/github-repositories-config.json');
+let configFile = require('../../config/github-repositories-config.json'),
+  authKeysConfig  = require('../../config/auth.keys.json');
 import { CronJob } from 'cron';
 import { GithubRepository } from '../app.authentication/github.repository';
 
@@ -19,8 +20,7 @@ export class GitHubRepositoriesService {
   }
 
   private updateTimeMorning() {
-    this.repoDB.deleteFromDb();
-    new CronJob('00 00 09 * * 1-5', () => {
+    new CronJob('00 18 12 * * 1-5', () => {
       this.makeRequestToGitHubLink();
     }, null, true, 'Europe/Kiev');
   }
@@ -38,7 +38,6 @@ export class GitHubRepositoriesService {
             initialRepositoriesObject,
             initialRepositoriesObject.repoName
           );
-          console.log('Repositories names updated');
         }
       });
   }
@@ -50,13 +49,13 @@ export class GitHubRepositoriesService {
   }
 
   public async getNamesFromDB(authToken) {
-    this.repoDB.deleteFromDb();
-    const updateReposNamesTime = await this.repoDB.getReposNamesUpdateTime(),
-      githubAccessToken = await this.githubUser.getAccessToken(authToken),
-      milliseconds = Date.now() - updateReposNamesTime.reposNamesUpdateTime,
-      hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    const updateReposNamesTime = await this.repoDB.getReposNamesUpdateTime();
+    let time: number;
+    !updateReposNamesTime ? time = 0 : time = updateReposNamesTime.reposNamesUpdateTime;
 
-    console.log(hours + ' hrs');
+    const milliseconds = Date.now() - time,
+      hours = Math.floor(milliseconds / (1000 * 60 * 60)),
+      githubAccessToken = await this.githubUser.getAccessToken(authToken);
 
     if (hours >= 24) {
       this.getRepositoriesNamesFromGit(githubAccessToken.accessToken);
@@ -84,7 +83,6 @@ export class GitHubRepositoriesService {
         ),
         repositoryData = assign({}, masterSearch, developmentSearch);
       this.repoDB.insertToDB(repositoryData);
-      console.log('Updated');
     }
   }
 
@@ -92,7 +90,7 @@ export class GitHubRepositoriesService {
     for (let branch of configFile.ALIASES_OF_BRANCH[branchAlias]) {
 
       const link = `https://raw.githubusercontent.com/${repositoryData.repoName}/${branch}/package.json`,
-        gitHubData = await this.getRepositoryDataFromGithub(link, configFile.ACCESS_TOKEN);
+        gitHubData = await this.getRepositoryDataFromGithub(link, authKeysConfig.ACCESS_TOKEN);
       if (keys(gitHubData).length === 0) break;
 
       const branches: RepoBranchesDataObjectInterface = { [branchAlias]: gitHubData };

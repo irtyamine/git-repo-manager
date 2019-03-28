@@ -14,7 +14,9 @@ export class GitHubRepositoriesRepository {
       { $set: newRepositoryObject },
       { upsert: true },
       (err, res) => {
-        if (err) throw err;
+        if (!newRepositoryObject.repoName) {
+          return null;
+        }
       }
     );
   }
@@ -41,10 +43,6 @@ export class GitHubRepositoriesRepository {
 
   public getReposNamesUpdateTime() {
     return this.repoModel.findOne().select({'reposNamesUpdateTime': 1, '_id': 0});
-  }
-
-  public deleteFromDb() {
-    return this.repoModel.deleteMany({ repoName: null });
   }
 
   public findRepositoryData(parameter) {
