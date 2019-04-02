@@ -15,39 +15,30 @@ describe('Service: DataService', () => {
     httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should be created', () => {
+  it('should be created', (done: DoneFn) => {
     let getRepositoriesService = TestBed.get(GetRepositoriesService),
       dataService = new MockDataService(getRepositoriesService);
     expect(dataService).toBeTruthy();
+    done();
   });
 
   describe('loadReposNames()', () => {
-    it('should return an Observable', () => {
+    it('should return an Observable', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
       mockService.loadReposNames().subscribe(repositoriesNames => {
-        expect(repositoriesNames).toEqual(mockRepositories.dummyData[0].repoName);
+        expect(repositoriesNames).toEqual({repoName: mockRepositories.dummyData[0].repoName});
+        done();
       });
 
       httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/names`)
-        .flush(mockRepositories.dummyData[0].repoName);
-    });
-  });
-
-  describe('getNames(name)', () => {
-    it('should get repository name and call getReposData(param)', () => {
-      let getRepositoriesService = TestBed.get(GetRepositoriesService),
-        mockService = new MockDataService(getRepositoriesService),
-        getReposDataSpy = spyOn(mockService, 'getReposData');
-
-      mockService.getNames('name');
-      expect(getReposDataSpy).toHaveBeenCalled();
+        .flush({'repoName': mockRepositories.dummyData[0].repoName});
     });
   });
 
   describe('getReposData(param)', () => {
-    it ('should return "repositoriesSubject" as BehaviorSubject', () => {
+    it ('should return "repositoriesSubject" as BehaviorSubject', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -59,12 +50,13 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repository => {
         expect(repository).toEqual(mockRepositories.dummyData);
+        done();
       });
     });
   });
 
   describe('filterByPrivacyAndBranches(value)', () => {
-    it('should filter by public repos', () => {
+    it('should filter by public repos', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -78,10 +70,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(5);
+        done();
       });
     });
 
-    it ('should filter by private repos', () => {
+    it ('should filter by private repos', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -95,10 +88,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(4);
+        done();
       });
     });
 
-    it ('should filter by missing master branch', () => {
+    it ('should filter by missing master branch', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -112,10 +106,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by missing development branch', () => {
+    it ('should filter by missing development branch', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -129,10 +124,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter and return default array', () => {
+    it ('should filter and return default array', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -146,12 +142,13 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories).toEqual(mockRepositories.dummyData);
+        done();
       });
     });
   });
 
   describe('filterByPackages(value)', () => {
-    it ('should filter by repository name', () => {
+    it ('should filter by repository name', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -165,10 +162,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by package name', () => {
+    it ('should filter by package name', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -182,10 +180,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter by project version at master or development branches', () => {
+    it ('should filter by project version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -199,10 +198,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by package description at master or development branches', () => {
+    it ('should filter by package description at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -216,10 +216,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter by lodash version at master or development branches', () => {
+    it ('should filter by lodash version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -233,10 +234,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter by tslint version at master or development branches', () => {
+    it ('should filter by tslint version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -250,10 +252,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(0);
+        done();
       });
     });
 
-    it ('should filter by typescript version at master or development branches', () => {
+    it ('should filter by typescript version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -267,10 +270,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter by express version at master or development branches', () => {
+    it ('should filter by express version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -284,10 +288,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(4);
+        done();
       });
     });
 
-    it ('should filter by @angular/common version at master or development branches', () => {
+    it ('should filter by @angular/common version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
@@ -301,10 +306,11 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter and return data with missing package at both branches', () => {
+    it ('should filter and return data with missing package at both branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
       
@@ -318,6 +324,7 @@ describe('Service: DataService', () => {
 
       mockService.subject.subscribe(repositories => {
         expect(repositories.length).toBe(2);
+        done();
       });
     });
   });

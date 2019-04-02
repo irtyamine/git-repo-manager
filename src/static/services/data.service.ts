@@ -13,11 +13,7 @@ export class DataService {
     return this.repositoryService.getRepositoryNames();
   }
 
-  public getNames(name) {
-    this.getReposData(name);
-  }
-
-  protected getReposData(param) {
+  public getReposData(param) {
     return this.repositoryService.getSingleRepository(param).subscribe((res) => {
       if(!res.repoName || !res.timestamp) {
         return;

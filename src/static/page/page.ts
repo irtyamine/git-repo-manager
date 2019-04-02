@@ -47,7 +47,7 @@ export class Page implements OnInit {
   private getRepositoriesFromDB() {
     this.repositoriesDataService.loadReposNames().subscribe(reposNames => {
       for(let name of reposNames) {
-        this.repositoriesDataService.getNames(name.repoName);
+        this.repositoriesDataService.getReposData(name.repoName);
       }
     });
   }
