@@ -14,13 +14,12 @@ addons:
 
 cache:
   directories:
-    - ./node_modules
+    - node_modules
 
 install:
   - npm install
 
 jobs:
-  fast_finish: true
   include:
     - stage: Unit tests
       script: npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox

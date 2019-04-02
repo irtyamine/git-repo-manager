@@ -20,31 +20,31 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>10/10</span>
+        <span class='fraction'>6/10</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">7.14% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>7/14</span>
+        <span class='fraction'>1/14</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">42.86% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>7/7</span>
+        <span class='fraction'>3/7</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">60% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/10</span>
+        <span class='fraction'>6/10</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,38 +101,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">28x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">21x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">144x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">144x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,13 +151,13 @@ export class GetRepositoriesService {
 &nbsp;
   constructor(protected http: HttpClient) {}
 &nbsp;
-  public getRecommendVersionDataConfig(): Observable&lt;any&gt; {
-    return this.http
+  public <span class="fstat-no" title="function not covered" >getRecommendVersionDataConfig(</span>): Observable&lt;any&gt; {
+<span class="cstat-no" title="statement not covered" >    return this.http</span>
       .get(`${this.API_URL}/repositories/recommend-versions`)
       .pipe(
-        catchError(err =&gt;
-        err.code === 404 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Not Found') </span>:
-          err.code === 401 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Unauthorized') </span>: throwError(err))
+        catchError(<span class="fstat-no" title="function not covered" >err </span>=&gt;
+<span class="cstat-no" title="statement not covered" >        err.code === 404 ? throwError('Not Found') :</span>
+          err.code === 401 ? throwError('Unauthorized') : throwError(err))
       );
   }
 &nbsp;
@@ -165,9 +165,9 @@ export class GetRepositoriesService {
     return this.http
       .get(`${this.API_URL}/repositories/names`)
       .pipe(
-        catchError(err =&gt;
-        err.code === 404 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Not Found') </span>:
-          err.code === 401 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Unauthorized') </span>: throwError(err))
+        catchError(<span class="fstat-no" title="function not covered" >err </span>=&gt;
+<span class="cstat-no" title="statement not covered" >        err.code === 404 ? throwError('Not Found') :</span>
+          err.code === 401 ? throwError('Unauthorized') : throwError(err))
       );
   }
 &nbsp;
@@ -177,9 +177,9 @@ export class GetRepositoriesService {
     return this.http
       .get(`${this.API_URL}/repositories/repository`, options)
       .pipe(
-        catchError(err =&gt;
-          err.code === 404 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Not found') </span>:
-            err.code === 401 ? <span class="branch-0 cbranch-no" title="branch not covered" >throwError('Unauthorized') </span>: throwError(err),
+        catchError(<span class="fstat-no" title="function not covered" >err </span>=&gt;
+<span class="cstat-no" title="statement not covered" >          err.code === 404 ? throwError('Not found') :</span>
+            err.code === 401 ? throwError('Unauthorized') : throwError(err),
         ),
       );
   }
@@ -190,7 +190,7 @@ export class GetRepositoriesService {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Mar 26 2019 11:00:18 GMT+0200 (EET)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Apr 02 2019 14:50:45 GMT+0300 (EEST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
