@@ -1,62 +1,277 @@
-<form>
-  <div class="versions_control">
-    <table align="center">
-      <tr>
-        <th rowspan="3">Repository name</th>
-        <th rowspan="3">Type of privacy</th>
-        <th rowspan="3">Last update</th>
-        <th colspan="16">Branches</th>
-      </tr>
-      <tr>
-        <th colspan="8">master</th>
-        <th colspan="8">development</th>
-      </tr>
-      <tr>
-        <th>name</th>
-        <th>version</th>
-        <th>description</th>
-        <th>lodash</th>
-        <th>tslint</th>
-        <th>typescript</th>
-        <th>express</th>
-        <th>@angular/common</th>
-        <th>name</th>
-        <th>version</th>
-        <th>description</th>
-        <th>lodash</th>
-        <th>tslint</th>
-        <th>typescript</th>
-        <th>express</th>
-        <th>@angular/common</th>
-      </tr>
-      <tr *ngFor="let repository of repositories">
-        <td>{{ repository.repoName }}</td>
-        <td [class]="repository.repoType === 'Public' ? 'publicRepos' : 'privateRepos'">{{ repository.repoType }}</td>
-        <td>{{ repository.timestamp }}</td>
-        <td class="error_alert" *ngIf='!repository.master && !!repository.development' colspan="8">There isn't 'master' branch at '{{ repository.repoName }}' repository</td>
-        <td class="error_alert" *ngIf='!repository.master && !repository.development' colspan="16">There aren't any branches at '{{ repository.repoName }}' repository</td>
-        <td *ngIf='!!repository.master'>{{ repository.master.name }}</td>
-        <td *ngIf='!!repository.master'>{{ repository.master.version }}</td>
-        <td *ngIf='!!repository.master'>{{ repository.master.description }}</td>
-        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.master.lodash }}</td>
-        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.master.tslint}}</td>
-        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.master.typescript }}</td>
-        <td *ngIf='!!repository.master' [class]="setVersion(repository.master.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.master.express }}</td>
-        <td *ngIf='!!repository.master' [class]="setVersion(repository.master['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.master['@angular/common'] }}</td>
-        <td class="error_alert" *ngIf='!repository.development && !!repository.master' colspan="8">There isn't 'development' branch at '{{ repository.repoName }}' repository</td>
-        <td *ngIf='!!repository.development'>{{ repository.development.name }}</td>
-        <td *ngIf='!!repository.development'>{{ repository.development.version }}</td>
-        <td *ngIf='!!repository.development'>{{ repository.development.description }}</td>
-        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.lodash, packagesVersions.lodash) ? 'old_version' : ''">{{ repository.development.lodash }}</td>
-        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.tslint, packagesVersions.tslint) ? 'old_version' : ''">{{ repository.development.tslint}}</td>
-        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.typescript, packagesVersions.typescript) ? 'old_version' : ''">{{ repository.development.typescript }}</td>
-        <td *ngIf='!!repository.development' [class]="setVersion(repository.development.express, packagesVersions.express) ? 'old_version' : ''">{{ repository.development.express }}</td>
-        <td *ngIf='!!repository.development' [class]="setVersion(repository.development['@angular/common'], packagesVersions['@angular/common']) ? 'old_version' : ''">{{ repository.development['@angular/common'] }}</td>
-      </tr>
-    </table>
-  </div>
-  <div class="btn-pos">
-    <button *ngIf="!condition" disabled class="button-btn-disabled">SYNCHRONIZE</button>
-    <button *ngIf="condition" class="button-btn" (click)="getReposData()">SYNCHRONIZE</button>
-  </div>
-</form>
+<button type="button" class="btn btn-outline-danger btn-block" (click)="logOut()">Log Out</button>
+<!--<button type="button" class="btn btn-primary text-white" (click)="isAuthenticated()">Log Out</button>-->
+<div class="table-position">
+  <table class="table table-bordered table-active">
+    <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
+    <thead class="thead-dark">
+    <tr>
+      <th class="repository-name text-center">Repository name</th>
+      <th class="text"><span>Type of privacy</span></th>
+      <th class="text"><span>Branches</span></th>
+      <th class="text"><span>package name<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>version<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>description<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>lodash</span></th>
+      <th class="text"><span>tslint<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>typescript<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>express</span></th>
+      <th class="text"><span>@angular/common</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Repository name" aria-label="Username" (keyup)="filtration('repoName', $event)">
+      </div></td>
+      <td><div class="select">
+        <label>
+          <select (change)="filterByPrivacy($event.target.value)" >
+            <option disabled selected hidden>Filter by privacy</option>
+            <option value="default">Filter by privacy</option>
+            <option value="Private">Only private</option>
+            <option value="Public">Only public</option>
+          </select>
+        </label>
+      </div></td>
+      <td><div class="select">
+        <label>
+          <select (change)="filterBranches($event.target.value)">
+            <option disabled selected hidden>Filter by branches</option>
+            <option value="default">Filter by branches</option>
+            <option value="development">Only master</option>
+            <option value="master">Only development</option>
+            <option value="none">No branches</option>
+          </select>
+        </label>
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="package name" aria-label="Username" (keyup)="filtration('name', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="version" aria-label="Username" (keyup)="filtration('version', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="description" aria-label="Username" (keyup)="filtration('description', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="lodash" aria-label="Username" (keyup)="filtration('lodash', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="tslint" aria-label="Username" (keyup)="filtration('tslint', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="typescript" aria-label="Username" (keyup)="filtration('typescript', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="express" aria-label="Username" (keyup)="filtration('express', $event)">
+      </div></td>
+      <td><div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="@angular/common" aria-label="Username" (keyup)="filtration('@angular/common', $event)">
+      </div></td>
+    </tr>
+    <tr *ngFor="let repository of (repositoriesData | async)">
+      <!--REPOSITORY NAME-->
+      <td class="repository-name">{{ repository.repoName }}</td>
+
+      <!--REPOSITORY TYPE-->
+      <td [ngClass]="repository.repoType === 'Public'
+                     ? 'text bg-primary text-white h5'
+                     : 'text bg-secondary text-white h5'">
+        <span>{{ repository.repoType }}</span>
+      </td>
+
+      <!--BRANCHES-->
+      <td [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'" data-container="body">
+      <span *ngIf="!isBranch(repository.branches); else branch"
+            tooltip="{{getBranch(repository.branches, 'master')}} &rarr; {{getBranch(repository.branches, 'development')}}">
+        <a>{{ getBranch(repository.branches, 'master') }}</a>
+        <a [hidden]="isBranch(repository.branches)">&rarr;</a>
+        <a>{{ getBranch(repository.branches, 'development') }}</a>
+      </span>
+      <ng-template #branch>
+        <span>{{ getBranch(repository.branches, 'master') }}{{ getBranch(repository.branches, 'development') }}</span>
+      </ng-template>
+      </td>
+
+      <!--PACKAGE NAME-->
+      <td [ngClass]="isNone(repository.branches, 'name') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'name'); else packageName"
+              tooltip="{{getPackageValue(repository.branches.master, 'name')}}
+                &rarr; {{getPackageValue(repository.branches.development, 'name')}}">
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
+            {{ getPackageValue(repository.branches.master, 'name') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'version')}">
+            {{ getPackageValue(repository.branches.development, 'name') }}
+          </a>
+        </span>
+        <ng-template #packageName>
+          <span tooltip="{{getPackageValue(repository.branches.master, 'name')}}">
+              {{ getPackageValue(repository.branches.master, 'name') }}
+          </span>
+        </ng-template>
+      </td>
+
+      <!--VERSION-->
+      <td [ngClass]="isNone(repository.branches, 'version') ? ' text bg-danger text-white h5' : 'text'">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'version'); else version">
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
+            {{ getPackageValue(repository.branches.master, 'version') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'version')}">
+            {{ getPackageValue(repository.branches.development, 'version') }}
+          </a>
+        </span>
+        <ng-template #version>
+          <span *ngIf="isNone(repository.branches, 'version'); else version2">(none)</span>
+          <ng-template #version2>
+            <span>
+              {{ getPackageValue(repository.branches.master, 'version') }}
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--DESCRIPTION-->
+      <td [ngClass]="isNone(repository.branches, 'description') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'description'); else description"
+                     tooltip="{{getPackageValue(repository.branches.master, 'description')}}
+                       &rarr; {{getPackageValue(repository.branches.development, 'description')}}">
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'description')}">
+            {{ getPackageValue(repository.branches.master, 'description') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'description')}">
+            {{ getPackageValue(repository.branches.development, 'description') }}
+          </a>
+        </span>
+        <ng-template #description>
+          <span *ngIf="isNone(repository.branches, 'description'); else description2">(none)</span>
+          <ng-template #description2>
+            <span tooltip="{{getPackageValue(repository.branches.master, 'description')}}">
+              {{ getPackageValue(repository.branches.master, 'description') }}
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--LODASH-->
+      <td class="text">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'lodash'); else lodash">
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'lodash')}">
+            {{ getPackageValue(repository.branches.master, 'lodash') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'lodash')}">
+            {{ getPackageValue(repository.branches.development, 'lodash') }}
+          </a>
+        </span>
+        <ng-template #lodash>
+          <span *ngIf="isNone(repository.branches, 'lodash'); else lodash2">(none)</span>
+          <ng-template #lodash2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'lodash')}">
+                {{ getPackageValue(repository.branches.master, 'lodash') }}
+              </a>
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--TSLINT-->
+      <td [ngClass]="isNone(repository.branches, 'tslint') ? 'text bg-danger text-white h5' : 'text'">
+      <span *ngIf=" !isNoneOrSame(repository.branches, 'tslint'); else tslint">
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'tslint')}">
+            {{ getPackageValue(repository.branches.master, 'tslint') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'tslint')}">
+            {{ getPackageValue(repository.branches.development, 'tslint') }}
+          </a>
+        </span>
+        <ng-template #tslint>
+          <span *ngIf="isNone(repository.branches, 'tslint'); else tslint2">(none)</span>
+          <ng-template #tslint2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'tslint')}">
+                {{ getPackageValue(repository.branches.master, 'tslint') }}
+              </a>
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--TYPESCRIPT-->
+      <td [ngClass]="isNone(repository.branches, 'typescript') ? 'text bg-danger text-white h5' : 'text'">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'typescript'); else typescript">
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'typescript')}">
+            {{ getPackageValue(repository.branches.master, 'typescript') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'typescript')}">
+            {{ getPackageValue(repository.branches.development, 'typescript') }}
+          </a>
+        </span>
+        <ng-template #typescript>
+          <span *ngIf="isNone(repository.branches, 'typescript'); else typescript2">(none)</span>
+          <ng-template #typescript2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'typescript')}">
+                {{ getPackageValue(repository.branches.master, 'typescript') }}
+              </a>
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--EXPRESS-->
+      <td class="text">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'express'); else express">
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'express')}">
+            {{ getPackageValue(repository.branches.master, 'express') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'express')}">
+            {{ getPackageValue(repository.branches.development, 'express') }}
+          </a>
+        </span>
+        <ng-template #express>
+          <span *ngIf="isNone(repository.branches, 'express'); else express2">(none)</span>
+          <ng-template #express2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'express')}">
+                {{ getPackageValue(repository.branches.master, 'express') }}
+              </a>
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+
+      <!--@ANGULAR/COMMON-->
+      <td class="text">
+        <span *ngIf="!isNoneOrSame(repository.branches, '@angular/common'); else angular">
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, '@angular/common')}">
+            {{ getPackageValue(repository.branches.master, '@angular/common') }}
+          </a>
+          &rarr;
+          <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, '@angular/common')}">
+            {{ getPackageValue(repository.branches.development, '@angular/common') }}
+          </a>
+        </span>
+        <ng-template #angular>
+          <span *ngIf="isNone(repository.branches, '@angular/common'); else angular2">(none)</span>
+          <ng-template #angular2>
+            <span>
+              <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, '@angular/common')}">
+                {{ getPackageValue(repository.branches.master, '@angular/common') }}
+              </a>
+            </span>
+          </ng-template>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

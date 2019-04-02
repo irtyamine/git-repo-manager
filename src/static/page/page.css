@@ -1,69 +1,48 @@
-.versions_control, .branches_not_found {
-  margin-left: 20px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+.table-position {
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
-
-.old_version {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  background-color: #ce0000;
-  color: white;
+caption {
+    caption-side: top;
 }
-
-.publicRepos {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  background-color: #2750af;
-  color: white;
+th, td {
+    width: 70px;
+    padding: 8px;
 }
-
-.privateRepos {
-  font-family: Lucida, sans-serif;
-  font-weight: bold;
-  background-color: gray;
-  color: white;
+.table .repository-name {
+    width: 70px;
+    text-align: left;
 }
-
-table, th, td {
-  text-align: center;
-  border-collapse: collapse;
-  border: 1px solid black;
+.table .text {
+    position: relative;
 }
-
-.button-btn {
-  position: absolute;
-  background-color: #2750af;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+.table .text span {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: absolute;
+    left: 0;
+    right: 0;
 }
-
-.button-btn-disabled {
-  position: absolute;
-  background-color: #7fd2ff;
-  border-radius: 2px;
-  border: none;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+.text:before {
+    content: '';
+    display: inline-block;
 }
-
-.error_alert {
-  font-family: Lucida, sans-serif;
-  font-weight: bolder;
-  background-color: #ce0000;
-  color: white;
+.select select {
+    width: 100%;
+    color: #495057;
+    height: calc(2.25rem + 2px);
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+}
+.select select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.table .important-field {
+    cursor: help;
 }

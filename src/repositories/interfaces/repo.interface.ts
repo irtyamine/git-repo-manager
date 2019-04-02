@@ -1,9 +1,9 @@
-import { RepoBranch } from './repoBranch';
+import { RepoBranchesDataObjectInterface } from './repo-branches-data.object.interface';
 
 export interface Repo {
   repoName: string;
-  timestamp: number;
+  timestamp?: number;
+  reposNamesUpdateTime?: number;
   repoType: string;
-  master?: RepoBranch;
-  development?: RepoBranch;
+  branches?: RepoBranchesDataObjectInterface;
 }

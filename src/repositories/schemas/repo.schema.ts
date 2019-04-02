@@ -1,12 +1,16 @@
 import * as mongoose from 'mongoose';
-import { RepoBranchSchema } from './repo.branch.schema';
+import { RepoBranchesObjectSchema } from './repo-branches.object.schema';
 
 export const RepoSchema = new mongoose.Schema({
     repoName: {
         type: String,
-        required: false
+        required: true
     },
     timestamp: {
+        type: Number,
+        required: false
+    },
+    reposNamesUpdateTime: {
         type: Number,
         required: false
     },
@@ -14,6 +18,5 @@ export const RepoSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    master: RepoBranchSchema,
-    development: RepoBranchSchema
+    branches: RepoBranchesObjectSchema
 }, { _id: false });

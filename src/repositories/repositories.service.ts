@@ -1,93 +1,155 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { assign, pick, flatMap } from 'lodash';
+import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepository } from './repositories.repository';
-import { Repos } from './interfaces/repo.object.interface';
-import gitHubConfig from '../../config/github.repositories';
+import { RepoBranchesDataObjectInterface } from './interfaces/repo-branches-data.object.interface';
 import { Repo } from './interfaces/repo.interface';
+let configFile = require('../../config/github-repositories-config.json'),
+  authKeysConfig  = require('../../config/auth.keys.json');
+import { CronJob } from 'cron';
+import { GithubRepository } from '../app.authentication/github.repository';
 
 @Injectable()
 export class GitHubRepositoriesService {
   constructor(
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepository,
-  ) {}
-
-  public async getRepositories() {
-    return await this.makeRequestToGitHubLink(gitHubConfig.repositories);
+    private readonly githubUser: GithubRepository
+  ) {
+    this.updateTimeMorning();
+    this.updateTimeEvening();
   }
 
-  private async makeRequestToGitHubLink(repositories) {
-    const arrayOfRepos = flatMap(
-      repositories,
-      (repoData): Repos => {
-        return {
-          repoType: repoData.repoType,
-          repoName: repoData.name,
-          aliases: gitHubConfig.aliases,
-          token: repoData.token,
-        };
-      },
-    );
+  private updateTimeMorning() {
+    new CronJob('00 18 12 * * 1-5', () => {
+      this.makeRequestToGitHubLink();
+    }, null, true, 'Europe/Kiev');
+  }
 
-    for (let repo of arrayOfRepos) {
-      const { repoType, repoName, aliases, token } = repo;
-      for (let alias of aliases) {
-        const branchName = alias[0];
-        for (let branch of alias) {
-          const link = `https://raw.githubusercontent.com/${repoName}/${branch}/package.json`;
-          try {
-            const githubData = await this.getRepositoryData(link, token);
-            const repositoryObject: Repo = {
-              repoName,
-              timestamp: Date.now(),
-              repoType,
-              [branchName]: githubData
-            };
-            await this.repoDB.insertToDB(repositoryObject);
-            break;
-          } catch (error) {
-          }
+  private getRepositoriesNamesFromGit(accessToken) {
+    this.httpService.get(`https://api.github.com/orgs/valor-software/repos?access_token=${accessToken}&per_page=150`)
+      .subscribe(repositories => {
+        for(let repository of repositories.data) {
+          const initialRepositoriesObject = {
+            repoName: repository.full_name,
+            reposNamesUpdateTime: Date.now(),
+            repoType: !repository.private ? 'Public' : 'Private'
+          };
+          this.repoDB.firsInsertToDB(
+            initialRepositoriesObject,
+            initialRepositoriesObject.repoName
+          );
         }
-      }
-    }
-    return await this.repoDB.findRepositoriesData();
+      });
   }
 
-  private async getRepositoryData(route: string, accessToken?: string) {
+  private updateTimeEvening() {
+    new CronJob('00 00 19 * * 1-5', () => {
+      this.makeRequestToGitHubLink();
+    }, null, true, 'Europe/Kiev');
+  }
+
+  public async getNamesFromDB(authToken) {
+    const updateReposNamesTime = await this.repoDB.getReposNamesUpdateTime();
+    let time: number;
+    !updateReposNamesTime ? time = 0 : time = updateReposNamesTime.reposNamesUpdateTime;
+
+    const milliseconds = Date.now() - time,
+      hours = Math.floor(milliseconds / (1000 * 60 * 60)),
+      githubAccessToken = await this.githubUser.getAccessToken(authToken);
+
+    if (hours >= 24) {
+      this.getRepositoriesNamesFromGit(githubAccessToken.accessToken);
+      return await this.repoDB.findRepositoriesNames();
+    } else {
+      return await this.repoDB.findRepositoriesNames();
+    }
+  }
+
+  private async makeRequestToGitHubLink() {
+    const data = await this.repoDB.getRepositoryNameAndTypeToUpdate();
+    for (let repository of data) {
+      const branch = {},
+        masterSearch = await this.createGithubLinkAndGetDataFromGitHub(
+          repository,
+          {},
+          branch,
+          'master'
+        ),
+        developmentSearch = await this.createGithubLinkAndGetDataFromGitHub(
+          repository,
+          {},
+          branch,
+          'development'
+        ),
+        repositoryData = assign({}, masterSearch, developmentSearch);
+      this.repoDB.insertToDB(repositoryData);
+    }
+  }
+
+  private async createGithubLinkAndGetDataFromGitHub(repositoryData, dataObject, branchObject, branchAlias) {
+    for (let branch of configFile.ALIASES_OF_BRANCH[branchAlias]) {
+
+      const link = `https://raw.githubusercontent.com/${repositoryData.repoName}/${branch}/package.json`,
+        gitHubData = await this.getRepositoryDataFromGithub(link, authKeysConfig.ACCESS_TOKEN);
+      if (keys(gitHubData).length === 0) break;
+
+      const branches: RepoBranchesDataObjectInterface = { [branchAlias]: gitHubData };
+      assign(branchObject, branches);
+
+      const repository: Repo = {
+        repoName: repositoryData.repoName,
+        repoType: repositoryData.repoType,
+        timestamp: Date.now(),
+        branches: branchObject
+      };
+      assign(dataObject, repository);
+    }
+
+    return dataObject;
+  }
+
+  private async getRepositoryDataFromGithub(route: string, accessToken: string) {
     const config = {
       headers: {
-        Authorization: accessToken,
-      },
+        Authorization: accessToken
+      }
     };
 
-    const { data: packageJsonData } = await this.httpService
+    const resultData = {};
+    await this.httpService
       .get(route, config)
-      .toPromise();
+      .toPromise()
+      .then( result => {
+        const resultObjectDependencies = assign(
+          {},
+          result.data.devDependencies,
+          result.data.dependencies
+        ),
+          staticRepoData = pick(
+            result.data,
+            configFile.DEPENDENCIES
+          ),
+          dependenciesRepo = pick(
+          resultObjectDependencies,
+          configFile.DEV_DEPENDENCIES
+        );
 
-    const dependencies = assign(
-      {},
-      packageJsonData.devDependencies,
-      packageJsonData.dependencies,
-    );
-
-    const staticRepoData = pick(packageJsonData, [
-      gitHubConfig.staticRepoData.version,
-      gitHubConfig.staticRepoData.name,
-      gitHubConfig.staticRepoData.description,
-    ]);
-
-    const dependenciesRepo = pick(dependencies, [
-      gitHubConfig.objectPackages.express,
-      gitHubConfig.objectPackages.lodash,
-      gitHubConfig.objectPackages.tslint,
-      gitHubConfig.objectPackages.typescript,
-      gitHubConfig.objectPackages.angular,
-    ]);
-
-    return assign({}, staticRepoData, dependenciesRepo);
+        assign(resultData, staticRepoData, dependenciesRepo);
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          return null;
+        } else if (error.response.status === 400) {
+          return null;
+        }
+        else {
+          throw error;
+        }
+      });
+     return resultData;
   }
 
-  public findAllDataAtDatabase() {
-    return this.repoDB.findRepositoriesData();
+  public findRepoDataAtDatabase(parameter) {
+    return this.repoDB.findRepositoryData(parameter);
   }
 }

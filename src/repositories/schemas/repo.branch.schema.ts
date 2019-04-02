@@ -33,4 +33,4 @@ export const RepoBranchSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-});
+}, { _id: false });

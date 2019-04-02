@@ -1,0 +1,16 @@
+<form class="form-position">
+  <fieldset class="form-group">
+     <div class="card card-position">
+         <div class="card-header bg-dark text-white">
+             <div class="h3">Well Come!</div>
+         </div>
+         <div class="card-body">
+             <button [disabled]="!condition" class="btn btn-outline-dark btn-block btn-lg h1" (click)="goToGithubAuth()">
+                 <i [hidden]="!condition" class="fab fa-github fa-2x img-pos"></i>
+                 <a [hidden]="!condition" class="h1">Login via Github</a>
+                 <a [hidden]="condition" class="h1">Loading...</a>
+             </button>
+         </div>
+     </div>
+  </fieldset>
+</form>
