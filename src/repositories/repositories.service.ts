@@ -20,13 +20,13 @@ export class GitHubRepositoriesService {
   }
 
   private updateTimeMorning() {
-    new CronJob('00 18 12 * * 1-5', () => {
+    new CronJob('00 00 09 * * 1-5', () => {
       this.makeRequestToGitHubLink();
     }, null, true, 'Europe/Kiev');
   }
 
   private getRepositoriesNamesFromGit(accessToken) {
-    this.httpService.get(`https://api.github.com/orgs/valor-software/repos?access_token=${accessToken}&per_page=150`)
+    return this.httpService.get(`https://api.github.com/orgs/valor-software/repos?access_token=${accessToken}&per_page=150`)
       .subscribe(repositories => {
         for(let repository of repositories.data) {
           const initialRepositoriesObject = {
@@ -59,6 +59,9 @@ export class GitHubRepositoriesService {
 
     if (hours >= 24) {
       this.getRepositoriesNamesFromGit(githubAccessToken.accessToken);
+      setTimeout(() => {
+        this.makeRequestToGitHubLink();
+      }, 3000);
       return await this.repoDB.findRepositoriesNames();
     } else {
       return await this.repoDB.findRepositoriesNames();
@@ -66,8 +69,8 @@ export class GitHubRepositoriesService {
   }
 
   private async makeRequestToGitHubLink() {
-    const data = await this.repoDB.getRepositoryNameAndTypeToUpdate();
-    for (let repository of data) {
+    const repositories = await this.repoDB.getRepositoryNameAndTypeToUpdate();
+    for (let repository of repositories) {
       const branch = {},
         masterSearch = await this.createGithubLinkAndGetDataFromGitHub(
           repository,

@@ -3,7 +3,6 @@ import { GetRepositoriesService } from '../services/get.repositories.service';
 import { DataService } from '../services/data.service';
 import { Subject } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import * as compareVersions from 'compare-versions';
 import * as semver from 'semver';
 
 @Component({
@@ -34,11 +33,23 @@ export class Page implements OnInit {
       ).subscribe(text => {
         this.repositoriesDataService.filterByPackages(text);
       });
+    this.getRepositoriesFromDB();
   }
 
   ngOnInit() {
     this.getRecommendVersions();
     this.repositoriesData = this.repositoriesDataService.subject;
+    setTimeout(() => {
+      this.getRepositoriesFromDB();
+    }, 65000);
+  }
+
+  private getRepositoriesFromDB() {
+    this.repositoriesDataService.loadReposNames().subscribe(reposNames => {
+      for(let name of reposNames) {
+        this.repositoriesDataService.getNames(name.repoName);
+      }
+    });
   }
 
   public getRecommendVersions() {

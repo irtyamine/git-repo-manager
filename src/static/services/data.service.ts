@@ -7,8 +7,14 @@ export class DataService {
   protected repositories = [];
   protected repositoriesSubject = new BehaviorSubject([]);
 
-  constructor(protected repositoryService: GetRepositoriesService) {
-    this.getNames();
+  constructor(protected repositoryService: GetRepositoriesService) {  }
+
+  public loadReposNames() {
+    return this.repositoryService.getRepositoryNames();
+  }
+
+  public getNames(name) {
+    this.getReposData(name);
   }
 
   protected getReposData(param) {
@@ -20,15 +26,6 @@ export class DataService {
         this.repositoriesSubject.next(this.repositories);
       }
     });
-  }
-
-  protected getNames() {
-    return this.repositoryService.getRepositoryNames()
-      .subscribe(result => {
-        for (let element of result) {
-          this.getReposData(element.repoName);
-        }
-      });
   }
 
   public filterByPrivacyAndBranches(value: string) {
