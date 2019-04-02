@@ -7,7 +7,7 @@
 
 # IDEs and editors
 /.idea
-
+/Dockerfile
 # misc
 *.log
 
