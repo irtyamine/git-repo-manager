@@ -118,5 +118,55 @@
         }
       }
     }
-  ]
+  ],
+  "dummyVersions": {
+    "lodash": "4.17.1",
+    "tslint": "5.8.0",
+    "typescript": "2.5.2",
+    "express": "4.15.0",
+    "@angular/common": "5.2.0"
+  },
+  "dataObject": {
+    "branches": {
+      "master": {
+        "express": "3.14.5",
+        "lodash": "4.17.4"
+      },
+      "development" : {
+        "express": "4.15.1",
+        "lodash": "4.17.4"
+      }
+    }
+  },
+  "dataMissingObject": {
+    "branches": {
+      "master": {
+        "name": "TestName",
+        "tslint": "3.15.1"
+      }
+    }
+  },
+  "dummyTemplate": [{
+    "repoName": "Test/name",
+    "reposNamesUpdateTime": 1554299330683,
+    "repoType": "Public",
+    "timestamp": 1554299330683,
+    "branches": {
+      "master": {
+        "version": "0.0.1",
+        "name": "test",
+        "description": "Test description",
+        "lodash": "4.16.9",
+        "tslint": "3.15.1",
+        "@angular/common": "^2.4.4"
+      },
+      "development": {
+        "version": "0.0.1",
+        "name": "test",
+        "lodash": "4.16.9",
+        "tslint": "3.15.1",
+        "@angular/common": "6.3.0"
+      }
+    }
+  }]
 }

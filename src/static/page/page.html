@@ -8,12 +8,12 @@
       <th class="repository-name text-center">Repository name</th>
       <th class="text"><span>Type of privacy</span></th>
       <th class="text"><span>Branches</span></th>
-      <th class="text"><span>package name<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
-      <th class="text"><span>version<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
-      <th class="text"><span>description<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>package name<a container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>version<a container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>description<a container="body" class="important-field" tooltip="Important field">*</a></span></th>
       <th class="text"><span>lodash</span></th>
-      <th class="text"><span>tslint<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
-      <th class="text"><span>typescript<a data-container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>tslint<a container="body" class="important-field" tooltip="Important field">*</a></span></th>
+      <th class="text"><span>typescript<a container="body" class="important-field" tooltip="Important field">*</a></span></th>
       <th class="text"><span>express</span></th>
       <th class="text"><span>@angular/common</span></th>
     </tr>
@@ -21,7 +21,7 @@
     <tbody>
     <tr>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Repository name" aria-label="Username" (keyup)="filtration('repoName', $event)">
+        <input type="text" class="form-control" placeholder="Repository name" aria-label="Username" (keyup)="filtration('repoName', $event.target.value)">
       </div></td>
       <td><div class="select">
         <label>
@@ -45,28 +45,28 @@
         </label>
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="package name" aria-label="Username" (keyup)="filtration('name', $event)">
+        <input type="text" class="form-control" placeholder="package name" aria-label="Username" (keyup)="filtration('name', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="version" aria-label="Username" (keyup)="filtration('version', $event)">
+        <input type="text" class="form-control" placeholder="version" aria-label="Username" (keyup)="filtration('version', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="description" aria-label="Username" (keyup)="filtration('description', $event)">
+        <input type="text" class="form-control" placeholder="description" aria-label="Username" (keyup)="filtration('description', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="lodash" aria-label="Username" (keyup)="filtration('lodash', $event)">
+        <input type="text" class="form-control" placeholder="lodash" aria-label="Username" (keyup)="filtration('lodash', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="tslint" aria-label="Username" (keyup)="filtration('tslint', $event)">
+        <input type="text" class="form-control" placeholder="tslint" aria-label="Username" (keyup)="filtration('tslint', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="typescript" aria-label="Username" (keyup)="filtration('typescript', $event)">
+        <input type="text" class="form-control" placeholder="typescript" aria-label="Username" (keyup)="filtration('typescript', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="express" aria-label="Username" (keyup)="filtration('express', $event)">
+        <input type="text" class="form-control" placeholder="express" aria-label="Username" (keyup)="filtration('express', $event.target.value)">
       </div></td>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="@angular/common" aria-label="Username" (keyup)="filtration('@angular/common', $event)">
+        <input type="text" class="form-control" placeholder="@angular/common" aria-label="Username" (keyup)="filtration('@angular/common', $event.target.value)">
       </div></td>
     </tr>
     <tr *ngFor="let repository of (repositoriesData | async)">
@@ -81,11 +81,10 @@
       </td>
 
       <!--BRANCHES-->
-      <td [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'" data-container="body">
-      <span *ngIf="!isBranch(repository.branches); else branch"
-            tooltip="{{getBranch(repository.branches, 'master')}} &rarr; {{getBranch(repository.branches, 'development')}}">
+      <td [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'">
+      <span *ngIf="!isBranch(repository.branches); else branch" container="body" tooltip="master &rarr; development">
         <a>{{ getBranch(repository.branches, 'master') }}</a>
-        <a [hidden]="isBranch(repository.branches)">&rarr;</a>
+        <a [hidden]="isBranch(repository.branches)"> --> </a>
         <a>{{ getBranch(repository.branches, 'development') }}</a>
       </span>
       <ng-template #branch>
@@ -94,22 +93,18 @@
       </td>
 
       <!--PACKAGE NAME-->
-      <td [ngClass]="isNone(repository.branches, 'name') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
-        <span *ngIf="!isNoneOrSame(repository.branches, 'name'); else packageName"
-              tooltip="{{getPackageValue(repository.branches.master, 'name')}}
-                &rarr; {{getPackageValue(repository.branches.development, 'name')}}">
-          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
+      <td [ngClass]="isNone(repository.branches, 'name') ? 'text bg-danger text-white h5' : 'text'">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'name'); else packageName">
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'name')}">
             {{ getPackageValue(repository.branches.master, 'name') }}
           </a>
-          &rarr;
-          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'version')}">
+           -->
+          <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'name')}">
             {{ getPackageValue(repository.branches.development, 'name') }}
           </a>
         </span>
         <ng-template #packageName>
-          <span tooltip="{{getPackageValue(repository.branches.master, 'name')}}">
-              {{ getPackageValue(repository.branches.master, 'name') }}
-          </span>
+            <span>{{ getPackageValue(repository.branches.master, 'name') }}</span>
         </ng-template>
       </td>
 
@@ -119,7 +114,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'version')}">
             {{ getPackageValue(repository.branches.master, 'version') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'version')}">
             {{ getPackageValue(repository.branches.development, 'version') }}
           </a>
@@ -135,14 +130,12 @@
       </td>
 
       <!--DESCRIPTION-->
-      <td [ngClass]="isNone(repository.branches, 'description') ? 'text bg-danger text-white h5' : 'text'" data-container="body">
-        <span *ngIf="!isNoneOrSame(repository.branches, 'description'); else description"
-                     tooltip="{{getPackageValue(repository.branches.master, 'description')}}
-                       &rarr; {{getPackageValue(repository.branches.development, 'description')}}">
+      <td [ngClass]="isNone(repository.branches, 'description') ? 'text bg-danger text-white h5' : 'text'">
+        <span *ngIf="!isNoneOrSame(repository.branches, 'description'); else description">
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.master, 'description')}">
             {{ getPackageValue(repository.branches.master, 'description') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForText(repository.branches.development, 'description')}">
             {{ getPackageValue(repository.branches.development, 'description') }}
           </a>
@@ -150,7 +143,7 @@
         <ng-template #description>
           <span *ngIf="isNone(repository.branches, 'description'); else description2">(none)</span>
           <ng-template #description2>
-            <span tooltip="{{getPackageValue(repository.branches.master, 'description')}}">
+            <span>
               {{ getPackageValue(repository.branches.master, 'description') }}
             </span>
           </ng-template>
@@ -163,7 +156,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'lodash')}">
             {{ getPackageValue(repository.branches.master, 'lodash') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'lodash')}">
             {{ getPackageValue(repository.branches.development, 'lodash') }}
           </a>
@@ -186,7 +179,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'tslint')}">
             {{ getPackageValue(repository.branches.master, 'tslint') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'tslint')}">
             {{ getPackageValue(repository.branches.development, 'tslint') }}
           </a>
@@ -209,7 +202,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'typescript')}">
             {{ getPackageValue(repository.branches.master, 'typescript') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'typescript')}">
             {{ getPackageValue(repository.branches.development, 'typescript') }}
           </a>
@@ -232,7 +225,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, 'express')}">
             {{ getPackageValue(repository.branches.master, 'express') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, 'express')}">
             {{ getPackageValue(repository.branches.development, 'express') }}
           </a>
@@ -255,7 +248,7 @@
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.master, '@angular/common')}">
             {{ getPackageValue(repository.branches.master, '@angular/common') }}
           </a>
-          &rarr;
+          -->
           <a [ngClass]="{'text-danger': getStyleClassForVersion(repository.branches.development, '@angular/common')}">
             {{ getPackageValue(repository.branches.development, '@angular/common') }}
           </a>

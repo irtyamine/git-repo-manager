@@ -12,13 +12,7 @@ export class GetRepositoriesService {
   constructor(protected http: HttpClient) {}
 
   public getRecommendVersionDataConfig(): Observable<any> {
-    return this.http
-      .get(`${this.API_URL}/repositories/recommend-versions`)
-      .pipe(
-        catchError(err =>
-        err.code === 404 ? throwError('Not Found') :
-          err.code === 401 ? throwError('Unauthorized') : throwError(err))
-      );
+    return this.http.get(`${this.API_URL}/repositories/recommend-versions`);
   }
 
   public getRepositoryNames(): Observable<any> {

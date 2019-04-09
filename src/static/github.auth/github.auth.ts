@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-github-auth',
@@ -9,16 +8,17 @@ import { Router } from '@angular/router';
 })
 
 export class GithubAuthComponent implements OnInit {
+  public text: string = 'Login via Github';
   public condition: boolean = true;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit() {}
 
-
   public goToGithubAuth() {
     this.condition = false;
-    this.auth.gitLogin();
+    this.text = 'Loading...';
+    // this.auth.gitLogin();
   }
 
 }

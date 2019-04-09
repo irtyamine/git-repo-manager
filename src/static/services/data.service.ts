@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { GetRepositoriesService } from './get.repositories.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class DataService {
@@ -14,7 +15,7 @@ export class DataService {
   }
 
   public getReposData(param) {
-    return this.repositoryService.getSingleRepository(param).subscribe((res) => {
+    return this.repositoryService.getSingleRepository(param).subscribe(res => {
       if(!res.repoName || !res.timestamp) {
         return;
       } else {
@@ -22,6 +23,15 @@ export class DataService {
         this.repositoriesSubject.next(this.repositories);
       }
     });
+  }
+
+  public getVersions() {
+    return this.repositoryService.getRecommendVersionDataConfig()
+      .pipe(
+        catchError(err =>
+          err.code === 404 ? throwError('Not Found') :
+            err.code === 401 ? throwError('Unauthorized') : throwError(err))
+      );
   }
 
   public filterByPrivacyAndBranches(value: string) {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GetRepositoriesService } from '../services/get.repositories.service';
 import { DataService } from '../services/data.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import * as semver from 'semver';
 
@@ -13,18 +12,21 @@ import * as semver from 'semver';
 
 export class Page implements OnInit {
 
-  private keyUp = new Subject<any>();
-  public repositoriesData: any;
+  public keyUp = new Subject<any>();
+  public repositoriesData: BehaviorSubject<any>;
   public packagesVersions: any;
+  public text: string;
 
   constructor(
-    private reposService: GetRepositoriesService,
-    private repositoriesDataService: DataService,
+    private repositoriesDataService: DataService
   ) {
+    this.getRepositoriesFromDB();
+    this.getRecommendVersions();
+    this.repositoriesData = this.repositoriesDataService.subject;
     this.keyUp
       .pipe(
         map(event => {
-          const version = event.event.target.value;
+          const version = event.event;
           const packageName = event.pack;
           return { version, packageName };
         }),
@@ -33,32 +35,29 @@ export class Page implements OnInit {
       ).subscribe(text => {
         this.repositoriesDataService.filterByPackages(text);
       });
-    this.getRepositoriesFromDB();
   }
 
   ngOnInit() {
-    this.getRecommendVersions();
-    this.repositoriesData = this.repositoriesDataService.subject;
     setTimeout(() => {
       this.getRepositoriesFromDB();
     }, 65000);
   }
 
-  private getRepositoriesFromDB() {
-    this.repositoriesDataService.loadReposNames().subscribe(reposNames => {
+  public getRepositoriesFromDB() {
+    return this.repositoriesDataService.loadReposNames().subscribe(reposNames => {
       for(let name of reposNames) {
-        this.repositoriesDataService.getReposData(name.repoName);
+        this.repositoriesDataService.getReposData(name);
       }
     });
   }
 
   public getRecommendVersions() {
-    this.reposService.getRecommendVersionDataConfig().subscribe(data => {
+    return this.repositoriesDataService.getVersions().subscribe(data => {
       this.packagesVersions = data;
     });
   }
 
-  public filtration(packageName: string, event: any) {
+  public filtration(packageName: string, event: string) {
     this.keyUp.next({ event: event, pack: packageName });
   }
 
@@ -71,7 +70,7 @@ export class Page implements OnInit {
   }
 
   public isBranch(path) {
-    if (Object.keys(path).length === 1) {
+    if (!path.master || !path.development) {
       return true;
     } else {
       return false;
@@ -87,7 +86,7 @@ export class Page implements OnInit {
   }
 
   public getStyleClassForVersion(path, target) {
-    if (!path || !path[target] || Page.setVersion(path[target], this.packagesVersions[target])) {
+    if (!path || !path[target] || this.setVersion(path[target], this.packagesVersions[target])) {
       return true;
     } else {
       return false;
@@ -118,8 +117,10 @@ export class Page implements OnInit {
     if(master === '(none)' && development === '(none)') {
       return true;
     } else if (master === development) {
+      this.text = master;
       return true;
     } else {
+      this.text = `${master} &rarr; ${development}`;
       return false;
     }
   }
@@ -152,7 +153,7 @@ export class Page implements OnInit {
     window.location.href = 'http://cf83561e.ngrok.io/repositories2/logout';
   }
 
-  private static setVersion(version, configVersion) {
+  public setVersion(version, configVersion) {
     const clearVersion = semver.coerce(version);
     return semver.lt(clearVersion.raw, configVersion);
   }

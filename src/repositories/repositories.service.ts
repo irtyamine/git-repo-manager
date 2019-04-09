@@ -62,9 +62,13 @@ export class GitHubRepositoriesService {
       setTimeout(() => {
         this.makeRequestToGitHubLink();
       }, 3000);
-      return await this.repoDB.findRepositoriesNames();
+      let reposNames = await this.repoDB.findRepositoriesNames(),
+        names = reposNames.map(item => item.repoName);
+      return names;
     } else {
-      return await this.repoDB.findRepositoriesNames();
+      let reposNames = await this.repoDB.findRepositoriesNames(),
+        names = reposNames.map(item => item.repoName);
+      return names;
     }
   }
 
