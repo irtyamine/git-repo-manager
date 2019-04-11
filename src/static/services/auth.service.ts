@@ -9,15 +9,16 @@ export class AuthService {
   constructor(private http: HttpClient) {  }
 
   public gitLogin() {
-    window.location.href = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/repositories2/github`;
+    window.location.href = `${this.API_URL}/repositories2/github`;
   }
 
   public checkAuthTokenExists(): Observable<any> {
     return this.http.get(`${this.API_URL}/repositories2/isAuthenticated`)
       .pipe(
         catchError(err =>
-          err.code === 404 ? throwError('Not Found') : throwError(err.message))
+          err.code === 404 ? throwError('Not Found')
+            : err.code === 401 ? throwError('Unauthorized')
+            : throwError(err.message))
       );
   }
-
 }

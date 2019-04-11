@@ -16,7 +16,7 @@ module.exports = function (config) {
     ],
     reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
     coverageIstanbulReporter: {
-      reports: ['html', 'lcovonly'],
+      reports: ['lcovonly'],
       dir: path.join(__dirname, '../coverage'),
       combineBrowserReports: true,
       fixWebpackSourcePaths: true,
@@ -29,16 +29,16 @@ module.exports = function (config) {
       thresholds: {
         emitWarning: false,
         global: {
-          statements: 80,
-          lines: 80,
-          branches: 50,
-          functions: 80
+          statements: 20,
+          lines: 20,
+          branches: 20,
+          functions: 20
         },
         each: {
-          statements: 80,
-          lines: 80,
-          branches: 50,
-          functions: 80
+          statements: 20,
+          lines: 20,
+          branches: 20,
+          functions: 20
         }
       },
       verbose: false
@@ -54,7 +54,12 @@ module.exports = function (config) {
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          ' --remote-debugging-port=9222'
+        ]
       }
     },
     singleRun: false

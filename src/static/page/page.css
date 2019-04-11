@@ -46,3 +46,7 @@ th, td {
 .table .important-field {
     cursor: help;
 }
+
+.inline span {
+    display: inline-block;
+}

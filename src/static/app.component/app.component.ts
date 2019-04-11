@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { setTheme } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CronJob } from 'cron';
@@ -13,41 +14,43 @@ export class AppComponent implements OnInit {
   public errorCondition: boolean = true;
   public errorAlert: string;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(public router: Router, private auth: AuthService) {
+    setTheme('bs4');
+  }
 
   ngOnInit() {
-    this.authentication();
+    this.checkForAuthentication();
     // NIGHT
     new CronJob('00 00 00 * * *', () => {
-      this.authentication();
+      this.checkForAuthentication();
     }, null, true, 'Europe/Kiev');
 
     // MORNING
     new CronJob('00 00 06 * * *', () => {
-      this.authentication();
+      this.checkForAuthentication();
     }, null, true, 'Europe/Kiev');
 
     // AFTERNOON
     new CronJob('00 00 12 * * *', () => {
-      this.authentication();
+      this.checkForAuthentication();
     }, null, true, 'Europe/Kiev');
 
     // EVENING
     new CronJob('00 00 18 * * *', () => {
-      this.authentication();
+      this.checkForAuthentication();
     }, null, true, 'Europe/Kiev');
   }
 
-  public authentication() {
-    this.auth.checkAuthTokenExists().subscribe(res => {
+  public checkForAuthentication() {
+    return this.auth.checkAuthTokenExists().subscribe(res => {
       if (!res) {
-        this.router.navigateByUrl('/login');
+        this.router.navigate(['/login']);
       } else {
-        this.router.navigateByUrl('/table-repositories');
+        this.router.navigate(['/table-repositories']);
       }
     }, err => {
-      if (err.indexOf('401 Unauthorized', 0) >= 0) {
-        this.router.navigateByUrl('/login');
+      if (err.indexOf('Unauthorized', 0) >= 0) {
+        this.router.navigate(['/login']);
         this.errorCondition = false;
         this.errorAlert = 'Oops! Something went wrong during authentication process or auth token expired';
       }

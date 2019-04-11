@@ -1,8 +1,8 @@
-import { DataService } from './data.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GetRepositoriesService } from './get.repositories.service';
 import { MockDataService } from './mock.data.service';
+let mockRepositories = require('./mock.repositories.json');
 
 describe('Service: DataService', () => {
   let httpMock: HttpTestingController;
@@ -10,98 +10,75 @@ describe('Service: DataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
-      providers: [ DataService, GetRepositoriesService ]
+      providers: [ MockDataService, GetRepositoriesService ]
     });
     httpMock = TestBed.get(HttpTestingController);
   });
 
-  it('should be created', () => {
+  it('should be created', (done: DoneFn) => {
     let getRepositoriesService = TestBed.get(GetRepositoriesService),
-      dataService = new DataService(getRepositoriesService);
+      dataService = new MockDataService(getRepositoriesService);
     expect(dataService).toBeTruthy();
+    done();
   });
 
-  describe('getReposData(param)', () => {
-    it ('should return "repositoriesSubject" as BehaviorSubject', () => {
+  describe('loadReposNames()', () => {
+    it('should return an Observable', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [{
-        repoName: 'RepoName/One',
-        repoType: 'Private',
-        timestamp: Date.now(),
-        branches: {
-          master: {
-            version: '0.0.0',
-            description: 'Test description'
-          },
-          development: {
-            version: '0.0.1',
-            description: 'Test description v2'
-          }
-        },
-      }];
+      mockService.loadReposNames().subscribe(repositoriesNames => {
+        expect(repositoriesNames).toEqual({repoName: mockRepositories.dummyData[0].repoName});
+        done();
+      });
 
-      mockService.getReposData('RepoName/One');
-      let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${dummyData[0].repoName}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(dummyData[0]);
+      httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/names`)
+        .flush({'repoName': mockRepositories.dummyData[0].repoName});
+    });
+  });
+
+  describe('getReposData(param)', () => {
+    it ('should return "repositoriesSubject" as BehaviorSubject', (done: DoneFn) => {
+      let getRepositoriesService = TestBed.get(GetRepositoriesService),
+        mockService = new MockDataService(getRepositoriesService);
+
+      for(let repo of mockRepositories.dummyData) {
+        mockService.getReposData(repo.repoName);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+        .flush(repo);
+      }
 
       mockService.subject.subscribe(repository => {
-        expect(repository).toEqual(dummyData);
+        expect(repository).toEqual(mockRepositories.dummyData);
+        done();
       });
     });
   });
 
   describe('filterByPrivacyAndBranches(value)', () => {
-    it('should filter by public repos', () => {
+    it('should filter by public repos', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      let dummyData = [
-        {
-          repoName: 'RepoName/One',
-          timestamp: Date.now(),
-          repoType: 'Public',
-        },
-        {
-          repoName: 'RepoName/Two',
-          timestamp: Date.now(),
-          repoType: 'Private',
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPrivacyAndBranches('Public');
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(5);
+        done();
       });
     });
 
-    it ('should filter by private repos', () => {
+    it ('should filter by private repos', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      let dummyData = [
-        {
-          repoName: 'RepoName/One',
-          timestamp: Date.now(),
-          repoType: 'Public',
-        },
-        {
-          repoName: 'RepoName/Two',
-          timestamp: Date.now(),
-          repoType: 'Private',
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
         let req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
         req.flush(repo);
@@ -109,559 +86,245 @@ describe('Service: DataService', () => {
 
       mockService.filterByPrivacyAndBranches('Private');
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[1]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(4);
+        done();
       });
     });
 
-    it ('should filter by missing master branch', () => {
+    it ('should filter by missing master branch', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'RepoName/onlyMaster',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              name: 'master'
-            }
-          }
-        },
-        {
-          repoName: 'RepoName/onlyDevelopment',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              name: 'development'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPrivacyAndBranches('master');
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[1]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by missing development branch', () => {
+    it ('should filter by missing development branch', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'RepoName/onlyMaster',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              name: 'master'
-            }
-          }
-        },
-        {
-          repoName: 'RepoName/onlyDevelopment',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              name: 'development'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPrivacyAndBranches('development');
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter by missing master and development branches', () => {
+    it ('should filter and return default array', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'RepoName/noBranches',
-          timestamp: Date.now(),
-        },
-        {
-          repoName: 'RepoName/allBranches',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              name: 'master'
-            },
-            development: {
-              name: 'development'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
-      }
-
-      mockService.filterByPrivacyAndBranches('none');
-
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
-      });
-    });
-
-    it ('should filter and return default array', () => {
-      let getRepositoriesService = TestBed.get(GetRepositoriesService),
-        mockService = new MockDataService(getRepositoriesService);
-
-      const dummyData = [
-        {
-          repoName: 'RepoName/noBranches',
-          timestamp: Date.now()
-        },
-        {
-          repoName: 'RepoName/onlyMaster',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              name: 'master'
-            }
-          }
-        },
-        {
-          repoName: 'RepoName/onlyDevelopment',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              name: 'development'
-            }
-          }
-        },
-        {
-          repoName: 'RepoName/allBranches',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              name: 'master'
-            },
-            development: {
-              name: 'development'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
-        mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPrivacyAndBranches('default');
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual(dummyData);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories).toEqual(mockRepositories.dummyData);
+        done();
       });
     });
   });
 
   describe('filterByPackages(value)', () => {
-    it ('should filter by repository name', () => {
+    it ('should filter by repository name', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {}
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            master: {}
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'repoName', version: 'fin' });
+      mockService.filterByPackages({ packageName: 'repoName', version: 't' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by package name', () => {
+    it ('should filter by package name', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          name: 'Package/find',
-          branches: {
-            master: {},
-            development: {}
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          name: 'Package/miss',
-          branches: {
-            master: {},
-            development: {}
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'name', version: 'fi' });
+      mockService.filterByPackages({ packageName: 'name', version: 'mas' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter by project version at master or development branches', () => {
+    it ('should filter by project version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              version: '0.0.1'
-            },
-            development: {
-              version: '0.0.2'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              version: '1.0.0'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual(dummyData);
+      mockService.filterByPackages({packageName: 'version', version: '0.1'});
+
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(3);
+        done();
       });
     });
 
-    it ('should filter by package description at master or development branches', () => {
+    it ('should filter by package description at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              description: 'Test master description'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              description: 'Test development description'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'description', version: 'dev'});
+      mockService.filterByPackages({ packageName: 'description', version: 'desc'});
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[1]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter by lodash version at master or development branches', () => {
+    it ('should filter by lodash version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              lodash: '4*'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              lodash: '3.16.5'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'lodash', version: '4.' });
+      mockService.filterByPackages({ packageName: 'lodash', version: '*' });
 
-      mockService.subject.subscribe(result => {
-        expect(result.length).toEqual(0);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter by tslint version at master or development branches', () => {
+    it ('should filter by tslint version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              tslint: '2.3.2'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              tslint: '3.1.5'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPackages({ packageName: 'tslint', version: '.5' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[1]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(0);
+        done();
       });
     });
 
-    it ('should filter by typescript version at master or development branches', () => {
+    it ('should filter by typescript version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              typescript: '2.3.2'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              typescript: '3.1.5'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
-      mockService.filterByPackages({ packageName: 'typescript', version: '.5' });
+      mockService.filterByPackages({ packageName: 'typescript', version: '.2.' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[1]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(2);
+        done();
       });
     });
 
-    it ('should filter by express version at master or development branches', () => {
+    it ('should filter by express version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              express: '4.15.3'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              express: '4.16.3'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPackages({ packageName: 'express', version: '4.1' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual(dummyData);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(4);
+        done();
       });
     });
 
-    it ('should filter by @angular/common version at master or development branches', () => {
+    it ('should filter by @angular/common version at master or development branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
 
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              '@angular/common': '^2.4.2'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            development: {
-              '@angular/common': '4.3.6'
-            }
-          }
-        }
-      ];
-
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPackages({ packageName: '@angular/common', version: '^' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(1);
+        done();
       });
     });
 
-    it ('should filter and return data with missing package at both repositories', () => {
+    it ('should filter and return data with missing package at both branches', (done: DoneFn) => {
       let getRepositoriesService = TestBed.get(GetRepositoriesService),
         mockService = new MockDataService(getRepositoriesService);
-
-      const dummyData = [
-        {
-          repoName: 'Repo/find',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              '@angular/common': '^2.4.2'
-            },
-            development: {
-              tslint: '3.15.1'
-            }
-          }
-        },
-        {
-          repoName: 'Repo/miss',
-          timestamp: Date.now(),
-          branches: {
-            master: {
-              lodash: '4.17.1'
-            },
-            development: {
-              '@angular/common': '4.3.6'
-            }
-          }
-        }
-      ];
       
-      for (let repo of dummyData) {
+      for (let repo of mockRepositories.dummyData) {
         mockService.getReposData(repo.repoName);
-        const req = httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`);
-        req.flush(repo);
+        httpMock.expectOne(`${getRepositoriesService.API_URL}/repositories/repository?repositoryName=${repo.repoName}`)
+          .flush(repo);
       }
 
       mockService.filterByPackages({ packageName: 'lodash', version: 'none' });
 
-      mockService.subject.subscribe(result => {
-        expect(result).toEqual([dummyData[0]]);
+      mockService.subject.subscribe(repositories => {
+        expect(repositories.length).toBe(2);
+        done();
       });
     });
   });

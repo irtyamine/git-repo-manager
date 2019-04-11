@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { GetRepositoriesService } from './get.repositories.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class DataService {
   protected repositories = [];
   protected repositoriesSubject = new BehaviorSubject([]);
 
-  constructor(protected repositoryService: GetRepositoriesService) {
-    this.getNames();
+  constructor(protected repositoryService: GetRepositoriesService) {  }
+
+  public loadReposNames() {
+    return this.repositoryService.getRepositoryNames();
   }
 
-  protected getReposData(param) {
-    return this.repositoryService.getSingleRepository(param).subscribe((res) => {
+  public getReposData(param) {
+    return this.repositoryService.getSingleRepository(param).subscribe(res => {
       if(!res.repoName || !res.timestamp) {
         return;
       } else {
@@ -22,13 +25,13 @@ export class DataService {
     });
   }
 
-  protected getNames() {
-    return this.repositoryService.getRepositoryNames()
-      .subscribe(result => {
-        for (let element of result) {
-          this.getReposData(element.repoName);
-        }
-      });
+  public getVersions() {
+    return this.repositoryService.getRecommendVersionDataConfig()
+      .pipe(
+        catchError(err =>
+          err.code === 404 ? throwError('Not Found') :
+            err.code === 401 ? throwError('Unauthorized') : throwError(err))
+      );
   }
 
   public filterByPrivacyAndBranches(value: string) {
