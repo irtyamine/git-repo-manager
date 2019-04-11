@@ -5,6 +5,6 @@ import * as path from 'path';
 export class FrontendController {
   @Get()
   getFront(@Res() response) {
-    response.sendFile(path.resolve('../../dist/index.html'));
+    response.sendFile(path.resolve('./dist/index.html'));
   }
 }

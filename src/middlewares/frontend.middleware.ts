@@ -3,7 +3,7 @@ import { MiddlewareFunction, Injectable, NestMiddleware } from '@nestjs/common';
 import * as path from 'path';
 const allowedExt = ['.js', '.ico', '.css'];
 
-const resolvePath = (file: string) => path.resolve(`../dist/${file}`);
+const resolvePath = (file: string) => path.resolve(`./dist/${file}`);
 
 @Injectable()
 export class FrontendMiddleware implements NestMiddleware {

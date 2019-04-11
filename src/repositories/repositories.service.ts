@@ -3,8 +3,7 @@ import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepository } from './repositories.repository';
 import { RepoBranchesDataObjectInterface } from './interfaces/repo-branches-data.object.interface';
 import { Repo } from './interfaces/repo.interface';
-let configFile = require('../../config/github-repositories-config.json'),
-  authKeysConfig  = require('../../config/auth.keys.json');
+let configFile = require('../../config/github-repositories-config.json');
 import { CronJob } from 'cron';
 import { GithubRepository } from '../app.authentication/github.repository';
 
@@ -13,7 +12,7 @@ export class GitHubRepositoriesService {
   constructor(
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepository,
-    private readonly githubUser: GithubRepository
+    private readonly githubUser: GithubRepository,
   ) {
     this.updateTimeMorning();
     this.updateTimeEvening();
@@ -62,13 +61,11 @@ export class GitHubRepositoriesService {
       setTimeout(() => {
         this.makeRequestToGitHubLink();
       }, 3000);
-      let reposNames = await this.repoDB.findRepositoriesNames(),
-        names = reposNames.map(item => item.repoName);
-      return names;
+      let reposNames = await this.repoDB.findRepositoriesNames();
+      return reposNames.map(item => item.repoName);
     } else {
-      let reposNames = await this.repoDB.findRepositoriesNames(),
-        names = reposNames.map(item => item.repoName);
-      return names;
+      let reposNames = await this.repoDB.findRepositoriesNames();
+      return reposNames.map(item => item.repoName);
     }
   }
 
@@ -97,7 +94,7 @@ export class GitHubRepositoriesService {
     for (let branch of configFile.ALIASES_OF_BRANCH[branchAlias]) {
 
       const link = `https://raw.githubusercontent.com/${repositoryData.repoName}/${branch}/package.json`,
-        gitHubData = await this.getRepositoryDataFromGithub(link, authKeysConfig.ACCESS_TOKEN);
+        gitHubData = await this.getRepositoryDataFromGithub(link, process.env.ACCESS_TOKEN);
       if (keys(gitHubData).length === 0) break;
 
       const branches: RepoBranchesDataObjectInterface = { [branchAlias]: gitHubData };
