@@ -1,14 +1,14 @@
 # compiled output
-/config
 /dist
+/Dockerfile
+/src/coverage
 
 # dependencies
 /node_modules
 
 # IDEs and editors
 /.idea
-/Dockerfile
-/src/coverage
+/.env
 # misc
 *.log
 

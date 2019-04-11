@@ -2,13 +2,12 @@ import { Controller, Get, UseGuards, Res, Req, UnauthorizedException } from '@ne
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { GithubRepository } from './github.repository';
-const authKeys = require('../../config/auth.keys.json');
 
 @Controller('repositories2')
 export class AuthController {
-  constructor(private auth: AuthService, private githubrepository: GithubRepository) {}
+  constructor(private auth: AuthService, private githubRepository: GithubRepository) {}
 
-  private API_URL = 'http://cf83561e.ngrok.io';
+  private API_URL = `${process.env.URL_LOCAL}${process.env.PORT}`;
 
   @Get('github')
   @UseGuards(AuthGuard('github'))
@@ -18,7 +17,7 @@ export class AuthController {
   @UseGuards(AuthGuard('github'))
   githubLoginCallback(@Req() req, @Res() res) {
     const authToken: string = req.user.jwt;
-    if(authToken && req.user.organizationName === authKeys.organizations.ACCESS_GITHUB_ORGANIZATION) {
+    if(authToken && req.user.organizationName === process.env.ACCESS_GITHUB_ORGANIZATION) {
       res.cookie('_auth_token', authToken, { maxAge: Date.now() + (3600 * 5 * 1000)});
       res.redirect(`${this.API_URL}/table-repositories`);
     } else {
@@ -28,7 +27,7 @@ export class AuthController {
 
   @Get('isAuthenticated')
   isAuthenticated(@Req() req, @Res() res) {
-    this.githubrepository.deleteOldAuthTokens(Date.now());
+    this.githubRepository.deleteOldAuthTokens(Date.now());
     if (!req.cookies['_auth_token']) {
       res.json(false);
     } else {
