@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /src/coverage
+/src/out-tsc
 
 # dependencies
 /node_modules

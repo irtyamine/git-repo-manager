@@ -9,7 +9,7 @@ export class AuthService {
   constructor(private http: HttpClient) {  }
 
   public gitLogin() {
-    window.location.href = `${this.API_URL}/repositories2/github`;
+    window.location.href = 'https://repo-manager.valor-software.com/repositories2/github';
   }
 
   public checkAuthTokenExists(): Observable<any> {
