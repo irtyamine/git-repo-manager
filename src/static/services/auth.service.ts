@@ -9,11 +9,11 @@ export class AuthService {
   constructor(private http: HttpClient) {  }
 
   public gitLogin() {
-    window.location.href = `http://localhost:8080/repositories2/github`;
+    window.location.href = `${this.API_URL}/repositories2/github`;
   }
 
   public checkAuthTokenExists(): Observable<any> {
-    return this.http.get(`http://localhost:8080/repositories2/isAuthenticated`)
+    return this.http.get(`${this.API_URL}/repositories2/isAuthenticated`)
       .pipe(
         catchError(err =>
           err.code === 404 ? throwError('Not Found')

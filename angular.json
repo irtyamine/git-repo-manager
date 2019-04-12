@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "front-end": {
-      "root": "src",
+      "root": "",
       "sourceRoot": "src/static",
       "projectType": "application",
       "prefix": "app",

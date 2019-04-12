@@ -3,7 +3,7 @@ import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepository } from './repositories.repository';
 import { RepoBranchesDataObjectInterface } from './interfaces/repo-branches-data.object.interface';
 import { Repo } from './interfaces/repo.interface';
-let configFile = require('../../config/github-repositories-config.json');
+const configFile = require('../../config/github-repositories-config.json');
 import { CronJob } from 'cron';
 import { GithubRepository } from '../app.authentication/github.repository';
 

@@ -7,7 +7,7 @@ export class RepositoriesController {
   constructor(private readonly repositoryService: GitHubRepositoriesService) {}
 
   @Get('recommend-versions')
-  frontendPath() {
+  findRecommendVersions() {
     return GitHubRepositoriesConfigurationFile.RECOMMENDED_AT_VALOR_VERSIONS;
   }
 
