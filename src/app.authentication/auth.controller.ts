@@ -7,8 +7,6 @@ import { GithubRepository } from './github.repository';
 export class AuthController {
   constructor(private auth: AuthService, private githubRepository: GithubRepository) {}
 
-  private API_URL = `${process.env.URL_LOCAL}${process.env.PORT}`;
-
   @Get('github')
   @UseGuards(AuthGuard('github'))
   githubLogin() {}
@@ -19,9 +17,9 @@ export class AuthController {
     const authToken: string = req.user.jwt;
     if(authToken && req.user.organizationName === process.env.ACCESS_GITHUB_ORGANIZATION) {
       res.cookie('_auth_token', authToken, { maxAge: Date.now() + (3600 * 5 * 1000)});
-      res.redirect(`${this.API_URL}/table-repositories`);
+      res.redirect(`${process.env.URL}/table-repositories`);
     } else {
-      res.redirect(`${this.API_URL}/login`);
+      res.redirect(`${process.env.URL}/login`);
     }
   }
 
@@ -46,6 +44,6 @@ export class AuthController {
   @Get('logout')
   githubLogOut(@Res() res) {
     res.clearCookie('_auth_token');
-    res.redirect(`${this.API_URL}/login`);
+    res.redirect(`${process.env.URL}/login`);
   }
 }

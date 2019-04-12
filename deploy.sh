@@ -7,11 +7,13 @@ ZONE_EN1B=us-east1-b
 URL_LOCAL=http://localhost:
 PORT=80
 MONGO_URL=mongodb://10.142.0.3
-
+URL=https://repo-manager.valor-software.com
+URL_LOGIN=https://repo-manager.valor-software.com
 
 echo "docker build"
 docker build -t gcr.io/$PROJECT_NAME/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT \
-  --build-arg URL_LOCAL=$URL_LOCAL \
+  --build-arg URL=$URL \
+  --build-arg URL_LOGIN=$URL_LOGIN \
   --build-arg PORT=$PORT \
   --build-arg MONGO_URL=$MONGO_URL \
   --build-arg ACCESS_TOKEN=$ACCESS_TOKEN \
