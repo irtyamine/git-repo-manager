@@ -1,6 +1,5 @@
 # compiled output
 /dist
-/Dockerfile
 /src/coverage
 
 # dependencies
