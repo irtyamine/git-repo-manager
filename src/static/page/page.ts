@@ -3,6 +3,7 @@ import { DataService } from '../services/data.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import * as semver from 'semver';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-page',
@@ -150,7 +151,7 @@ export class Page implements OnInit {
   }
 
   public logOut() {
-    window.location.href = 'http://cf83561e.ngrok.io/repositories2/logout';
+    window.location.href = `${environment.url}/repositories2/logout`;
   }
 
   public setVersion(version, configVersion) {

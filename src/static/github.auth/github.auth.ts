@@ -18,7 +18,6 @@ export class GithubAuthComponent implements OnInit {
   public goToGithubAuth() {
     this.condition = false;
     this.text = 'Loading...';
-    // this.auth.gitLogin();
+    this.auth.gitLogin();
   }
-
 }

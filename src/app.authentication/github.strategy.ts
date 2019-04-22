@@ -9,9 +9,9 @@ import * as short from 'short-uuid';
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   constructor(private http: HttpService, private auth: AuthService) {
     super({
-      callbackURL: `${process.env.URL_LOGIN}/repositories2/github/callback`,
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: `${process.env.URL}/repositories2/github/callback`,
+      clientID: process.env.GITHUB_CLIENT_ID || '1',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '1',
       scope: [
         'user',
         'repo',

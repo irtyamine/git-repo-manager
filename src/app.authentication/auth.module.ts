@@ -11,7 +11,10 @@ import { databaseProviders } from '../common/database.providers';
   controllers: [ AuthController ],
   providers: [
     AuthService,
-    GithubRepository,
+    {
+      provide: GithubRepository,
+      useClass: GithubRepository
+    },
     GithubStrategy,
     ...databaseProviders,
     ...githubUserProviders

@@ -1,4 +1,5 @@
 import { Controller, Get, UseGuards, Res, Req, UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { GithubRepository } from './github.repository';
@@ -24,7 +25,7 @@ export class AuthController {
   }
 
   @Get('isAuthenticated')
-  isAuthenticated(@Req() req, @Res() res) {
+  isAuthenticated(@Req() req: Request, @Res() res) {
     this.githubRepository.deleteOldAuthTokens(Date.now());
     if (!req.cookies['_auth_token']) {
       res.json(false);

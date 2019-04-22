@@ -41,10 +41,6 @@ export class GitHubRepositoriesRepository {
     return this.repoModel.find().select({'repoName': 1, 'repoType': 1, '_id': 0});
   }
 
-  public getReposNamesUpdateTime() {
-    return this.repoModel.findOne().select({'reposNamesUpdateTime': 1, '_id': 0});
-  }
-
   public findRepositoryData(parameter) {
     return this.repoModel.findOne( { repoName: parameter }).select({'_id': 0});
   }

@@ -1,13 +1,19 @@
-import { HttpModule, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { GitHubRepositoriesService } from './repositories.service';
+import { HttpModule, Module } from '@nestjs/common';
+import { GitHubRepositoriesService } from './services/repositories.service';
 import { GitHubRepositoriesRepository } from './repositories.repository';
 import { repositoriesProviders } from './repositories.providers';
 import { databaseProviders } from '../common/database.providers';
-import { LoggerMiddleware } from '../middlewares/logger.middleware';
 import { RepositoriesController } from './repositories.controller';
 import { AuthService } from '../app.authentication/auth.service';
 import { GithubRepository } from '../app.authentication/github.repository';
 import { githubUserProviders } from '../app.authentication/github.user.providers';
+import { CronJobService } from './services/cronjob.service';
+import { RepoStateService } from './services/repo.state.service';
+
+const reposService = {
+    provide: GitHubRepositoriesRepository,
+        useClass: GitHubRepositoriesRepository
+};
 
 @Module({
     controllers: [
@@ -18,20 +24,12 @@ import { githubUserProviders } from '../app.authentication/github.user.providers
         GitHubRepositoriesService,
         AuthService,
         GithubRepository,
-        GitHubRepositoriesRepository,
+        RepoStateService,
+        CronJobService,
+        reposService,
         ...repositoriesProviders,
         ...githubUserProviders,
         ...databaseProviders
     ]
 })
-export class RepositoriesModule {
-    // configure(consumer: MiddlewareConsumer) {
-    //     consumer
-    //         .apply(LoggerMiddleware)
-    //         .with('RepositoriesModule', 'GET')
-    //         .exclude(
-    //             { path: 'repository', method: RequestMethod.ALL }
-    //         )
-    //         .forRoutes('/');
-    // }
-}
+export class RepositoriesModule {  }

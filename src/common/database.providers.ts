@@ -5,7 +5,7 @@ export const databaseProviders = [
     provide: 'DbConnectionToken',
     useFactory: async (): Promise<typeof mongoose> =>
       await mongoose.connect(
-        `${ process.env.MONGO_URL }/repositories_versions`,
+          `mongodb://localhost:27017/repositories_versions` || process.env.MONGO_URL,
         { useNewUrlParser: true, useFindAndModify: false },
       ),
   }

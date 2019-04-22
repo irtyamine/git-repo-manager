@@ -1,10 +1,13 @@
 import { Controller, Get, Req } from '@nestjs/common';
-import { GitHubRepositoriesService } from './repositories.service';
+import { RepoStateService } from './services/repo.state.service';
+
 const GitHubRepositoriesConfigurationFile = require('../../config/github-repositories-config.json');
 
 @Controller('repositories')
 export class RepositoriesController {
-  constructor(private readonly repositoryService: GitHubRepositoriesService) {}
+  constructor(
+      private readonly stateService: RepoStateService
+  ) {  }
 
   @Get('recommend-versions')
   findRecommendVersions() {
@@ -12,12 +15,12 @@ export class RepositoriesController {
   }
 
   @Get('names')
-  getNames(@Req() req) {
-    return this.repositoryService.getNamesFromDB(req.cookies['_auth_token']);
+  getNames() {
+    return this.stateService.getNames();
   }
 
   @Get('repository')
   findRepository(@Req() req) {
-    return this.repositoryService.findRepoDataAtDatabase(req.query.repositoryName);
+    return this.stateService.findRepoDataAtDatabase(req.query.repositoryName);
   }
 }
