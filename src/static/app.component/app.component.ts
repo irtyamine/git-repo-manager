@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { setTheme } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CronJob } from 'cron';
@@ -11,12 +10,10 @@ import { CronJob } from 'cron';
 })
 
 export class AppComponent implements OnInit {
-  public errorCondition: boolean = true;
+  public appErrorCondition: boolean = true;
   public errorAlert: string;
 
-  constructor(public router: Router, private auth: AuthService) {
-    setTheme('bs4');
-  }
+  constructor(public router: Router, private auth: AuthService) {  }
 
   ngOnInit() {
     this.checkForAuthentication();
@@ -51,7 +48,7 @@ export class AppComponent implements OnInit {
     }, err => {
       if (err.indexOf('Unauthorized', 0) >= 0) {
         this.router.navigate(['/login']);
-        this.errorCondition = false;
+        this.appErrorCondition = false;
         this.errorAlert = 'Oops! Something went wrong during authentication process or auth token expired';
       }
     });

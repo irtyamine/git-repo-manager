@@ -17,7 +17,7 @@ module.exports = function (config) {
     reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
     coverageIstanbulReporter: {
       reports: ['lcovonly'],
-      dir: path.join(__dirname, '../coverage'),
+      dir: path.join(__dirname, '../../coverage/front-end'),
       combineBrowserReports: true,
       fixWebpackSourcePaths: true,
       skipFilesWithNoCoverage: false,

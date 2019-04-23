@@ -1,0 +1,63 @@
+.table-position {
+    margin: 30px 50px 30px 70px;
+}
+caption {
+    caption-side: top;
+}
+th, td {
+    width: 70px;
+    padding: 8px;
+}
+.table .repository-name {
+    width: 70px;
+    text-align: left;
+}
+.table .text {
+    position: relative;
+}
+.table .text span {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.text:before {
+    content: '';
+    display: inline-block;
+}
+.select select {
+    width: 100%;
+    color: #495057;
+    height: calc(2.25rem + 2px);
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+}
+.select select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.table .important-field {
+    cursor: help;
+}
+
+.inline span {
+    display: inline-block;
+}
+
+.btn-logout-width {
+    width: 84px;
+    float: right;
+}
+
+.btn-info-width {
+    width: 221px;
+}
+
+.collapse-width {
+    width: 260px;
+}
