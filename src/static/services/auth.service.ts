@@ -13,6 +13,18 @@ export class AuthService {
       window.location.href = `${this.API_URL}/repositories2/github`;
   }
 
+  public getUserData(): Observable<any> {
+    return this.http.get(`${this.API_URL}/repositories2/get-user-data`)
+      .pipe(
+        timeout(30000),
+        catchError(err =>
+          err.name === 'TimeoutError' ? throwError('Auth check timed out')
+          : err.code === 404 ? throwError('Not Found')
+          : err.code === 401 ? throwError('Unauthorized')
+          : throwError(err.message))
+      );
+  }
+
   public checkAuthTokenExists(): Observable<any> {
     return this.http.get(`${this.API_URL}/repositories2/isAuthenticated`)
       .pipe(

@@ -12,7 +12,7 @@ import { ReposData } from './repos-data.component/repos-data';
 import { AuthGuard } from './guards/auth.guard';
 import { DataService } from './services/data.service';
 import { GetRepositoriesService } from './services/get.repositories.service';
-import {  BsDropdownModule, CollapseModule, ModalModule } from 'ngx-bootstrap';
+import { BsDropdownModule, CollapseModule, ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { GetPackagesService } from './services/get.packages.service';
 
 const routes: Routes = [
@@ -36,7 +36,8 @@ const routes: Routes = [
     TooltipModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    TypeaheadModule.forRoot()
   ],
   providers: [
     AuthService,

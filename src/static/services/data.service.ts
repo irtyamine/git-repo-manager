@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { GetRepositoriesService } from './get.repositories.service';
+import { DefaultFilterObjectInterface } from '../interfaces/default.filter.object.interface';
 
 @Injectable()
 export class DataService {
   protected repositories = [];
+  protected internalFilterResult = [];
   protected repositoriesSubject = new BehaviorSubject([]);
-  private currentVersionsForFiltering: any = [];
+  protected projectBranchesSubject = new BehaviorSubject([]);
 
-  constructor(protected repositoryService: GetRepositoriesService) {
-      // this.setArrayForFiltering();
-  }
+  constructor(protected repositoryService: GetRepositoriesService) {}
 
   public loadReposNames() {
     return this.repositoryService.getRepositoryNames();
   }
 
   public getReposData(param) {
+    this.repositories.length = 0;
     return this.repositoryService.getSingleRepository(param).subscribe(res => {
-      if(!res.repoName || !res.timestamp) {
+      if(!res) {
         return null;
       } else {
         this.repositories.push(res);
@@ -29,71 +30,73 @@ export class DataService {
     });
   }
 
-  // private setArrayForFiltering() {
-  //     this.getVersions().subscribe(versions => {
-  //         this.currentVersionsForFiltering.push(
-  //             { packageName: value.packageName, version: '' },
-  //             { packageName: value.packageName, version: '' },
-  //             { packageName: value.packageName, version: '' },
-  //             { packageName: value.packageName, version: '' },
-  //             );
-  //         for (let item in versions) {
-  //            this.currentVersionsForFiltering.push({ packageName: item, version: '' });
-  //        }
-  //         console.log(this.currentVersionsForFiltering);
-  //     });
-  // }
-
-  public filterByPrivacyAndBranches(value: string) {
-    const result = this.repositories.filter(item =>
-      item.repoType === value
-        || (value === 'master' && !item.branches[value])
-        || (value === 'development' && !item.branches[value])
-        || (value === 'none' && !item.branches)
-        || value === 'default');
-    this.repositoriesSubject.next(result);
+  public getBranchesForSpecificProject(repoName: string) {
+    return this.repositoryService.getBranchesForSpecificProject(repoName)
+      .subscribe((res: any) => {
+        this.projectBranchesSubject.next(res);
+      });
   }
 
-  public filterByPackages(value: any) {
-    // for(let elem of this.currentVersionsForFiltering) {
-    //     if(elem.packageName === value.packageName) {
-    //         elem.version = value.version;
-    //     }
-    // }
-    //
-    //   console.log(this.currentVersionsForFiltering);
-
-      const result = this.repositories.filter(item =>
-        item.repoName.toLowerCase().indexOf(value.version, 0) >= 0
-        || DataService.isNone(item.branches, value.packageName, value.version)
-        || DataService.getDataFromObject(item.branches.master, value.packageName, value.version)
-        || DataService.getDataFromObject(item.branches.development, value.packageName, value.version));
-    this.repositoriesSubject.next(result);
+  public updateSingeRepository(repositoryName: string, branchOne: string, branchTwo: string) {
+    return this.repositoryService.updateSingleRepositoryDataByCustomBranches(repositoryName, branchOne, branchTwo)
+        .subscribe((res: any) => {
+          this.repositories = res;
+          this.repositoriesSubject.next(this.repositories);
+        });
   }
 
-  private static isNone(branches, packageName, value) {
-    if(value === 'none') {
-      if (!branches.master) {
-        return !branches.development[packageName];
-      } else if (!branches.development) {
-        return !branches.master[packageName];
-      } else return !branches.master[packageName] && !branches.development[packageName];
-    } else {
-      return false;
-    }
+  private filterByPrivacyAndBranches(filterObject: DefaultFilterObjectInterface) {
+    console.log(filterObject);
+    return this.repositories.filter(repository =>
+        repository.repoType === filterObject.repoType
+         || filterObject.repoType === 'default'
+    );
   }
 
-  private static getDataFromObject(branch, packageName, version?) {
-    if (branch && branch[packageName]) {
-        const str = branch[packageName];
-        if (str.indexOf(version, 0) >= 0) {
-          return branch[packageName];
-        } else {
-          return false;
+  public filteredByPackages(key: string, defaultFilterObject: DefaultFilterObjectInterface, filterObject: any) {
+    const arrayOfFilteredRepos = this.filterByPrivacyAndBranches(defaultFilterObject);
+
+    const keys = Object.keys(filterObject);
+    const result = arrayOfFilteredRepos.filter((item) => {
+        let found = true;
+        for (let elem of keys) {
+          if (!filterObject[elem]) {
+            continue;
+          }
+          if (item.branches.master && item.branches.master[elem]) {
+            found = item.branches.master[elem].indexOf(filterObject[elem]) !== -1;
+          } else if (item.branches.development && item.branches.development[elem]) {
+            found =  item.branches.development[elem].indexOf(filterObject[elem]) !== -1;
+          } else {
+             found = false;
+          }
+          if (found) {
+            return found;
+          }
         }
+        return found;
+      });
+
+    const filteredResult = result.filter(item => {
+      if(!key) {
+       return true;
+      }
+      if (item.branches.master && item.branches.master[key]) {
+        return item.branches.master[key].indexOf(filterObject[key]) >= 0;
+      } else if (item.branches.development && item.branches.development[key]) {
+        return item.branches.development[key].indexOf(filterObject[key]) >= 0;
+      }
+    });
+
+    if (!filterObject[key]) {
+      this.repositoriesSubject.next(result);
     } else {
-      return false;
+      this.repositoriesSubject.next(filteredResult);
     }
+  }
+
+  get branchesSubject() {
+    return this.projectBranchesSubject;
   }
 
   get subject() {

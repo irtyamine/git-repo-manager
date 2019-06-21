@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GitHubRepositoriesService } from './get-repositories-data';
+import { RequestBodyInterface } from '../interfaces/request.body.interface';
 
 @Injectable()
 export class RepoStateService {
@@ -13,5 +14,13 @@ export class RepoStateService {
 
     public findRepoDataAtDatabase(name: string) {
         return this.reposService.findRepositoryDataAtDatabase(name);
+    }
+
+    public async getBranchesFromGithub(repoName: string) {
+        return await this.reposService.getBranchesByProject(repoName);
+    }
+
+    public async updateRepoByNewBranches(body: RequestBodyInterface) {
+        return await this.reposService.updateSingleRepository(body.repoName, body.branches);
     }
 }

@@ -9,7 +9,7 @@ export class PackagesRepositoryLayer {
 
     public insertNewPackageToDB(item: PackagesInterface) {
         let newPackageObject = new this.packageModel(item);
-        this.packageModel.create(newPackageObject, async (err, result) => {
+        return this.packageModel.create(newPackageObject, async (err, result) => {
             if (err) throw err;
         });
     }
@@ -23,6 +23,21 @@ export class PackagesRepositoryLayer {
     }
 
     public getRecommendVersions() {
-        return this.packageModel.find().select({'name': 1, '_package.recommendVersion': 1, '_id': 0});
+        return this.packageModel.find().select({'name': 1, 'recommendVersion': 1, '_id': 0});
+    }
+
+    public updateDependencyRecommendVersion(updateObject: PackagesInterface, param: string) {
+        return this.packageModel.updateOne(
+            { name: param.toString() },
+            { recommendVersion: updateObject.recommendVersion.toString() },
+            (err, res) => {
+                if(err) throw err;
+            });
+    }
+
+    public deleteDependency(dependency: string) {
+        return this.packageModel.deleteOne({ name: dependency.toString() }, (err) => {
+            if(err) throw err;
+        });
     }
 }

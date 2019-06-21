@@ -6,55 +6,74 @@
   <button type="button" class="btn btn-outline-danger btn-block btn-logout-width" (click)="logOut()">Log Out</button>
   <button type="button" class="btn btn-outline-info btn-clock btn-info-width" (click)="openModal(template)">Add package</button>
   <table class="table table-bordered table-active">
+    <caption>{{ authUserData.role }}: {{ authUserData.login }}</caption>
     <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
     <thead class="thead-dark">
     <tr>
       <th class="repository-name text-center">Repository Name</th>
       <th class="text"><span>Type of privacy</span></th>
       <th class="text"><span>Branches</span></th>
-      <th class="text" *ngFor="let item of (tableHeader | async)">
-        <span [tooltip]="item._package.recommendVersion">
+      <th class="text" *ngFor="let item of (tableHeader | async); let i = index">
+        <span [id]="i" [tooltip]="item.recommendVersion" (dblclick)="replaceHeaderWithButton(i)">
           {{ item.name }}<a container="body" class="important-field"
-             [hidden]="!item._package.isImportant"
-             [tooltip]="item._package.isImportant ? 'Important field' : ''" placement="bottom">*</a>
+             [hidden]="!item.isImportant"
+             tooltip="Important field" placement="bottom">*</a><a [hidden]="!item.recommendVersion">:</a> {{ item.recommendVersion }}
         </span>
+
+        <div  [id]="'buttonField'+i" class="text-center col-12" style="display: none;">
+          <div class="btn-group btn-group-sm " role="group">
+            <button type="button" class="btn btn-primary" (click)="replaceButtonWithInput(i)">Update</button>
+            <button type="button" class="btn btn-danger" (click)="deleteDependency(i, item.name)">Delete</button>
+          </div>
+        </div>
+
+        <input [id]="'inputField'+i" type="text" class="form-control text-size"
+               [(ngModel)]="newRecommendVersion" (keyup)="updateDependencyRecommendVersion($event, i, item.name)"
+               placeholder="New version" style="display: none">
       </th>
     </tr>
     </thead>
     <tbody>
     <tr>
       <td><div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Repository name" aria-label="Username" (keyup)="filtration('repoName', $event.target.value)">
+        <input name="repoName" type="text" class="form-control" placeholder="Repository name"
+               [(ngModel)]="defaultFilterData.repoName" aria-label="Username"
+               (keyup)="filtration('repoName', $event.target.value)" [ngModelOptions]="{ standalone : true }">
       </div></td>
       <td><div class="select">
         <label>
-          <select (change)="filterByPrivacy($event.target.value)" >
-            <option disabled selected hidden>Filter by privacy</option>
-            <option value="default">Filter by privacy</option>
-            <option value="Private">Only private</option>
-            <option value="Public">Only public</option>
+          <select name="repoType" [(ngModel)]="defaultFilterData.repoType"
+                  (change)="filterByPrivacy()" [ngModelOptions]="{ standalone : true }">
+            <option disabled selected hidden [value]="''">Filter by privacy</option>
+            <option [value]="'default'">Filter by privacy</option>
+            <option [value]="'Private'">Only private</option>
+            <option [value]="'Public'">Only public</option>
           </select>
         </label>
       </div></td>
       <td><div class="select">
         <label>
-          <select (change)="filterBranches($event.target.value)">
-            <option disabled selected hidden>Filter by branches</option>
-            <option value="default">Filter by branches</option>
-            <option value="development">Only master</option>
-            <option value="master">Only development</option>
+          <select name="branch" [(ngModel)]="defaultFilterData.branch"
+                  (change)="filterBranches()" [ngModelOptions]="{ standalone : true }">
+            <option disabled selected hidden [value]="''">Filter by branches</option>
+            <option [value]="'default'">Filter by branches</option>
+            <option [value]="'master'">Only master</option>
+            <option [value]="'development'">Only development</option>
+            <option [value]="'custom'">By custom branches</option>
           </select>
         </label>
       </div></td>
       <td *ngFor="let item of (tableHeader | async)">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" [placeholder]="item.name" aria-label="Username" (keyup)="filtration(item.name, $event.target.value)">
+          <input type="text" [name]="item.name" class="form-control" [placeholder]="item.name" [(ngModel)]="filterData[item.name]"
+                 aria-label="Username" (keyup)="filtration(item.name)"
+                 [ngModelOptions]="{ standalone : true }">
         </div>
       </td>
     </tr>
-    <tr *ngFor="let repository of (repositoriesData | async)">
+    <tr *ngFor="let repository of (repositoriesData | async); let i = index">
       <!--REPOSITORY NAME-->
-      <td class="repository-name">{{ repository.repoName }}</td>
+      <td class="repository-name" [id]="'repoName' + i">{{ repository.repoName }}</td>
 
       <!--REPOSITORY TYPE-->
       <td [ngClass]="repository.repoType === 'Public'
@@ -64,34 +83,49 @@
       </td>
 
       <!--BRANCHES-->
-      <td [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'">
-      <span *ngIf="!isBranch(repository.branches); else branch" container="body" tooltip="master &rarr; development">
-        <a>{{ getBranchName(repository.branches, 'master') }}</a>
+      <td [id]="'branches' + i" [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'"
+          (mouseenter)="tooltipText($event.target.innerText)" (dblclick)="selectProjectBranches(i)">
+      <span [id]="'spanId' + i" container="body" [tooltip]="showTooltip(text) ? text : null">
+        <a>{{ getBranchName(repository.branches, 0) }}</a>
         <a [hidden]="isBranch(repository.branches)"> &rarr; </a>
-        <a>{{ getBranchName(repository.branches, 'development') }}</a>
+        <a>{{ getBranchName(repository.branches, 1) }}</a>
       </span>
-        <ng-template #branch>
-          <span>{{ getBranchName(repository.branches, 'master') }}{{ getBranchName(repository.branches, 'development') }}</span>
-        </ng-template>
+      </td>
+      <td [id]="'selectBranches' + i" class="text" style="display: none; width: 100%" (dblclick)="showBranches(i)">
+        <div>
+          <div class="select">
+            <select (change)="firstSelectValue = $event.target.value">
+              <option disabled select hidden>First branch</option>
+              <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
+            </select>
+          </div>
+          <div>&rarr;</div>
+          <div class="select">
+            <select (change)="secondSelectValue = $event.target.value">
+              <option disabled select hidden>Second branch</option>
+              <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
+            </select>
+          </div>
+        </div>
       </td>
 
       <td *ngFor="let item of (tableHeader | async)" data-container="body"
-          [ngClass]="isNone(repository.branches, item.name) && item._package.isImportant ? ' text bg-danger text-white h5' : 'text'"
+          [ngClass]="isNone(repository.branches, item.name) && item.isImportant ? ' text bg-danger text-white h5' : 'text'"
           (mouseenter)="tooltipText($event.target.innerText)">
         <span *ngIf="!isNoneOrSame(repository.branches, item.name); else version" [tooltip]="showTooltip(text) ? text : null">
           <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches.master, item.name)}">
-            {{ getPackageValue(repository.branches.master, item.name) }}
+            {{ getPackageValue(repository.branches, 0, item.name) }}
           </a>
           &rarr;
           <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches.development, item.name)}">
-            {{ getPackageValue(repository.branches.development, item.name) }}
+            {{ getPackageValue(repository.branches, 1, item.name) }}
           </a>
         </span>
         <ng-template #version>
           <span *ngIf="isNone(repository.branches, item.name); else version2">(none)</span>
           <ng-template #version2>
             <span [tooltip]="showTooltip(text) ? text : null">
-              {{ getPackageValue(repository.branches.master, item.name) }}
+              {{ getPackageValue(repository.branches, 0, item.name) }}
             </span>
           </ng-template>
         </ng-template>
@@ -109,20 +143,31 @@
     </button>
   </div>
   <div class="modal-body">
-    <form>
+    <form [formGroup]="myForm">
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-name">Name</span>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="name" name="name" placeholder="Package name" autocomplete="off" aria-describedby="inputGroup-sizing-name">
-      </div>
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroup-sizing-version">Version</span>
-        </div>
-        <input type="text" class="form-control" [(ngModel)]="version" name="version" placeholder="Recommend version" autocomplete="off" aria-describedby="inputGroup-sizing-version">
+        <input formControlName="dependency" type="text"
+               (keyup)="addDependencyName($event); addNewDependencyVersion($event)"
+               name="name"
+               autocomplete="off"
+               aria-describedby="inputGroup-sizing-name"
+               [typeahead]="availableDependenciesSubject.getValue()"
+               [typeaheadOptionsLimit]="20"
+               [typeaheadMinLength]="0"
+               placeholder="Package name"
+               class="form-control">
       </div>
       <div class="select">
+          <label>
+            <select (change)="isImportant = $event.target.value">
+              <option disabled select="" hidden>Choose recommend version</option>
+              <option name="isImportant" *ngFor="let version of (versionsSubject | async)" [value]="version">{{ version }}</option>
+            </select>
+          </label>
+        </div>
+      <div class="select" [hidden]="authUserData.role === 'member'">
         <label>
           <select (change)="isImportant = $event.target.value">
             <option disabled select="" hidden>Choose package need</option>
@@ -131,6 +176,7 @@
           </select>
         </label>
       </div>
+      <div class="text-lg-center" [hidden]="authUserData.role === 'admin'">Not important field</div>
     </form>
   </div>
   <div class="modal-footer">

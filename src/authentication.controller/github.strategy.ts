@@ -24,18 +24,24 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
           const result = res.data.filter(organization =>
              organization.login === process.env.ACCESS_GITHUB_ORGANIZATION
           );
-          let organizationName = '';
-          if (!result) {
-            organizationName = '';
-          } else {
-            organizationName = result[0].login;
-            this.auth.insertNewUserAccessData(Date.now() + 18000000, accessToken, jwt);
-          }
-          const user = {
-              organizationName,
-              jwt
-            };
-          done(null, user);
+        this.auth.getUserOrgStatus(profile._json.login, accessToken)
+            .subscribe(res => {
+              const userStatus = res.data.role;
+              const userLogin = res.data.user.login;
+              let organizationName = '';
+              if (!result) {
+                organizationName = '';
+              } else {
+                organizationName = result[0].login;
+                this.auth.insertNewUserAccessData(Date.now() + 18000000, userLogin, userStatus, accessToken, jwt);
+              }
+              const user = {
+                organizationName,
+                jwt
+              };
+              done(null, user);
+            });
+
         }, err => {
           if(err.name === 'TimeoutError') {
             const user = {

@@ -18,5 +18,5 @@ export const RepoSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    branches: RepoBranchesObjectSchema
+    branches: {}
 }, { _id: false });

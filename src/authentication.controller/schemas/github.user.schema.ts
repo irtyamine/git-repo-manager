@@ -5,6 +5,14 @@ export const GithubUserSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  userLogin: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    required: true
+  },
   accessToken: {
     type: String,
     required: true
