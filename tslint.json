@@ -62,6 +62,7 @@
     "only-arrow-functions": false,
     "no-var-requires": false,
     "ban-types": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "forin": false
   }
 }

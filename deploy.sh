@@ -8,7 +8,6 @@ URL_LOCAL=http://localhost:
 PORT=80
 MONGO_URL=mongodb://10.142.0.3
 URL=https://repo-manager.valor-software.com
-URL_LOGIN=https://repo-manager.valor-software.com
 
 echo "docker build"
 docker build -t gcr.io/$PROJECT_NAME/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT \
