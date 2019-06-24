@@ -5,18 +5,16 @@ export const PackagesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    _package: {
-        recommendVersion: {
-          type: String,
-          required: false
-        },
-        addedBy: {
-          type: String,
-          required: true,
-        },
-        isImportant: {
-          type: Boolean,
-          required: true
-        }
+    recommendVersion: {
+        type: String,
+        required: false
+    },
+    addedBy: {
+        type: String,
+        required: true,
+    },
+    isImportant: {
+        type: Boolean,
+        required: true
     }
 });

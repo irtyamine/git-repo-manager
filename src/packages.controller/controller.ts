@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Req } from '@nestjs/common';
 import { PackagesService } from './packages.service';
 import { PackagesInterface } from './packages.interface';
 
@@ -16,9 +16,29 @@ export class PackagesController {
         return this.service.getRecommendPackagesVersions();
     }
 
+    @Get('new-package')
+    getPackage(@Req() req) {
+        return this.service.findPackage(req.query.newDependency);
+    }
+
+    @Get('new-recommend-version')
+    getNewVersions(@Req() req) {
+      return this.service.getRecommendVersionsForNewPackage(req.query.dependencyName);
+    }
+
     @Post('insert-package')
-    insertNewPackage(@Body() body: PackagesInterface) {
-        this.service.insertNewPackage(body);
+    async insertNewPackage(@Body() body: PackagesInterface) {
+        await this.service.insertNewPackage(body);
         return this.service.getPackages();
+    }
+
+    @Put('update-version')
+    updateRecommendVersion(@Body() body) {
+        this.service.updateRecommendVersion(body);
+    }
+
+    @Delete('delete-dependency')
+    deleteDependency(@Req() req) {
+        this.service.deleteDependency(req.query.dependency);
     }
 }

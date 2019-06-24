@@ -18,6 +18,11 @@ export class GithubRepositoryLayer {
     return this.userModel.findOne({ authToken: authToken }).exec();
   }
 
+  public async getUsrData(authToken: string) {
+    const data = await this.userModel.findOne({ authToken: authToken }).exec();
+    return { login: data.userLogin, role: data.status };
+  }
+
   public deleteOldAuthTokens(date: number) {
     return this.userModel.deleteMany({ expiresDate: { $lt: date }}).exec();
   }

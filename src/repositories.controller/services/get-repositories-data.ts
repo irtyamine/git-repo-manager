@@ -3,7 +3,7 @@ import { assign, pick, keys } from 'lodash';
 import { GitHubRepositoriesRepositoryLayer } from '../repository-layer';
 import { RepoBranchesDataObjectInterface } from '../interfaces/repo-branches-data.object.interface';
 import { Repo } from '../interfaces/repo.interface';
-import { catchError, retry, timeout } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PackagesRepositoryLayer } from '../../packages.controller/repository-layer';
 const configFile = require('../../../github-repositories-config.json');
@@ -16,14 +16,46 @@ export class GitHubRepositoriesService {
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepositoryLayer,
     private packagesService: PackagesRepositoryLayer
-  ) {  }
+  ) {}
 
   private async getPackagesNames() {
-    let data = await this.packagesService.getPackagesNames();
+    this.packages.length = 0;
+    const data = await this.packagesService.getPackagesNames();
     for(let pkg of data) {
       this.packages.push(pkg.name);
     }
-    console.log(this.packages);
+  }
+
+  public async updateSingleRepository(repositoryName: string, branches: any) {
+    await this.getPackagesNames();
+    const dataObject = {};
+    for (let branch of branches) {
+      const url = `https://raw.githubusercontent.com/${repositoryName}/${branch}/package.json`,
+        githubData = await this.getRepositoryDataFromGithub(url, `token ${process.env.ACCESS_TOKEN}`);
+
+      const branches: RepoBranchesDataObjectInterface = { [branch]: githubData };
+
+      assign(dataObject, branches);
+    }
+
+    const newRepositoryData = {
+      repoName: repositoryName,
+      branches: dataObject
+    };
+
+    await this.repoDB.updateSingleRepository(newRepositoryData);
+    return await this.repoDB.getAllRepos();
+  }
+
+  public async getBranchesByProject(repoName: string) {
+    const url = `https://api.github.com/repos/${repoName}/branches`;
+
+    const branchesData = await this.httpService.get(url).toPromise();
+    const branches = [];
+    branchesData.data.forEach(branch => {
+      branches.push(branch.name);
+    });
+    return branches;
   }
 
   public async getRepositoriesNamesFromDb() {
@@ -38,21 +70,19 @@ export class GitHubRepositoriesService {
             timeout(30000),
             catchError(err => throwError(err))
         )
-        .subscribe(repositories => {
+        .subscribe(async repositories => {
           for(let repository of repositories.data) {
             const initialRepositoriesObject = {
               repoName: repository.full_name,
               reposNamesUpdateTime: Date.now(),
               repoType: !repository.private ? 'Public' : 'Private'
             };
-            this.repoDB.insertReposNamesToDB(
+            await this.repoDB.insertReposNamesToDB(
                 initialRepositoriesObject,
                 initialRepositoriesObject.repoName
             );
           }
-          setTimeout(() => {
-            this.makeRequestToGitHubLink();
-          }, 1000);
+          await this.makeRequestToGitHubLink();
         }, err => {
           if(err.name === 'TimeoutError') {
             console.error('Error: Get repos data from Github API timed out');
@@ -68,21 +98,21 @@ export class GitHubRepositoriesService {
   private async makeRequestToGitHubLink() {
     const repositories = await this.repoDB.getRepositoryNameAndTypeToUpdate();
     for (let repository of repositories) {
-      const branch = {},
-        masterSearch = await this.createGithubLinkAndGetDataFromGitHub(
-          repository,
-          {},
-          branch,
-          'master'
-        ),
-        developmentSearch = await this.createGithubLinkAndGetDataFromGitHub(
-          repository,
-          {},
-          branch,
-          'development'
-        ),
-        repositoryData = assign({}, masterSearch, developmentSearch);
-      this.repoDB.insertSingleRepositoryToDB(repositoryData);
+      const branch = {};
+      const masterSearch = await this.createGithubLinkAndGetDataFromGitHub(
+        repository,
+        {},
+        branch,
+        'master'
+      );
+      const developmentSearch = await this.createGithubLinkAndGetDataFromGitHub(
+        repository,
+        {},
+        branch,
+        'development'
+      );
+      const repositoryData = assign({}, masterSearch, developmentSearch);
+      await this.repoDB.insertSingleRepositoryToDB(repositoryData);
     }
   }
 

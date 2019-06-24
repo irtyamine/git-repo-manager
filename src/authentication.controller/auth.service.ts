@@ -9,14 +9,20 @@ import { GithubUserInterface } from './interfases/github.user.interface';
 export class AuthService {
   constructor(private http: HttpService, private dbService: GithubRepositoryLayer) {}
 
-  public insertNewUserAccessData(date, accessToken, authToken) {
+  public insertNewUserAccessData(date: number, userLogin: string, userStatus: string, accessToken: string, authToken: string) {
     const userProfileObject: GithubUserInterface = {
       expiresDate: date,
+      userLogin: userLogin,
+      status: userStatus,
       accessToken: accessToken,
       authToken: authToken,
     };
 
     return this.dbService.insertNewUser(userProfileObject);
+  }
+
+  public async getUserLoginAndStatus(authToken: string) {
+    return await this.dbService.getUsrData(authToken);
   }
 
   public getUserListOfOrganizations(accessToken) {
@@ -25,6 +31,14 @@ export class AuthService {
     };
 
     return this.http.get('https://api.github.com/user/orgs', { headers: heads })
+        .pipe(
+            timeout(30000),
+            catchError(err => throwError(err))
+        );
+  }
+
+  public getUserOrgStatus(userLogin: string, accessToken: string) {
+    return this.http.get(`https://api.github.com/orgs/valor-software/memberships/${userLogin}?access_token=${accessToken}`)
         .pipe(
             timeout(30000),
             catchError(err => throwError(err))

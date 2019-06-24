@@ -4,6 +4,8 @@ export interface Repo {
   repoName: string;
   timestamp?: number;
   reposNamesUpdateTime?: number;
-  repoType: string;
-  branches?: RepoBranchesDataObjectInterface;
+  repoType?: string;
+  branches?: {
+    [key: string]: any
+  };
 }

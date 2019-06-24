@@ -4,13 +4,15 @@ import { RepositoriesModule } from './repositories.controller/repositories.modul
 import { FrontendController } from './frontend.controller';
 import { AuthModule } from './authentication.controller/auth.module';
 import { PackagesModule } from './packages.controller/packages.module';
+import { UserBranchesModule } from './user.branches/user.branches.module';
 
 @Module({
   imports: [
     HttpModule,
     RepositoriesModule,
     AuthModule,
-    PackagesModule
+    PackagesModule,
+    UserBranchesModule
   ],
   exports: [],
   controllers: [

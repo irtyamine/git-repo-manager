@@ -30,6 +30,11 @@ export class AuthController {
     }
   }
 
+  @Get('get-user-data')
+  async getUserData(@Req() req) {
+    return await this.auth.getUserLoginAndStatus(req.cookies['_auth_token']);
+  }
+
   @Get('isAuthenticated')
   isAuthenticated(@Req() req: Request, @Res() res) {
     this.githubRepository.deleteOldAuthTokens(Date.now());
