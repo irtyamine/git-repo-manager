@@ -12,15 +12,19 @@ export class RepoStateService {
         return await this.reposService.getRepositoriesNamesFromDb();
     }
 
-    public findRepoDataAtDatabase(name: string) {
-        return this.reposService.findRepositoryDataAtDatabase(name);
+    public findRepoDataAtDatabase(name: string, authToken: string) {
+        return this.reposService.findRepositoryDataAtDatabase(name, authToken);
     }
 
-    public async getBranchesFromGithub(repoName: string) {
-        return await this.reposService.getBranchesByProject(repoName);
+    public async getBranchesFromGithub(repoName: string, authToken: string) {
+        return await this.reposService.getBranchesByProject(repoName, authToken);
     }
 
-    public async updateRepoByNewBranches(body: RequestBodyInterface) {
-        return await this.reposService.updateSingleRepository(body.repoName, body.branches);
+    public async updateRepoByNewBranches(body: RequestBodyInterface, authToken: string) {
+        return await this.reposService.updateSingleRepository(body.repoName, body.branches, authToken);
+    }
+
+    public async setRepoToDefaultBranches(body: any, authToken: string) {
+        return await this.reposService.setRepoBranchesToDefault(body, authToken);
     }
 }

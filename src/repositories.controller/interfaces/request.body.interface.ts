@@ -1,6 +1,7 @@
 export interface RequestBodyInterface {
     repoName: string;
-    branches: {
-        [key: string]: any
-    };
+    repoType?: string;
+    timestamp?: number;
+    addedBy?: string;
+    branches?: {};
 }

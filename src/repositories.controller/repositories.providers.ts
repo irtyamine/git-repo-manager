@@ -7,5 +7,11 @@ export const repositoriesProviders = [
     useFactory: (connection: Connection) =>
       connection.model('Repo', RepoSchema),
     inject: ['DbConnectionToken'],
+  },
+  {
+    provide: 'CustomRepoModelToken',
+    useFactory: (connection: Connection) =>
+        connection.model('CustomRepos', RepoSchema),
+    inject: ['DbConnectionToken']
   }
 ];

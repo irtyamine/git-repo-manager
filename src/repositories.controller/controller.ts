@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Delete } from '@nestjs/common';
 import { RepoStateService } from './services/repo.state';
 
 const GitHubRepositoriesConfigurationFile = require('../../github-repositories-config.json');
@@ -21,16 +21,21 @@ export class RepositoriesController {
 
   @Get('branches-for-project')
   async getBranches(@Req() req) {
-    return await this.stateService.getBranchesFromGithub(req.query.repoName);
+    return await this.stateService.getBranchesFromGithub(req.query.repoName, req.cookies['_auth_token']);
   }
 
   @Get('repository')
   findRepository(@Req() req) {
-    return this.stateService.findRepoDataAtDatabase(req.query.repositoryName);
+    return this.stateService.findRepoDataAtDatabase(req.query.repositoryName, req.cookies['_auth_token']);
   }
 
-  @Put('update-repo-data')
-  async updateRepoData(@Body() body) {
-    return await this.stateService.updateRepoByNewBranches(body);
+  @Post('update-repo-data')
+  async updateRepoData(@Req() req, @Body() body) {
+    return await this.stateService.updateRepoByNewBranches(body, req.cookies['_auth_token']);
+  }
+
+  @Delete('set-repo-default')
+  async setDefaultRepo(@Req() req) {
+    return await this.stateService.setRepoToDefaultBranches(req.query.name, req.cookies['_auth_token']);
   }
 }

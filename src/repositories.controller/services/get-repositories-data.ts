@@ -6,6 +6,7 @@ import { Repo } from '../interfaces/repo.interface';
 import { catchError, timeout } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PackagesRepositoryLayer } from '../../packages.controller/repository-layer';
+import { GithubRepositoryLayer } from '../../authentication.controller/repository-layer';
 const configFile = require('../../../github-repositories-config.json');
 
 @Injectable()
@@ -15,6 +16,7 @@ export class GitHubRepositoriesService {
   constructor(
     private readonly httpService: HttpService,
     private readonly repoDB: GitHubRepositoriesRepositoryLayer,
+    private giHubLayer: GithubRepositoryLayer,
     private packagesService: PackagesRepositoryLayer
   ) {}
 
@@ -26,32 +28,56 @@ export class GitHubRepositoriesService {
     }
   }
 
-  public async updateSingleRepository(repositoryName: string, branches: any) {
+  private async getRepositoryData(repositoryName: string, accessToken: string) {
+    const url = `https://api.github.com/repos/${repositoryName}?access_token=${accessToken}`;
+    let data = '';
+    await this.httpService.get(url)
+        .toPromise()
+        .then(res => {
+          data = res.data.private ? 'Private' : 'Public';
+        });
+    return data;
+  }
+
+  public async updateSingleRepository(repositoryName: string, branches: any, authToken: string) {
     await this.getPackagesNames();
     const dataObject = {};
+    const accessToken = await this.giHubLayer.getAccessToken(authToken);
+    const repoData = await this.getRepositoryData(repositoryName, accessToken.accessToken);
+
     for (let branch of branches) {
       const url = `https://raw.githubusercontent.com/${repositoryName}/${branch}/package.json`,
-        githubData = await this.getRepositoryDataFromGithub(url, `token ${process.env.ACCESS_TOKEN}`);
+          githubData = await this.getRepositoryDataFromGithub(url, `token ${process.env.ACCESS_TOKEN}`);
 
       const branches: RepoBranchesDataObjectInterface = { [branch]: githubData };
-
       assign(dataObject, branches);
     }
 
     const newRepositoryData = {
       repoName: repositoryName,
+      repoType: repoData,
+      timestamp: Date.now(),
+      addedBy: accessToken.userLogin,
       branches: dataObject
     };
 
     await this.repoDB.updateSingleRepository(newRepositoryData);
-    return await this.repoDB.getAllRepos();
+    return await this.repoDB.getAllRepos(accessToken.userLogin);
   }
 
-  public async getBranchesByProject(repoName: string) {
-    const url = `https://api.github.com/repos/${repoName}/branches`;
+  public async setRepoBranchesToDefault(repositoryName: string, authToken) {
+      const accessToken = await this.giHubLayer.getAccessToken(authToken);
+
+      this.repoDB.setBranchesToDefault(repositoryName, accessToken.userLogin);
+      return await this.repoDB.getAllRepos(accessToken.userLogin);
+  }
+
+  public async getBranchesByProject(repoName: string, authToken: string) {
+    const accessToken = await this.giHubLayer.getAccessToken(authToken);
+    const url = `https://api.github.com/repos/${repoName}/branches?access_token=${accessToken.accessToken}`;
 
     const branchesData = await this.httpService.get(url).toPromise();
-    const branches = [];
+    const branches = ['default'];
     branchesData.data.forEach(branch => {
       branches.push(branch.name);
     });
@@ -74,7 +100,6 @@ export class GitHubRepositoriesService {
           for(let repository of repositories.data) {
             const initialRepositoriesObject = {
               repoName: repository.full_name,
-              reposNamesUpdateTime: Date.now(),
               repoType: !repository.private ? 'Public' : 'Private'
             };
             await this.repoDB.insertReposNamesToDB(
@@ -91,8 +116,9 @@ export class GitHubRepositoriesService {
         });
   }
 
-  public findRepositoryDataAtDatabase(repoName: string) {
-    return this.repoDB.findRepositoryData(repoName);
+  public async findRepositoryDataAtDatabase(repoName: string, authToken: string) {
+    const accessToken = await this.giHubLayer.getAccessToken(authToken);
+    return await this.repoDB.findRepositoryData(repoName, accessToken.userLogin);
   }
 
   private async makeRequestToGitHubLink() {
@@ -130,6 +156,7 @@ export class GitHubRepositoriesService {
         repoName: repositoryData.repoName,
         repoType: repositoryData.repoType,
         timestamp: Date.now(),
+        addedBy: 'system',
         branches: branchObject
       };
       assign(dataObject, repository);
@@ -184,6 +211,6 @@ export class GitHubRepositoriesService {
           throw error;
         }
       });
-     return resultData;
+    return resultData;
   }
 }

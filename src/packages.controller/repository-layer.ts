@@ -18,8 +18,10 @@ export class PackagesRepositoryLayer {
         return this.packageModel.find().select({'name': 1, '_id': 0});
     }
 
-    public getPackages() {
-        return this.packageModel.find().select({'_id': 0});
+    public getPackages(usrLogin: string) {
+        return this.packageModel.find({ $and: [
+            { $or: [{ addedBy: 'admin' }, { addedBy: usrLogin }] }
+        ]}).select({'_id': 0});
     }
 
     public getRecommendVersions() {

@@ -7,8 +7,8 @@ export class PackagesController {
     constructor(private service: PackagesService) {  }
 
     @Get('all-packages')
-    getAllPackages() {
-        return this.service.getPackages();
+    getAllPackages(@Req() req) {
+        return this.service.getPackages(req.cookies['_auth_token']);
     }
 
     @Get('recommend-versions')
@@ -27,9 +27,9 @@ export class PackagesController {
     }
 
     @Post('insert-package')
-    async insertNewPackage(@Body() body: PackagesInterface) {
-        await this.service.insertNewPackage(body);
-        return this.service.getPackages();
+    async insertNewPackage(@Req() req, @Body() body: PackagesInterface) {
+        await this.service.insertNewPackage(body, req.cookies['_auth_token']);
+        return this.service.getPackages(req.cookies['_auth_token']);
     }
 
     @Put('update-version')

@@ -25,8 +25,9 @@ export class GetPackagesService {
         });
     }
 
-    public addNewPackage(data: { name: string, recommendVersion: string, addedBy: string, isImportant: boolean }) {
-      return this.http.post(`${environment.url}/repositories3/insert-package`, data)
+    public addNewPackage(data: { name: string, recommendVersion: string, isImportant: boolean }) {
+        console.log(data);
+        return this.http.post(`${environment.url}/repositories3/insert-package`, data)
         .pipe(
           catchError(err =>
             err.code === 404 ? throwError('Not Found') : throwError(err.message)
@@ -47,7 +48,7 @@ export class GetPackagesService {
     }
 
     public updateDependencyRecommendVersion(data: { dependencyName: string, newVersion: string }) {
-      return this.http.put(`${environment.url}/repositories3/update-version`, data)
+        return this.http.put(`${environment.url}/repositories3/update-version`, data)
         .pipe(
           catchError(err =>
             err.code === 404 ? throwError('Not Found') : throwError(err.message)
@@ -92,7 +93,6 @@ export class GetPackagesService {
     public getVersionsBySearch(name: string) {
         return this.getVersionsForNewDependency(name)
             .subscribe(res => {
-               console.log(res);
                this.versions.next(res);
             });
     }
