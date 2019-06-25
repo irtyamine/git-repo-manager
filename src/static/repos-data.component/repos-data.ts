@@ -42,7 +42,6 @@ export class ReposData implements OnInit{
   public errorText: string;
   public text: string;
   public tableHeader: BehaviorSubject<any>;
-  public newRecommendVersion: string;
   public defaultFilterData = {
     repoName: '',
     repoType: 'default',
@@ -56,7 +55,7 @@ export class ReposData implements OnInit{
 
   public name: string;
   public addRecommendVersion: string;
-  public isImportant: boolean;
+  public isImportant: boolean = false;
 
   public myForm = new FormGroup({
     dependency: new FormControl(),
@@ -110,14 +109,25 @@ export class ReposData implements OnInit{
       });
   }
 
-  public replaceHeaderWithButton(id: string) {
-    const header = document.getElementById(id),
-        buttonField = document.getElementById('buttonField' + id);
-    header.style.display = 'none';
-    buttonField.style.display = 'inline-block';
+  // UPDATE RECOMMEND VERSION OR DELETE DEPENDENCY
+  public replaceHeaderWithButton(id: string, userRole: string, addedBy: string) {
+    if (userRole === 'member' && addedBy === 'admin') {
+      this.errorCondition = false;
+      this.errorText = 'You dont\'n have permission to update or delete this column';
+      setTimeout(() => {
+        this.errorCondition = true;
+      }, 3000);
+    } else {
+      const header = document.getElementById(id),
+          buttonField = document.getElementById('buttonField' + id);
+      header.style.display = 'none';
+      buttonField.style.display = 'inline-block';
+    }
   }
 
-  public replaceButtonWithInput(id: string) {
+  public replaceButtonWithInput(id: string, dependencyName: string) {
+    this.getPackagesService.getVersionsBySearch(dependencyName);
+
     const buttonField = document.getElementById('buttonField' + id),
         inputField = document.getElementById('inputField' + id);
     buttonField.style.display = 'none';
@@ -138,11 +148,40 @@ export class ReposData implements OnInit{
     buttonField.style.display = 'none';
   }
 
-  public updateDependencyRecommendVersion(event, id: string, dependency: string) {
-    if(event.keyCode === 13) {
-      this.getPackagesService.updateDependencyRecommendVersion({ dependencyName: dependency, newVersion: this.newRecommendVersion });
-      this.replaceInputWithHeader(id);
+  // SET CUSTOM BRANCHES
+  public selectProjectBranches(index) {
+    const repositoryName = document.getElementById('repoName' + index),
+        branchesCellValue = document.getElementById('branches' + index),
+        selectBranchesValue = document.getElementById('selectBranches' + index);
+
+    branchesCellValue.style.display = 'none';
+    selectBranchesValue.style.display = 'inline-block';
+
+    this.repositoriesDataService.getBranchesForSpecificProject(repositoryName.innerText);
+  }
+
+  public showBranches(index) {
+    const repositoryName = document.getElementById('repoName' + index),
+        newBranchesCellValue = document.getElementById('branches' + index),
+        selectBranchesValue = document.getElementById('selectBranches' + index);
+
+    if (this.firstSelectValue === 'default' && this.secondSelectValue === 'default') {
+      console.log(true);
+      this.repositoriesDataService.deleteRepositoryWithSelectedDefaultBranches(repositoryName.textContent);
     }
+    this.repositoriesDataService.updateSingeRepository(repositoryName.textContent, this.firstSelectValue, this.secondSelectValue);
+
+    newBranchesCellValue.style.width = 100 + '%';
+    newBranchesCellValue.className = 'text';
+
+    selectBranchesValue.style.display = 'none';
+    newBranchesCellValue.style.display = 'inline-block';
+  }
+
+  // DEPENDENCIES CONTROL, TOOLTIP CONTROL, MODAL WINDOW CONTROL, FILTERING FUNCTIONS
+  public updateDependencyRecommendVersion(id: string, dependency: string, newVersion: string) {
+    this.getPackagesService.updateDependencyRecommendVersion({ dependencyName: dependency, newVersion: newVersion });
+      this.replaceInputWithHeader(id);
   }
 
   public deleteDependency(id: string, dependency: string) {
@@ -160,32 +199,6 @@ export class ReposData implements OnInit{
     }
   }
 
-  public selectProjectBranches(index) {
-    const repositoryName = document.getElementById('repoName' + index),
-        branchesCellValue = document.getElementById('branches' + index),
-        selectBranchesValue = document.getElementById('selectBranches' + index);
-
-    branchesCellValue.style.display = 'none';
-    selectBranchesValue.style.display = 'inline-block';
-
-    this.repositoriesDataService.getBranchesForSpecificProject(repositoryName.innerText);
-  }
-
-  public showBranches(index) {
-    const repositoryName = document.getElementById('repoName' + index),
-        newBranchesCellValue = document.getElementById('branches' + index),
-        selectBranchesValue = document.getElementById('selectBranches' + index),
-        span = document.getElementById('spanId' + index);
-
-    this.repositoriesDataService.updateSingeRepository(repositoryName.textContent, this.firstSelectValue, this.secondSelectValue);
-
-    newBranchesCellValue.style.width = 100 + '%';
-    newBranchesCellValue.className = 'text';
-
-    selectBranchesValue.style.display = 'none';
-    newBranchesCellValue.style.display = 'inline-block';
-  }
-
   public openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
@@ -194,7 +207,6 @@ export class ReposData implements OnInit{
     this.getPackagesService.addNewPackage({
       name: this.myForm.get('dependency').value,
       recommendVersion: this.addRecommendVersion,
-      addedBy: 'admin',
       isImportant: this.isImportant
     });
     this.modalRef.hide();

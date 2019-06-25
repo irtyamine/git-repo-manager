@@ -10,13 +10,13 @@ export const RepoSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    reposNamesUpdateTime: {
-        type: Number,
-        required: false
-    },
     repoType: {
         type: String,
         required: false
+    },
+    addedBy: {
+        type: String,
+        required: true
     },
     branches: {}
 }, { _id: false });

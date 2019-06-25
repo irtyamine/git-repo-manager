@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PackagesRepositoryLayer } from './repository-layer';
+import { GithubRepositoryLayer } from '../authentication.controller/repository-layer';
 import { PackagesInterface } from './packages.interface';
 import * as semver from 'semver';
 import * as shell from 'shelljs';
@@ -8,7 +9,7 @@ import * as shell from 'shelljs';
 export class PackagesService {
     private arrayOfRecommendVersions: any = [];
 
-    constructor(private repositoryLayer: PackagesRepositoryLayer) {  }
+    constructor(private repositoryLayer: PackagesRepositoryLayer, private gitHubLayer: GithubRepositoryLayer) {  }
 
 
     public findPackage(packageName: string) {
@@ -21,25 +22,25 @@ export class PackagesService {
     }
 
     public getRecommendVersionsForNewPackage(packageName: string) {
-        shell.exec(`npm view ${packageName} --json versions`, { silent: true }, (code, res, err) => {
-          let arr = JSON.parse(res);
-          this.arrayOfRecommendVersions = arr.filter((version) => {
+        let result = shell.exec(`npm view ${packageName} --json versions`, { silent: true }).stdout;
+        let arr = JSON.parse(result);
+        this.arrayOfRecommendVersions = arr.filter((version) => {
             return version.indexOf('-', 0) < 0
               && semver.satisfies(version, `${arr[arr.length-6]} - ${arr[arr.length-1]}`);
           });
-        });
         return this.arrayOfRecommendVersions;
     }
 
-    public insertNewPackage(data: PackagesInterface) {
+    public async insertNewPackage(data: PackagesInterface, authToken: string) {
+        const user = await this.gitHubLayer.getUsrData(authToken);
         const newPackageObject: PackagesInterface = {
             name: data.name,
             recommendVersion: data.recommendVersion,
-            addedBy: data.addedBy,
+            addedBy: user.role === 'admin' ? user.role : user.login,
             isImportant: data.isImportant
         };
 
-        return this.repositoryLayer.insertNewPackageToDB(newPackageObject);
+        return await this.repositoryLayer.insertNewPackageToDB(newPackageObject);
     }
 
     public async getRecommendPackagesVersions() {
@@ -53,8 +54,9 @@ export class PackagesService {
         return packages;
     }
 
-    public getPackages() {
-        return this.repositoryLayer.getPackages();
+    public async getPackages(authToken: string) {
+        const user = await this.gitHubLayer.getUsrData(authToken);
+        return await this.repositoryLayer.getPackages(user.login);
     }
 
     public updateRecommendVersion(updateData) {

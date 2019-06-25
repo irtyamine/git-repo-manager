@@ -45,6 +45,13 @@ export class DataService {
         });
   }
 
+  public deleteRepositoryWithSelectedDefaultBranches(repoName: string) {
+    return this.repositoryService.deleteCustomRepository(repoName)
+        .subscribe((res: any) => {
+          this.repositoriesSubject.next(res);
+        });
+  }
+
   private filterByPrivacyAndBranches(filterObject: DefaultFilterObjectInterface) {
     console.log(filterObject);
     return this.repositories.filter(repository =>

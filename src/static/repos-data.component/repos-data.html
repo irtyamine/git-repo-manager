@@ -5,7 +5,7 @@
 <div class="table-position">
   <button type="button" class="btn btn-outline-danger btn-block btn-logout-width" (click)="logOut()">Log Out</button>
   <button type="button" class="btn btn-outline-info btn-clock btn-info-width" (click)="openModal(template)">Add package</button>
-  <table class="table table-bordered table-active">
+  <table class="table table-bordered table-active" id="reporitoriesTable">
     <caption>{{ authUserData.role }}: {{ authUserData.login }}</caption>
     <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
     <thead class="thead-dark">
@@ -14,22 +14,24 @@
       <th class="text"><span>Type of privacy</span></th>
       <th class="text"><span>Branches</span></th>
       <th class="text" *ngFor="let item of (tableHeader | async); let i = index">
-        <span [id]="i" [tooltip]="item.recommendVersion" (dblclick)="replaceHeaderWithButton(i)">
+        <span [id]="i" [tooltip]="item.recommendVersion" (dblclick)="replaceHeaderWithButton(i, authUserData.role, item.addedBy)">
           {{ item.name }}<a container="body" class="important-field"
              [hidden]="!item.isImportant"
              tooltip="Important field" placement="bottom">*</a><a [hidden]="!item.recommendVersion">:</a> {{ item.recommendVersion }}
         </span>
 
-        <div  [id]="'buttonField'+i" class="text-center col-12" style="display: none;">
+        <div  [id]="'buttonField'+i" class="text-center col-12" style="display: none; width: 64px">
           <div class="btn-group btn-group-sm " role="group">
-            <button type="button" class="btn btn-primary" (click)="replaceButtonWithInput(i)">Update</button>
+            <button type="button" class="btn btn-primary" (click)="replaceButtonWithInput(i, item.name)">Update</button>
             <button type="button" class="btn btn-danger" (click)="deleteDependency(i, item.name)">Delete</button>
           </div>
         </div>
 
-        <input [id]="'inputField'+i" type="text" class="form-control text-size"
-               [(ngModel)]="newRecommendVersion" (keyup)="updateDependencyRecommendVersion($event, i, item.name)"
-               placeholder="New version" style="display: none">
+        <select class="col-12" [id]="'inputField'+i" [disabled]="(versionsSubject | async).length === 0"
+                (change)="updateDependencyRecommendVersion(i, item.name, $event.target.value)" style="display: none">
+          <option disabled select="" hidden>Choose recommend version</option>
+          <option name="isImportant" *ngFor="let version of (versionsSubject | async)" [value]="version">{{ version }}</option>
+        </select>
       </th>
     </tr>
     </thead>
@@ -38,7 +40,7 @@
       <td><div class="input-group mb-3">
         <input name="repoName" type="text" class="form-control" placeholder="Repository name"
                [(ngModel)]="defaultFilterData.repoName" aria-label="Username"
-               (keyup)="filtration('repoName', $event.target.value)" [ngModelOptions]="{ standalone : true }">
+               (keyup)="filtration('repoName')" [ngModelOptions]="{ standalone : true }">
       </div></td>
       <td><div class="select">
         <label>
@@ -91,21 +93,18 @@
         <a>{{ getBranchName(repository.branches, 1) }}</a>
       </span>
       </td>
-      <td [id]="'selectBranches' + i" class="text" style="display: none; width: 100%" (dblclick)="showBranches(i)">
+
+      <td [id]="'selectBranches' + i" class="col-12" style="display: none; width: 100%" (dblclick)="showBranches(i)">
         <div>
-          <div class="select">
-            <select (change)="firstSelectValue = $event.target.value">
+            <select (change)="firstSelectValue = $event.target.value" [disabled]="(branchesSubject| async).length === 0" style="width: 130px">
               <option disabled select hidden>First branch</option>
               <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
             </select>
-          </div>
-          <div>&rarr;</div>
-          <div class="select">
-            <select (change)="secondSelectValue = $event.target.value">
+          &rarr;
+            <select (change)="secondSelectValue = $event.target.value" [disabled]="(branchesSubject| async).length === 0" style="width: 130px">
               <option disabled select hidden>Second branch</option>
               <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
             </select>
-          </div>
         </div>
       </td>
 
@@ -153,7 +152,7 @@
                name="name"
                autocomplete="off"
                aria-describedby="inputGroup-sizing-name"
-               [typeahead]="availableDependenciesSubject.getValue()"
+               [typeahead]="(availableDependenciesSubject | async)"
                [typeaheadOptionsLimit]="20"
                [typeaheadMinLength]="0"
                placeholder="Package name"
@@ -161,7 +160,7 @@
       </div>
       <div class="select">
           <label>
-            <select (change)="isImportant = $event.target.value">
+            <select (change)="addRecommendVersion = $event.target.value">
               <option disabled select="" hidden>Choose recommend version</option>
               <option name="isImportant" *ngFor="let version of (versionsSubject | async)" [value]="version">{{ version }}</option>
             </select>

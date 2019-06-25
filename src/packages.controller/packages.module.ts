@@ -4,6 +4,8 @@ import { databaseProviders } from '../common/database.providers';
 import { packagesProviders } from './packages.providers';
 import { PackagesService } from './packages.service';
 import { PackagesRepositoryLayer } from './repository-layer';
+import { GithubRepositoryLayer } from '../authentication.controller/repository-layer';
+import { githubUserProviders } from '../authentication.controller/user.providers';
 
 @Module({
     controllers: [
@@ -13,8 +15,10 @@ import { PackagesRepositoryLayer } from './repository-layer';
     providers: [
         PackagesService,
         PackagesRepositoryLayer,
+        GithubRepositoryLayer,
         ...databaseProviders,
-        ...packagesProviders
+        ...packagesProviders,
+        ...githubUserProviders
     ]
 })
 
