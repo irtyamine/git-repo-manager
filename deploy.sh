@@ -39,7 +39,6 @@ echo "Update instance"
 gcloud beta compute instances update-container instance-1 \
   --zone $ZONE_EN1B \
   --container-image=gcr.io/$PROJECT_NAME/$DOCKER_IMAGE_NAME:latest \
-  --container-privileged
 
 # echo "Create firewall-rules"
 # gcloud compute firewall-rules create port-forwarding-3000 \
