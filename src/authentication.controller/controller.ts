@@ -10,6 +10,7 @@ import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { GithubRepositoryLayer } from './repository-layer';
+
 @Controller('repositories2')
 export class AuthController {
   constructor(private auth: AuthService, private githubRepository: GithubRepositoryLayer) {}

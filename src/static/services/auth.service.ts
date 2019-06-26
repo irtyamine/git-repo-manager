@@ -6,15 +6,14 @@ import { environment } from '../environments/environment';
 
 @Injectable()
 export class AuthService {
-  public API_URL = environment.url;
   constructor(private http: HttpClient) {  }
 
   public gitLogin() {
-      window.location.href = `${this.API_URL}/repositories2/github`;
+      window.location.href = `${environment.url}/repositories2/github`;
   }
 
   public getUserData(): Observable<any> {
-    return this.http.get(`${this.API_URL}/repositories2/get-user-data`)
+    return this.http.get(`${environment.url}/repositories2/get-user-data`)
       .pipe(
         timeout(30000),
         catchError(err =>
@@ -26,7 +25,7 @@ export class AuthService {
   }
 
   public checkAuthTokenExists(): Observable<any> {
-    return this.http.get(`${this.API_URL}/repositories2/isAuthenticated`)
+    return this.http.get(`${environment.url}/repositories2/isAuthenticated`)
       .pipe(
         timeout(30000),
         catchError(err =>
