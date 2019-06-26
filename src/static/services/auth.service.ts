@@ -7,12 +7,7 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient) {  }
-
-  public gitLogin() {
-      console.log('login');
-      window.location.href = `${environment.url}/repositories2/github`;
-  }
-
+  
   public getUserData(): Observable<any> {
     return this.http.get(`${environment.url}/repositories2/get-user-data`)
       .pipe(
