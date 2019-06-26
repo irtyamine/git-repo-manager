@@ -9,6 +9,7 @@ export class AuthService {
   constructor(private http: HttpClient) {  }
 
   public gitLogin() {
+      console.log('login');
       window.location.href = `${environment.url}/repositories2/github`;
   }
 
