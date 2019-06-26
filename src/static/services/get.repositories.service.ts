@@ -7,14 +7,11 @@ import { environment } from '../environments/environment';
 @Injectable()
 
 export class GetRepositoriesService {
-
-  public API_URL = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-
   constructor(protected http: HttpClient) {}
 
   public getRepositoryNames(): Observable<any> {
     return this.http
-      .get(`${this.API_URL}/repositories/names`)
+      .get(`${environment.url}/repositories/names`)
       .pipe(
         timeout(25000),
         catchError(err =>
@@ -73,7 +70,7 @@ export class GetRepositoriesService {
     const options = repoName ?
       { params: new HttpParams().set('repositoryName', repoName) } : {};
     return this.http
-      .get(`${this.API_URL}/repositories/repository`, options)
+      .get(`${environment.url}/repositories/repository`, options)
       .pipe(
         timeout(25000),
         catchError(err =>
