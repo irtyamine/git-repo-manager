@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-github-auth',
@@ -18,6 +19,6 @@ export class GithubAuthComponent implements OnInit {
   public goToGithubAuth() {
     this.condition = false;
     this.text = 'Loading...';
-    this.auth.gitLogin();
+    window.location.href = `${environment.url}/repositories2/github`;
   }
 }
