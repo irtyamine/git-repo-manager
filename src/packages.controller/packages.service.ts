@@ -7,7 +7,6 @@ import * as shell from 'shelljs';
 
 @Injectable()
 export class PackagesService {
-    private arrayOfRecommendVersions: any = [];
 
     constructor(private repositoryLayer: PackagesRepositoryLayer, private gitHubLayer: GithubRepositoryLayer) {  }
 
@@ -22,13 +21,14 @@ export class PackagesService {
     }
 
     public getRecommendVersionsForNewPackage(packageName: string) {
-        let result = shell.exec(`npm view ${packageName} --json versions`, { silent: true }).stdout;
-        let arr = JSON.parse(result);
-        this.arrayOfRecommendVersions = arr.filter((version) => {
-            return version.indexOf('-', 0) < 0
-              && semver.satisfies(version, `${arr[arr.length-6]} - ${arr[arr.length-1]}`);
-          });
-        return this.arrayOfRecommendVersions;
+        const result = shell.exec(`npm view ${packageName} --json versions`, { silent: true }).stdout,
+            arr = JSON.parse(result),
+            arrayOfRecommendVersions = arr.filter((version) => {
+              return version.indexOf('-', 0) < 0;
+            });
+        return arrayOfRecommendVersions.filter((version) => {
+           return semver.satisfies(version, `${arrayOfRecommendVersions[arrayOfRecommendVersions.length-6]} - ${arrayOfRecommendVersions[arrayOfRecommendVersions.length-1]}`);
+        });
     }
 
     public async insertNewPackage(data: PackagesInterface, authToken: string) {

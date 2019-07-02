@@ -93,7 +93,8 @@ export class GetPackagesService {
     public getVersionsBySearch(name: string) {
         return this.getVersionsForNewDependency(name)
             .subscribe(res => {
-               this.versions.next(res);
+                console.log(name + ': ' + res);
+                this.versions.next(res);
             });
     }
 
