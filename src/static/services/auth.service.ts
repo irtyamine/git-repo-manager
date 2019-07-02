@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient) {  }
-  
+
   public getUserData(): Observable<any> {
     return this.http.get(`${environment.url}/repositories2/get-user-data`)
       .pipe(

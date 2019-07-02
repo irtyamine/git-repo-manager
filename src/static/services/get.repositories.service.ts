@@ -52,20 +52,6 @@ export class GetRepositoriesService {
         );
   }
 
-  public deleteCustomRepository(repoName: string): Observable<any> {
-    const options = repoName ?
-        { params: new HttpParams().set('name', repoName) } : {};
-
-    return this.http.delete(`${environment.url}/repositories/set-repo-default`, options)
-      .pipe(
-        timeout(25000),
-        catchError(err =>
-          err.name === 'TimeoutError' ? throwError('Get repositories names timed out') :
-          err.code === 404 ? throwError('Not Found') :
-          err.code === 401 ? throwError('Unauthorized') : throwError(err))
-      );
-  }
-
   getSingleRepository(repoName: string): Observable<any> {
     const options = repoName ?
       { params: new HttpParams().set('repositoryName', repoName) } : {};

@@ -40,36 +40,34 @@ export class GitHubRepositoriesService {
   }
 
   public async updateSingleRepository(repositoryName: string, branches: any, authToken: string) {
+
     await this.getPackagesNames();
     const dataObject = {};
     const accessToken = await this.giHubLayer.getAccessToken(authToken);
-    const repoData = await this.getRepositoryData(repositoryName, accessToken.accessToken);
 
-    for (let branch of branches) {
-      const url = `https://raw.githubusercontent.com/${repositoryName}/${branch}/package.json`,
-          githubData = await this.getRepositoryDataFromGithub(url, `token ${process.env.ACCESS_TOKEN}`);
+    if (branches[0] === 'master' && branches[1] === 'development') {
+      this.repoDB.deleteRepository(repositoryName, accessToken.accessToken);
+    } else {
+      const repoData = await this.getRepositoryData(repositoryName, accessToken.accessToken);
 
-      const branches: RepoBranchesDataObjectInterface = { [branch]: githubData };
-      assign(dataObject, branches);
+      for (let branch of branches) {
+        const url = `https://raw.githubusercontent.com/${repositoryName}/${branch}/package.json`,
+            githubData = await this.getRepositoryDataFromGithub(url, `token ${process.env.ACCESS_TOKEN}`);
+
+        const branches: RepoBranchesDataObjectInterface = {[branch]: githubData};
+        assign(dataObject, branches);
+      }
+
+      const newRepositoryData = {
+        repoName: repositoryName,
+        repoType: repoData,
+        timestamp: Date.now(),
+        addedBy: accessToken.userLogin,
+        branches: dataObject
+      };
+      await this.repoDB.updateSingleRepository(newRepositoryData);
     }
-
-    const newRepositoryData = {
-      repoName: repositoryName,
-      repoType: repoData,
-      timestamp: Date.now(),
-      addedBy: accessToken.userLogin,
-      branches: dataObject
-    };
-
-    await this.repoDB.updateSingleRepository(newRepositoryData);
     return await this.repoDB.getAllRepos(accessToken.userLogin);
-  }
-
-  public async setRepoBranchesToDefault(repositoryName: string, authToken) {
-      const accessToken = await this.giHubLayer.getAccessToken(authToken);
-
-      this.repoDB.setBranchesToDefault(repositoryName, accessToken.userLogin);
-      return await this.repoDB.getAllRepos(accessToken.userLogin);
   }
 
   public async getBranchesByProject(repoName: string, authToken: string) {
@@ -89,14 +87,15 @@ export class GitHubRepositoriesService {
     return reposNames.map(item => item.repoName);
   }
 
-  public getRepositoriesNamesFromGit(accessToken) {
-    this.getPackagesNames();
-    return this.httpService.get(`https://api.github.com/orgs/valor-software/repos?access_token=${accessToken}&per_page=150`)
+  public async getRepositoriesNamesFromGit(accessToken) {
+    await this.getPackagesNames();
+    return await this.httpService.get(`https://api.github.com/orgs/valor-software/repos?access_token=${accessToken}&per_page=150`)
         .pipe(
             timeout(30000),
             catchError(err => throwError(err))
         )
         .subscribe(async repositories => {
+          console.log(repositories.data);
           for(let repository of repositories.data) {
             const initialRepositoriesObject = {
               repoName: repository.full_name,

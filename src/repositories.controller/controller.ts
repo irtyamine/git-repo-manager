@@ -33,9 +33,4 @@ export class RepositoriesController {
   async updateRepoData(@Req() req, @Body() body) {
     return await this.stateService.updateRepoByNewBranches(body, req.cookies['_auth_token']);
   }
-
-  @Delete('set-repo-default')
-  async setDefaultRepo(@Req() req) {
-    return await this.stateService.setRepoToDefaultBranches(req.query.name, req.cookies['_auth_token']);
-  }
 }

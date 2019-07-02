@@ -27,7 +27,21 @@ export function getAlertConfig(): TooltipConfig {
 
 export class ReposData implements OnInit{
 
+  public selected: string;
+  public reponames = [];
+
+  public availableDependencies = [];
+
+  public baseBranch: string = 'no selected';
+  public compareBranch: string = 'no selected';
+  public updateRepositoryName: string;
+
   public modalRef: BsModalRef;
+  public pkj: string = 'no selected';
+  public modalErroText: string;
+  public modalErrorCondition: boolean = false;
+  public newVersion: string = 'no selected';
+  public updateModalCondition: boolean = true;
   public keyUp = new Subject<any>();
   public keyUpDependencies = new Subject<any>();
   public repositoriesData: BehaviorSubject<any>;
@@ -102,6 +116,18 @@ export class ReposData implements OnInit{
   }
 
   ngOnInit(): void {
+    this.repositoriesData.subscribe(repos => {
+      this.reponames.length = 0;
+      for (let repo of repos) {
+        this.reponames.push(repo.repoName);
+      }
+    });
+    this.availableDependenciesSubject.subscribe(dependencies => {
+      this.availableDependencies.length = 0;
+      for (let dependency of dependencies) {
+        this.availableDependencies.push(dependency);
+      }
+    });
     this.auth.getUserData()
       .subscribe(res => {
          this.authUserData.login = res.login;
@@ -109,84 +135,68 @@ export class ReposData implements OnInit{
       });
   }
 
-  // UPDATE RECOMMEND VERSION OR DELETE DEPENDENCY
-  public replaceHeaderWithButton(id: string, userRole: string, addedBy: string) {
-    if (userRole === 'member' && addedBy === 'admin') {
-      this.errorCondition = false;
-      this.errorText = 'You dont\'n have permission to update or delete this column';
+  public displaySelectedProject(name: string) {
+    this.updateRepositoryName = name;
+    this.repositoriesDataService.getBranchesForSpecificProject(name);
+  }
+
+  public displaySelectedPackage(pkjName: string, addedBy: string) {
+    if (addedBy === 'admin' && this.authUserData.role === 'member') {
+      this.modalErroText = 'You dont\'t have permission to update this dependency';
+      this.modalErrorCondition = true;
       setTimeout(() => {
-        this.errorCondition = true;
+        this.modalErrorCondition = false;
       }, 3000);
     } else {
-      const header = document.getElementById(id),
-          buttonField = document.getElementById('buttonField' + id);
-      header.style.display = 'none';
-      buttonField.style.display = 'inline-block';
+      this.pkj = pkjName;
+      this.addNewDependencyVersion(pkjName);
     }
   }
 
-  public replaceButtonWithInput(id: string, dependencyName: string) {
-    this.getPackagesService.getVersionsBySearch(dependencyName);
-
-    const buttonField = document.getElementById('buttonField' + id),
-        inputField = document.getElementById('inputField' + id);
-    buttonField.style.display = 'none';
-    inputField.style.display = 'inline-block';
+  public displayListOfVersions(version: string) {
+    this.newVersion = version;
   }
 
-  public replaceInputWithHeader(id: string) {
-    const header = document.getElementById(id),
-        inputField = document.getElementById('inputField' + id);
-    header.style.display = 'inline-block';
-    inputField.style.display = 'none';
+  public displayBaseBranch(branchName: string) {
+    this.baseBranch = branchName;
   }
 
-  public replaceButtonWithHeader(id: string) {
-    const header = document.getElementById(id),
-        buttonField = document.getElementById('buttonField' + id);
-    header.style.display = 'inline-block';
-    buttonField.style.display = 'none';
-  }
-
-  // SET CUSTOM BRANCHES
-  public selectProjectBranches(index) {
-    const repositoryName = document.getElementById('repoName' + index),
-        branchesCellValue = document.getElementById('branches' + index),
-        selectBranchesValue = document.getElementById('selectBranches' + index);
-
-    branchesCellValue.style.display = 'none';
-    selectBranchesValue.style.display = 'inline-block';
-
-    this.repositoriesDataService.getBranchesForSpecificProject(repositoryName.innerText);
-  }
-
-  public showBranches(index) {
-    const repositoryName = document.getElementById('repoName' + index),
-        newBranchesCellValue = document.getElementById('branches' + index),
-        selectBranchesValue = document.getElementById('selectBranches' + index);
-
-    if (this.firstSelectValue === 'default' && this.secondSelectValue === 'default') {
-      console.log(true);
-      this.repositoriesDataService.deleteRepositoryWithSelectedDefaultBranches(repositoryName.textContent);
-    }
-    this.repositoriesDataService.updateSingeRepository(repositoryName.textContent, this.firstSelectValue, this.secondSelectValue);
-
-    newBranchesCellValue.style.width = 100 + '%';
-    newBranchesCellValue.className = 'text';
-
-    selectBranchesValue.style.display = 'none';
-    newBranchesCellValue.style.display = 'inline-block';
+  public displayCompareBranch(branchName: string) {
+    this.compareBranch = branchName;
   }
 
   // DEPENDENCIES CONTROL, TOOLTIP CONTROL, MODAL WINDOW CONTROL, FILTERING FUNCTIONS
-  public updateDependencyRecommendVersion(id: string, dependency: string, newVersion: string) {
+  public updateDependencyRecommendVersion(dependency: string, newVersion: string) {
     this.getPackagesService.updateDependencyRecommendVersion({ dependencyName: dependency, newVersion: newVersion });
-      this.replaceInputWithHeader(id);
+    this.modalRef.hide();
+    this.pkj = 'no selected';
+    this.newVersion = 'no selected';
   }
 
-  public deleteDependency(id: string, dependency: string) {
+  public setCustomBranchesForRepository(baseBranch: string, compareBranch: string) {
+    if (baseBranch === 'default') {
+      baseBranch = 'master';
+    }
+    if (compareBranch === 'default') {
+      compareBranch = 'development';
+    }
+
+    if (baseBranch === compareBranch) {
+      this.modalErrorCondition = true;
+      this.modalErroText = 'Please, choose the different branches';
+      setTimeout(() => {
+        this.modalErrorCondition = false;
+      }, 3000);
+    } else {
+      this.repositoriesDataService.updateSingeRepository(this.updateRepositoryName, baseBranch, compareBranch);
+      this.modalRef.hide();
+      this.baseBranch = 'no selected';
+      this.compareBranch = 'no selected';
+    }
+  }
+
+  public deleteDependency(dependency: string) {
     this.getPackagesService.deleteDependency(dependency);
-    this.replaceButtonWithHeader(id);
   }
 
   public addDependencyName(event) {
@@ -194,9 +204,10 @@ export class ReposData implements OnInit{
   }
 
   public addNewDependencyVersion(event) {
-    if(event.keyCode === 13) {
-      this.getPackagesService.getVersionsBySearch(this.myForm.get('dependency').value);
-    }
+    // if(event.keyCode === 13) {
+    //   this.getPackagesService.getVersionsBySearch(this.myForm.get('dependency').value);
+    // }
+      this.getPackagesService.getVersionsBySearch(event);
   }
 
   public openModal(template: TemplateRef<any>) {
@@ -270,39 +281,60 @@ export class ReposData implements OnInit{
     }
   }
 
-  public setStyleClassForCellValue(path, target) {
-    if (target === 'name' || target === 'version' || target === 'description') {
-      return !path || !path[target];
+  public setStyleClassForCellValue(path: Object, branchName: string, target: string) {
+    if (!path[branchName] && Object.keys(path).length === 2) {
+      const keys = Object.keys(path);
+      let customBranchObject = {};
+      branchName === 'master' ? customBranchObject = path[keys[0]] : customBranchObject = path[keys[1]];
+      if (target === 'name' || target === 'version' || target === 'description') {
+        return !customBranchObject[target];
+      } else {
+        const recommendVersion = this.packagesVersions.filter(item => item.packageName === target);
+        return !customBranchObject[target] || this.setVersion(customBranchObject[target], recommendVersion[0].version);
+      }
+    } else if (target === 'name' || target === 'version' || target === 'description') {
+      const findObject = path[branchName];
+      return !findObject || !findObject[target];
     } else {
+      const findObject = path[branchName];
       const data = this.packagesVersions.filter(item => item.packageName === target);
-      return !path || !path[target] || this.setVersion(path[target], data[0].version);
+      return !findObject || !findObject[target] || this.setVersion(findObject[target], data[0].version);
     }
   }
 
   public isNone(path, target) {
-    const master = this.getPackageValue(path, 0, target);
-    const development = this.getPackageValue(path, 1, target);
+    const master = this.getPackageValue(path, 'master', target);
+    const development = this.getPackageValue(path, 'development', target);
     return master === '(none)' && development === '(none)';
   }
 
   public isNoneOrSame(path, target) {
-    const master = this.getPackageValue(path, 0, target);
-    const development = this.getPackageValue(path, 1, target);
+    const master = this.getPackageValue(path, 'master', target);
+    const development = this.getPackageValue(path, 'development', target);
     if(master === '(none)' && development === '(none)') {
       return true;
     } else return master === development;
   }
 
-  public getPackageValue(repository, index, packageName) {
-    const branches = Object.keys(repository);
-    const branchName = branches[index];
-
-    if (!repository[branchName]) {
+  public getPackageValue(repository: Object, branchName: string, packageName: string) {
+    if (!repository[branchName] && Object.keys(repository).length === 2) {
+      const keys = Object.keys(repository);
+      let customBranch = {};
+      branchName === 'master' ? customBranch = repository[keys[0]] : customBranch = repository[keys[1]];
+      if (customBranch[packageName]) {
+        return customBranch[packageName];
+      } else {
+        return '(none)';
+      }
+    } else if (!repository[branchName]) {
       return '(none)';
-    } if (repository[branchName][packageName]) {
-      return repository[branchName][packageName];
     } else {
-      return '(none)';
+      const findObject = repository[branchName];
+      if (findObject[packageName]) {
+        return findObject[packageName];
+      } else {
+        return '(none)';
+      }
     }
   }
 

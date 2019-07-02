@@ -23,8 +23,4 @@ export class RepoStateService {
     public async updateRepoByNewBranches(body: RequestBodyInterface, authToken: string) {
         return await this.reposService.updateSingleRepository(body.repoName, body.branches, authToken);
     }
-
-    public async setRepoToDefaultBranches(body: any, authToken: string) {
-        return await this.reposService.setRepoBranchesToDefault(body, authToken);
-    }
 }

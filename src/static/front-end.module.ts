@@ -14,6 +14,8 @@ import { DataService } from './services/data.service';
 import { GetRepositoriesService } from './services/get.repositories.service';
 import { BsDropdownModule, CollapseModule, ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { GetPackagesService } from './services/get.packages.service';
+import { TabsModule } from 'ngx-bootstrap';
+import { AlertModule } from 'ngx-bootstrap';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -37,7 +39,9 @@ const routes: Routes = [
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
-    TypeaheadModule.forRoot()
+    TypeaheadModule.forRoot(),
+    TabsModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [
     AuthService,

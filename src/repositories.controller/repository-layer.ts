@@ -33,6 +33,10 @@ export class GitHubRepositoriesRepositoryLayer {
       });
   }
 
+  public deleteRepository(repoName: string, addedBy: string) {
+    this.updateRepoModel.deleteMany({ $and: [{ $or: [{ repoName: repoName }, { addedBy: addedBy }] }] }, (err) => {});
+  }
+
   public setBranchesToDefault(repoName: string, userLogin: string) {
     return this.updateRepoModel.deleteOne({ repoName: repoName, addedBy: userLogin }, (err) => {});
   }

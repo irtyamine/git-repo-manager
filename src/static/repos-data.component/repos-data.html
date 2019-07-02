@@ -2,9 +2,12 @@
   {{errorText}}
 </div>
 
-<div class="table-position">
-  <button type="button" class="btn btn-outline-danger btn-block btn-logout-width" (click)="logOut()">Log Out</button>
-  <button type="button" class="btn btn-outline-info btn-clock btn-info-width" (click)="openModal(template)">Add package</button>
+<div class="table-position text-center">
+  <div class="btn-group btn-group-lg" role="group">
+    <button type="button" class="btn btn-outline-primary" (click)="openModal(template)">Add package</button>
+    <button type="button" class="btn btn-outline-primary" (click)="openModal(updatePackage)">Update package or repository branches</button>
+    <button type="button" class="btn btn-outline-danger" (click)="logOut()">Log Out</button>
+  </div>
   <table class="table table-bordered table-active" id="reporitoriesTable">
     <caption>{{ authUserData.role }}: {{ authUserData.login }}</caption>
     <caption>Last update: {{ lastUpdate((repositoriesData | async)[(repositoriesData | async).length -1]?.timestamp) }} ago</caption>
@@ -13,25 +16,12 @@
       <th class="repository-name text-center">Repository Name</th>
       <th class="text"><span>Type of privacy</span></th>
       <th class="text"><span>Branches</span></th>
-      <th class="text" *ngFor="let item of (tableHeader | async); let i = index">
-        <span [id]="i" [tooltip]="item.recommendVersion" (dblclick)="replaceHeaderWithButton(i, authUserData.role, item.addedBy)">
+      <th class="text" *ngFor="let item of (tableHeader | async)">
+        <span [tooltip]="item.recommendVersion">
           {{ item.name }}<a container="body" class="important-field"
              [hidden]="!item.isImportant"
              tooltip="Important field" placement="bottom">*</a><a [hidden]="!item.recommendVersion">:</a> {{ item.recommendVersion }}
         </span>
-
-        <div  [id]="'buttonField'+i" class="text-center col-12" style="display: none; width: 64px">
-          <div class="btn-group btn-group-sm " role="group">
-            <button type="button" class="btn btn-primary" (click)="replaceButtonWithInput(i, item.name)">Update</button>
-            <button type="button" class="btn btn-danger" (click)="deleteDependency(i, item.name)">Delete</button>
-          </div>
-        </div>
-
-        <select class="col-12" [id]="'inputField'+i" [disabled]="(versionsSubject | async).length === 0"
-                (change)="updateDependencyRecommendVersion(i, item.name, $event.target.value)" style="display: none">
-          <option disabled select="" hidden>Choose recommend version</option>
-          <option name="isImportant" *ngFor="let version of (versionsSubject | async)" [value]="version">{{ version }}</option>
-        </select>
       </th>
     </tr>
     </thead>
@@ -44,8 +34,7 @@
       </div></td>
       <td><div class="select">
         <label>
-          <select name="repoType" [(ngModel)]="defaultFilterData.repoType"
-                  (change)="filterByPrivacy()" [ngModelOptions]="{ standalone : true }">
+          <select name="repoType" [(ngModel)]="defaultFilterData.repoType" (change)="filterByPrivacy()" [ngModelOptions]="{ standalone : true }">
             <option disabled selected hidden [value]="''">Filter by privacy</option>
             <option [value]="'default'">Filter by privacy</option>
             <option [value]="'Private'">Only private</option>
@@ -55,8 +44,7 @@
       </div></td>
       <td><div class="select">
         <label>
-          <select name="branch" [(ngModel)]="defaultFilterData.branch"
-                  (change)="filterBranches()" [ngModelOptions]="{ standalone : true }">
+          <select name="branch" [(ngModel)]="defaultFilterData.branch" (change)="filterBranches()" [ngModelOptions]="{ standalone : true }">
             <option disabled selected hidden [value]="''">Filter by branches</option>
             <option [value]="'default'">Filter by branches</option>
             <option [value]="'master'">Only master</option>
@@ -73,9 +61,9 @@
         </div>
       </td>
     </tr>
-    <tr *ngFor="let repository of (repositoriesData | async); let i = index">
+    <tr *ngFor="let repository of (repositoriesData | async)">
       <!--REPOSITORY NAME-->
-      <td class="repository-name" [id]="'repoName' + i">{{ repository.repoName }}</td>
+      <td class="repository-name">{{ repository.repoName }}</td>
 
       <!--REPOSITORY TYPE-->
       <td [ngClass]="repository.repoType === 'Public'
@@ -85,46 +73,33 @@
       </td>
 
       <!--BRANCHES-->
-      <td [id]="'branches' + i" [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'"
-          (mouseenter)="tooltipText($event.target.innerText)" (dblclick)="selectProjectBranches(i)">
-      <span [id]="'spanId' + i" container="body" [tooltip]="showTooltip(text) ? text : null">
+      <td [ngClass]="isBranch(repository.branches) ? 'text bg-danger text-white h5' : 'text'"
+          (mouseenter)="tooltipText($event.target.innerText)">
+      <span container="body" [tooltip]="showTooltip(text) ? text : null">
         <a>{{ getBranchName(repository.branches, 0) }}</a>
         <a [hidden]="isBranch(repository.branches)"> &rarr; </a>
         <a>{{ getBranchName(repository.branches, 1) }}</a>
       </span>
       </td>
 
-      <td [id]="'selectBranches' + i" class="col-12" style="display: none; width: 100%" (dblclick)="showBranches(i)">
-        <div>
-            <select (change)="firstSelectValue = $event.target.value" [disabled]="(branchesSubject| async).length === 0" style="width: 130px">
-              <option disabled select hidden>First branch</option>
-              <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
-            </select>
-          &rarr;
-            <select (change)="secondSelectValue = $event.target.value" [disabled]="(branchesSubject| async).length === 0" style="width: 130px">
-              <option disabled select hidden>Second branch</option>
-              <option *ngFor="let branch of (branchesSubject| async)" [value]="branch">{{ branch }}</option>
-            </select>
-        </div>
-      </td>
-
       <td *ngFor="let item of (tableHeader | async)" data-container="body"
           [ngClass]="isNone(repository.branches, item.name) && item.isImportant ? ' text bg-danger text-white h5' : 'text'"
           (mouseenter)="tooltipText($event.target.innerText)">
         <span *ngIf="!isNoneOrSame(repository.branches, item.name); else version" [tooltip]="showTooltip(text) ? text : null">
-          <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches.master, item.name)}">
-            {{ getPackageValue(repository.branches, 0, item.name) }}
+          <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches, 'master', item.name)}">
+            {{ getPackageValue(repository.branches, 'master', item.name) }}
           </a>
           &rarr;
-          <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches.development, item.name)}">
-            {{ getPackageValue(repository.branches, 1, item.name) }}
+          <a [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches, 'development', item.name)}">
+            {{ getPackageValue(repository.branches, 'development', item.name) }}
           </a>
         </span>
         <ng-template #version>
           <span *ngIf="isNone(repository.branches, item.name); else version2">(none)</span>
           <ng-template #version2>
-            <span [tooltip]="showTooltip(text) ? text : null">
-              {{ getPackageValue(repository.branches, 0, item.name) }}
+            <span [ngClass]="{'text-danger': setStyleClassForCellValue(repository.branches, 'master', item.name)}"
+                  [tooltip]="showTooltip(text) ? text : null">
+              {{ getPackageValue(repository.branches, 'master', item.name) }}
             </span>
           </ng-template>
         </ng-template>
@@ -152,9 +127,9 @@
                name="name"
                autocomplete="off"
                aria-describedby="inputGroup-sizing-name"
-               [typeahead]="(availableDependenciesSubject | async)"
-               [typeaheadOptionsLimit]="20"
-               [typeaheadMinLength]="0"
+               [typeahead]="availableDependencies"
+               [typeaheadOptionsLimit]="30"
+               [typeaheadMinLength]="2"
                placeholder="Package name"
                class="form-control">
       </div>
@@ -180,5 +155,91 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="addNewPackage()">Add package</button>
+  </div>
+</ng-template>
+
+<ng-template #updatePackage>
+  <div class="modal-header">
+    <div>
+      <h4 class="modal-title pull-center" [hidden]="!updateModalCondition">Update recommend version</h4>
+      <h4 class="modal-title pull-center" [hidden]="updateModalCondition">Select custom branches for specific project</h4>
+    </div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div style="margin-left: 35px" class="btn-group" role="group">
+      <button type="button" class="btn btn-outline-dark" (click)="updateModalCondition = true">Update recommend version</button>
+      <button type="button" class="btn btn-outline-dark" (click)="updateModalCondition = false">Set custom branches</button>
+    </div>
+  </div>
+  <div class="modal-body" [hidden]="!updateModalCondition">
+    <div style="text-align: center">
+      <div class="alert alert-danger" [hidden]="!modalErrorCondition">
+        {{ modalErroText }}
+      </div>
+      <div class="btn-group" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-white dropdown-toggle btn-sm"
+                aria-controls="dropdown-basic">
+          package: <b>{{ pkj }}</b> <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem">
+            <a class="dropdown-item" *ngFor="let item of (tableHeader | async)"
+               (click)="displaySelectedPackage(item.name, item.addedBy)">{{ item.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+      :
+      <div class="btn-group" dropdown>
+        <button id="button-basic-1" dropdownToggle type="button" [disabled]="pkj === 'no selected'" class="btn btn-white dropdown-toggle btn-sm" aria-controls="dropdown-basic">
+          version: <b>{{ newVersion }}</b> <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic-1" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><a class="dropdown-item" *ngFor="let version of (versionsSubject | async)" (click)="displayListOfVersions(version)">{{ version }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body" [hidden]="updateModalCondition">
+    <div class="alert alert-danger" [hidden]="!modalErrorCondition">
+      {{ modalErroText }}
+    </div>
+    <input type="text" [(ngModel)]="selected"
+           placeholder="Input repository name"
+           autocomplete="off"
+           [typeahead]="reponames"
+           [typeaheadOptionsLimit]="150"
+           (typeaheadOnSelect)="displaySelectedProject($event.value)"
+           [typeaheadMinLength]="3"
+           class="form-control">
+    <div style="text-align: center; margin-top: 20px">
+      <div class="btn-group" dropdown>
+        <button id="button-basic-2" dropdownToggle type="button" class="btn btn-white dropdown-toggle btn-sm"
+                aria-controls="dropdown-basic">
+          base: <b>{{ baseBranch }}</b> <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic-2" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><a class="dropdown-item" *ngFor="let branch of (branchesSubject | async)" (click)="displayBaseBranch(branch)">{{ branch }}</a></li>
+        </ul>
+      </div>
+      &rarr;
+      <div class="btn-group" dropdown>
+        <button id="button-basic-3" dropdownToggle type="button" class="btn btn-white dropdown-toggle btn-sm" aria-controls="dropdown-basic">
+          compare: <b>{{ compareBranch }}</b> <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic-3" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><a class="dropdown-item" *ngFor="let branch of (branchesSubject | async)" (click)="displayCompareBranch(branch)">{{ branch }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" [hidden]="!updateModalCondition">
+    <button type="button" class="btn btn-primary" (click)="updateDependencyRecommendVersion(pkj, newVersion)">Apply</button>
+  </div>
+  <div class="modal-footer" [hidden]="updateModalCondition">
+    <button type="button" class="btn btn-primary" (click)="setCustomBranchesForRepository(baseBranch, compareBranch)">Apply</button>
   </div>
 </ng-template>
