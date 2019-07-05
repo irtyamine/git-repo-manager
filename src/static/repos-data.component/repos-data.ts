@@ -30,6 +30,8 @@ export class ReposData implements OnInit{
   public selected: string;
   public reponames = [];
 
+  public checkBoxSatatus: boolean = true;
+
   public availableDependencies = [];
 
   public baseBranch: string = 'no selected';

@@ -95,7 +95,6 @@ export class GitHubRepositoriesService {
             catchError(err => throwError(err))
         )
         .subscribe(async repositories => {
-          console.log(repositories.data);
           for(let repository of repositories.data) {
             const initialRepositoriesObject = {
               repoName: repository.full_name,

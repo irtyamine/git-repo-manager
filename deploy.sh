@@ -4,8 +4,6 @@ PROJECT_NAME=git-repo-manager
 DOCKER_IMAGE_NAME=git-repo
 ZONE_EN1B=us-east1-b
 
-PORT=80
-
 echo "docker build"
 docker build -t gcr.io/$PROJECT_NAME/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT \
   --build-arg URL=$URL \
