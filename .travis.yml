@@ -44,5 +44,6 @@ jobs:
           script: "./deploy.sh"
           skip_cleanup: true
           on:
-            all_branches: true
-            # branch: development
+            branch: development
+            # all_branches: true
+            
