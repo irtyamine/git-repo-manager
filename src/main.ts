@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(BackEndModule, server, {});
   app.use(cookieParser());
   app.setBaseViewsDir(join(__dirname, '..', 'static'));
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT);
 }
 
 bootstrap();

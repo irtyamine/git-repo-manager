@@ -23,7 +23,7 @@ gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
 gcloud --quiet config set project $PROJECT_NAME
 gcloud --quiet config set compute/zone $ZONE_EN1B
 
-gcloud app deploy --verbosity=debug
+gcloud app deploy 
 
 # echo "docker push"
 # gcloud docker -- push gcr.io/$PROJECT_NAME/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT
