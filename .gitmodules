@@ -1,0 +1,2 @@
+[submodule "client"]
+  path=apps/client

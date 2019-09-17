@@ -1,0 +1,134 @@
+@import './scss/transition';
+@import './scss/blink';
+@import './scss/variables';
+
+.my-table {
+  margin: 5% auto;
+  position: relative;
+  &__caption {
+    caption-side: top;
+    color: #e1e1e1;
+  }
+
+  &__header {
+    background-color: $color-grey;
+    &-row {
+      height: 50px;
+      text-align: center;
+      &_element {
+        padding-left: 30px;
+        padding-right: 30px;
+        color: $color-white;
+      }
+      &::before {
+        content: '';
+      }
+    }
+  }
+
+  &__body {
+    background-color: $color-light-black;
+    &-row {
+      height: 40px;
+      border: 1px solid $color-black;
+      @include transition(.3s);
+      &_element {
+        text-align: center;
+        color: white;
+        &:first-child {
+          text-align: left;
+          padding-left: 15px;
+        }
+      }
+      &:hover {
+        background-color: $color-black;
+        height: 55px;
+        .row-danger {
+          background-color: $color-hover-danger;
+        }
+        .public {
+          background-color: $color-hover-public;
+        }
+        .private {
+          background-color: $color-hover-private;
+        }
+        &::before {
+          height: 54px;
+          background-color: $color-row-before-active;
+        }
+      }
+    }
+  }
+}
+
+.important {
+  cursor: help;
+}
+
+.row-danger {
+  background-color: $color-danger;
+  color: $color-white;
+  text-align: center;
+  font-size: 22px;
+  @include transition(.3s);
+}
+
+.row-width {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 10px;
+  left: 0;
+  right: 0;
+}
+
+.public {
+  @include transition(.3s);
+  font-size: 22px;
+  text-align: center;
+  color: $color-white;
+  background-color: rgba(9, 37, 166, 0.7);
+}
+
+.private {
+  @include transition(.3s);
+  font-size: 22px;
+  text-align: center;
+  color: $color-white;
+  background-color: rgba(163, 162, 166, 0.7);
+}
+
+.before_success {
+  @extend .my-table__body-row;
+  &::before {
+    @include transition(.3s);
+    position: absolute;
+    content: '';
+    left: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $color-row-before;
+    width: 3px;
+    height: 39px;
+  }
+}
+
+.before_danger {
+  @extend .my-table__body-row;
+  &:hover {
+    &::before {
+      height: 54px;
+      background-color: $color-hover-danger;
+    }
+  }
+  &::before {
+    @include transition(.3s);
+    position: absolute;
+    content: '';
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $color-row-before-danger;
+    width: 3px;
+    height: 39px;
+  }
+}
