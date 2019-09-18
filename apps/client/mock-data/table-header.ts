@@ -31,7 +31,7 @@ export const tableHeader = [
   },
   {
     name: 'express',
-    recommendVersion: 'recommendVersion',
+    recommendVersion: '4.16.0',
     addedBy: 'admin',
     isImportant: false
   },

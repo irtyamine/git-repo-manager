@@ -16,6 +16,10 @@
       height: 50px;
       text-align: center;
       &_element {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 200px;
         padding-left: 30px;
         padding-right: 30px;
         color: $color-white;
@@ -33,11 +37,22 @@
       border: 1px solid $color-black;
       @include transition(.3s);
       &_element {
+        @include transition(.6s);
         text-align: center;
         color: white;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 180px;
         &:first-child {
           text-align: left;
-          padding-left: 15px;
+          padding-left: 10px;
+          max-width: 100%;
+        }
+        &:hover {
+          @include transition(1.5s);
+          max-width: 1000px;
+          text-align: center;
         }
       }
       &:hover {
@@ -51,10 +66,6 @@
         }
         .private {
           background-color: $color-hover-private;
-        }
-        &::before {
-          height: 54px;
-          background-color: $color-row-before-active;
         }
       }
     }
@@ -71,15 +82,6 @@
   text-align: center;
   font-size: 22px;
   @include transition(.3s);
-}
-
-.row-width {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 10px;
-  left: 0;
-  right: 0;
 }
 
 .public {
@@ -111,16 +113,16 @@
     width: 3px;
     height: 39px;
   }
+  &:hover {
+    &::before {
+      height: 54px;
+      background-color: $color-row-before-active;
+    }
+  }
 }
 
 .before_danger {
   @extend .my-table__body-row;
-  &:hover {
-    &::before {
-      height: 54px;
-      background-color: $color-hover-danger;
-    }
-  }
   &::before {
     @include transition(.3s);
     position: absolute;
@@ -130,5 +132,11 @@
     background-color: $color-row-before-danger;
     width: 3px;
     height: 39px;
+  }
+  &:hover {
+    &::before {
+      height: 54px;
+      background-color: $color-hover-danger;
+    }
   }
 }

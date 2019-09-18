@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { tableHeader } from '../../../../mock-data/table-header';
 import { repositoriesData } from '../../../../mock-data/repositories';
-import { TooltipConfig } from 'ngx-bootstrap';
 import { HelpersService } from '../services/helpers.service';
-
-export function getAlertConfig(): TooltipConfig {
-  return Object.assign(new TooltipConfig(), {
-    placement: 'left',
-    container: 'body',
-    delay: 21
-  });
-}
 
 @Component({
   selector: 'app-valor-projects',
   templateUrl: './valor-projects.component.html',
   styleUrls: ['./valor-projects.component.scss'],
-  providers: [{ provide: TooltipConfig, useFactory: getAlertConfig }]
 })
 export class ValorProjectsComponent implements OnInit {
   public tHeader = tableHeader;
   public repositories = repositoriesData;
+  public text: string;
 
   constructor(private helpers: HelpersService) {  }
 
   ngOnInit() {}
+
+  public tooltipText(event: string) {
+    this.text = event;
+  }
+
+  public setTooltipText(tooltipText: string) {
+    return 'aaaaaa';
+  }
 
   public getBranches(branches: object, rowIndex: number) {
     const id = 'branches' + rowIndex;
@@ -65,7 +64,6 @@ export class ValorProjectsComponent implements OnInit {
     const firstBranch = Object.keys(branches)[0];
     const secondBranch = Object.keys(branches)[1];
     const cellId = packageName + rowIndex;
-    const rowId = 'row' + rowIndex;
 
     if (!firstBranch) {
       const secondBranchPackage = branches[secondBranch][packageName];
@@ -76,8 +74,7 @@ export class ValorProjectsComponent implements OnInit {
         secondBranchPackage,
         recommendVersion,
         isImportant,
-        cellId,
-        rowId
+        cellId
       );
     }
     else if (!secondBranch) {
@@ -89,8 +86,7 @@ export class ValorProjectsComponent implements OnInit {
         null,
         recommendVersion,
         isImportant,
-        cellId,
-        rowId
+        cellId
       );
     }
     else {
@@ -103,8 +99,7 @@ export class ValorProjectsComponent implements OnInit {
         secondBranchPackage,
         recommendVersion,
         isImportant,
-        cellId,
-        rowId
+        cellId
       );
     }
 

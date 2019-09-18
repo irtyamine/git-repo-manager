@@ -1,24 +1,37 @@
 <table class="my-table">
   <caption class="my-table__caption">Last Update: {{ repositories[0].timestamp | timestamp }}</caption>
   <caption class="my-table__caption">Member: member</caption>
+
   <thead class="my-table__header">
     <tr class="my-table__header-row ">
       <th class="my-table__header-row_element">repository name</th>
       <th class="my-table__header-row_element">branches</th>
       <th class="my-table__header-row_element">type of privacy</th>
       <th class="my-table__header-row_element" *ngFor="let headElement of tHeader">
-        {{ headElement.name }}
-        <span [hidden]="!headElement.isImportant"> *</span>
+        <span [tooltip]="headElement.recommendVersion">{{ headElement.name }}</span>
+        <span [hidden]="!headElement.recommendVersion">: {{ headElement.recommendVersion }}</span>
+        <span [hidden]="!headElement.isImportant" class="important" tooltip="Important Field"> *</span>
       </th>
     </tr>
   </thead>
+
   <tbody class="my-table__body">
     <tr class="my-table__body-row" *ngFor="let repository of repositories; let rowIndex = index" [id]="'row'+rowIndex">
-      <td [id]="'repoName'+rowIndex" class="my-table__body-row_element">{{ repository.repoName }}</td>
-      <td [id]="'branches'+rowIndex" class="my-table__body-row_element row-width">{{ getBranches(repository.branches, rowIndex) }}</td>
-      <td [id]="'repoType'+rowIndex" class="my-table__body-row_element row-width">{{ getRepositoryType(repository.repoType, rowIndex) }}</td>
-      <td class="my-table__body-row_element row-width" *ngFor="let headElement of tHeader" [id]="headElement.name+rowIndex">
-        {{ getRepoPackage(repository.branches, headElement.name, headElement.recommendVersion, headElement.isImportant, rowIndex) }}
+      <td [id]="'repoName'+rowIndex" class="my-table__body-row_element">
+        <span>{{ repository.repoName }}</span>
+      </td>
+
+      <td [id]="'branches'+rowIndex" class="my-table__body-row_element">
+        <span>{{ getBranches(repository.branches, rowIndex) }}</span>
+      </td>
+
+      <td [id]="'repoType'+rowIndex" class="my-table__body-row_element">
+        <span>{{ getRepositoryType(repository.repoType, rowIndex) }}</span>
+      </td>
+
+      <td class="my-table__body-row_element" *ngFor="let headElement of tHeader" [id]="headElement.name+rowIndex" data-container="body">
+        <span tooltip="set"></span>
+          {{ getRepoPackage(repository.branches, headElement.name, headElement.recommendVersion, headElement.isImportant, rowIndex) }}
       </td>
     </tr>
   </tbody>
