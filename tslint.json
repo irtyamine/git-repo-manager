@@ -29,7 +29,7 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      1140
     ],
     "member-access": false,
     "member-ordering": [
@@ -87,7 +87,14 @@
     "use-pipe-transform-interface": true,
     "no-trailing-whitespace": false,
     "forin": true,
-    "one-line": false
+    "one-line": false,
+    "prefer-const": false,
+    "ban-types": false,
+    "label-position": false,
+    "no-string-literal": false,
+    "object-literal-shorthand": false,
+    "align": false,
+    "no-shadowed-variable": false
   },
   "rulesDirectory": [
     "codelyzer"

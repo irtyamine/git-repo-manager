@@ -6,24 +6,16 @@ import { HelpersService } from '../services/helpers.service';
 @Component({
   selector: 'app-valor-projects',
   templateUrl: './valor-projects.component.html',
-  styleUrls: ['./valor-projects.component.scss'],
+  styleUrls: ['./valor-projects.component.scss']
 })
+
 export class ValorProjectsComponent implements OnInit {
   public tHeader = tableHeader;
   public repositories = repositoriesData;
-  public text: string;
 
   constructor(private helpers: HelpersService) {  }
 
   ngOnInit() {}
-
-  public tooltipText(event: string) {
-    this.text = event;
-  }
-
-  public setTooltipText(tooltipText: string) {
-    return 'aaaaaa';
-  }
 
   public getBranches(branches: object, rowIndex: number) {
     const id = 'branches' + rowIndex;
