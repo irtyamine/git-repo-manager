@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { RepositoriesModule } from './repositories/repositories.module';
+import { GithubRepositoriesModule } from './github-repositories/github-repositories.module';
 
 @Module({
   imports: [
-    RepositoriesModule
+    GithubRepositoriesModule,
   ],
-  exports: []
+  exports: [],
+  providers: []
 })
 
 export class AppModule {}

@@ -1,5 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { assign, pick, keys } from 'lodash';
+import { LayerService } from './layer.service';
+import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
 const config = require('../../../config.json');
 
@@ -7,7 +9,10 @@ const config = require('../../../config.json');
 
 export class UpdateRepositoriesService {
 
-  constructor(private readonly httpService: HttpService) {  }
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly repositoryLayer: LayerService
+  ) {  }
 
   private getTypeOfPrivacyAndReposNames(repositories: Object[]): Object[] {
     return Array.from(repositories, repository =>
@@ -20,7 +25,7 @@ export class UpdateRepositoriesService {
     );
   }
 
-  public async getOrgRepositories(): Promise<object> {
+  public async getOrgRepositories() {
     let repos = [];
 
     const url = `https://api.github.com/orgs/valor-software/repos?per_page=150`;
@@ -35,21 +40,24 @@ export class UpdateRepositoriesService {
       .then(repositories => {
         repos = this.getTypeOfPrivacyAndReposNames(repositories.data);
       });
-    return await this.getRepositoryPackageJson(repos);
+    await this.getRepositoryPackageJson(repos);
   }
 
   private async getRepositoryPackageJson(repositories) {
-    let resultData = [];
-
     for (let repository of repositories) {
       const master = await this.getDataFromGithub(repository.repoName, 'master');
       const development = await this.getDataFromGithub(repository.repoName, 'development');
 
-      resultData.push(assign(repository, { timestamp: Date.now(), branches: { master, development } }));
-      console.log('Updated - ' + repository.repoName);
-    }
+      const newRepository: GithubRepositoryInterface = assign(repository, {
+        organization: 'valor-software',
+        dataSource: 'github',
+        timestamp: Date.now(),
+        branches: { master, development }
+      });
 
-    return resultData;
+      await this.repositoryLayer.updateRepositoryData(newRepository);
+    }
+    console.log('GitHub data updated');
   }
 
   private async getDataFromGithub(repositoryName: string, branchAlias: string) {
