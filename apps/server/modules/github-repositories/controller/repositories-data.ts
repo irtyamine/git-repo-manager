@@ -1,14 +1,18 @@
 import { Controller, Get, Res } from '@nestjs/common';
+import { GetRepositoriesDataService } from '../services/get-repositories-data.service';
 
 @Controller('github/repositories')
 
 export class RepositoriesData {
 
-  constructor() {  }
+  constructor(
+    private readonly getRepositories: GetRepositoriesDataService
+  ) {  }
 
-  @Get('names')
+  @Get('all-repositories')
   async getOrgRepositories(@Res() res) {
-    res.json({result: 1});
+    const result = await this.getRepositories.getRepositories('valor-software', 'github');
+    res.json(result);
   }
 
 }

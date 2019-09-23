@@ -25,4 +25,4 @@ export const GithubRepositoriesSchema = new mongoose.Schema({
     type: Object,
     required: true
   }
-});
+}, { versionKey: false, _id: false });

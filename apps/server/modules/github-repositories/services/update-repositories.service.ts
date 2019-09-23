@@ -75,10 +75,7 @@ export class UpdateRepositoriesService {
         .then((res: any) => {
           const data = assign(res.data, res.data.dependencies, res.data.devDependencies);
 
-          result = pick(
-            data,
-            config.PACKAGES
-          );
+          result = pick(data, config.PACKAGES);
         })
         .catch(err => {});
     }

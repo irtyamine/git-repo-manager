@@ -10,6 +10,16 @@ export class LayerService {
     @Inject('NewRepositoryModelToken') private readonly repositoriesModel: Model<GithubRepositoryInterface&Document>
   ) {  }
 
+  public async getRepositories(organizationName: string, dataSource: string) {
+    return await this.repositoriesModel.find({
+        organization: organizationName,
+        dataSource: dataSource
+      },
+      (err, res) => {
+      if (err) { throw err; }
+    }).select({ '_id': 0 });
+  }
+
   public async updateRepositoryData(repository: GithubRepositoryInterface) {
     const newRepository = new this.repositoriesModel(repository);
 

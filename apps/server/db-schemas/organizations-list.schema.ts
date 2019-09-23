@@ -13,5 +13,5 @@ export const OrganizationsListSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-});
+}, { versionKey: false, _id: false });
 
