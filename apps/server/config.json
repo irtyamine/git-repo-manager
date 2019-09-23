@@ -2,14 +2,5 @@
   "ALIASES_OF_BRANCH": {
     "master": [ "master" ],
     "development": [ "development", "develop" ]
-  },
-  "PACKAGES": [
-    "name",
-    "version",
-    "description",
-    "lodash",
-    "tslint",
-    "express",
-    "@angular/common"
-  ]
+  }
 }

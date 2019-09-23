@@ -1,6 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { assign, pick, keys } from 'lodash';
 import { LayerService } from './layer.service';
+import { PackagesService } from './packages.service';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
 const config = require('../../../config.json');
@@ -11,8 +12,14 @@ export class UpdateRepositoriesService {
 
   constructor(
     private readonly httpService: HttpService,
+    private readonly packagesService: PackagesService,
     private readonly repositoryLayer: LayerService
   ) {  }
+
+  private async getPackagesNames(): Promise<Object[]> {
+    let packages = await this.packagesService.getPackages();
+    return Array.from(packages, singlePackage => singlePackage.name);
+  }
 
   private getTypeOfPrivacyAndReposNames(repositories: Object[]): Object[] {
     return Array.from(repositories, repository =>
@@ -44,9 +51,11 @@ export class UpdateRepositoriesService {
   }
 
   private async getRepositoryPackageJson(repositories) {
+    let packages = await this.getPackagesNames();
+
     for (let repository of repositories) {
-      const master = await this.getDataFromGithub(repository.repoName, 'master');
-      const development = await this.getDataFromGithub(repository.repoName, 'development');
+      const master = await this.getDataFromGithub(repository.repoName, 'master', packages);
+      const development = await this.getDataFromGithub(repository.repoName, 'development', packages);
 
       const newRepository: GithubRepositoryInterface = assign(repository, {
         organization: 'valor-software',
@@ -60,8 +69,9 @@ export class UpdateRepositoriesService {
     console.log('GitHub data updated');
   }
 
-  private async getDataFromGithub(repositoryName: string, branchAlias: string) {
+  private async getDataFromGithub(repositoryName: string, branchAlias: string, packages: any) {
     let result = {};
+
     const headsOptions = {
       headers: {
         authorization: `token ${process.env.ACCESS_TOKEN}`
@@ -75,7 +85,7 @@ export class UpdateRepositoriesService {
         .then((res: any) => {
           const data = assign(res.data, res.data.dependencies, res.data.devDependencies);
 
-          result = pick(data, config.PACKAGES);
+          result = pick(data, packages);
         })
         .catch(err => {});
     }

@@ -6,6 +6,7 @@ import { databaseProviders } from '../../database/database.providers';
 import { gitHubRepositoriesProviders } from './repositories.providers';
 import { LayerService } from './services/layer.service';
 import { GetRepositoriesDataService } from './services/get-repositories-data.service';
+import { PackagesService } from './services/packages.service';
 
 @Module({
   controllers: [
@@ -17,6 +18,7 @@ import { GetRepositoriesDataService } from './services/get-repositories-data.ser
   providers: [
     UpdateRepositoriesService,
     GetRepositoriesDataService,
+    PackagesService,
     LayerService,
     CronService,
     ...databaseProviders,
