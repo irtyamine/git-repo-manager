@@ -4,8 +4,8 @@
   -o-transition-duration: $duration;
   transition-duration: $duration;
 
-  -webkit-transition-property: background-color, max-width, overflow, text-overflow, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -webkit-transform, text-align;
-  -moz-transition-property: background-color, max-width, overflow, text-overflow, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -moz-transform, text-align;
-  -o-transition-property: background-color, max-width, overflow, text-overflow,  padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -o-transform, text-align;
-  transition-property: background-color, max-width, overflow, text-overflow, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, transform, text-align;
+  -webkit-transition-property: background-color, max-width, overflow, text-overflow, white-space, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -webkit-transform, text-align;
+  -moz-transition-property: background-color, max-width, overflow, text-overflow, white-space, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -moz-transform, text-align;
+  -o-transition-property: background-color, max-width, overflow, text-overflow, white-space, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, -o-transform, text-align;
+  transition-property: background-color, max-width, overflow, text-overflow, white-space, padding, background-color, height, width, margin-top, margin-bottom, box-shadow, transform, text-align;
 }

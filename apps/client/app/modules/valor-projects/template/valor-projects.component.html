@@ -29,8 +29,7 @@
         <span>{{ getRepositoryType(repository.repoType, rowIndex) }}</span>
       </td>
 
-      <td class="my-table__body-row_element" *ngFor="let headElement of tHeader" [id]="headElement.name+rowIndex" data-container="body">
-        <span tooltip="set"></span>
+      <td class="my-table__body-row_element" *ngFor="let headElement of tHeader" [id]="headElement.name+rowIndex">
           {{ getRepoPackage(repository.branches, headElement.name, headElement.recommendVersion, headElement.isImportant, rowIndex) }}
       </td>
     </tr>
