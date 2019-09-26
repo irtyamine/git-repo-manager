@@ -1,7 +1,7 @@
 import { Connection } from 'mongoose';
-import { OrganizationsListSchema } from '../../db-schemas/organizations-list.schema';
-import { GithubRepositoriesSchema } from '../../db-schemas/github-repository.schema';
-import { PackgesSchema } from '../../db-schemas/github-packages.schema';
+import { OrganizationsListSchema } from '../../schemas/organizations-list.schema';
+import { GithubRepositoriesSchema } from '../../schemas/github-repository.schema';
+import { PackgesSchema } from '../../schemas/github-packages.schema';
 
 export const gitHubRepositoriesProviders = [
   {

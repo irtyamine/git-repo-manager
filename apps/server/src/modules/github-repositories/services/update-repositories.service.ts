@@ -4,7 +4,7 @@ import { LayerService } from './layer.service';
 import { PackagesService } from './packages.service';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
-const config = require('../../../config.json');
+const config = require('../../../configs/config.json');
 
 @Injectable()
 
@@ -33,8 +33,6 @@ export class UpdateRepositoriesService {
   }
 
   public async getOrgRepositories() {
-    let repos = [];
-
     const url = `https://api.github.com/orgs/valor-software/repos?per_page=150`;
     const headOptions = {
       headers: {
@@ -42,11 +40,9 @@ export class UpdateRepositoriesService {
       }
     };
 
-    await this.httpService.get(url, headOptions)
-      .toPromise()
-      .then(repositories => {
-        repos = this.getTypeOfPrivacyAndReposNames(repositories.data);
-      });
+    const { data } = await this.httpService.get(url, headOptions).toPromise();
+    const repos = this.getTypeOfPrivacyAndReposNames(data);
+
     await this.getRepositoryPackageJson(repos);
   }
 
@@ -83,11 +79,19 @@ export class UpdateRepositoriesService {
        await this.httpService.get(url, headsOptions)
         .toPromise()
         .then((res: any) => {
-          const data = assign(res.data, res.data.dependencies, res.data.devDependencies);
-
-          result = pick(data, packages);
+          const { data } = res;
+          const dependencies = assign(
+            data,
+            data.dependencies,
+            data.devDependencies
+          );
+          result = pick(dependencies, packages);
         })
-        .catch(err => {});
+        .catch(err => {
+          if (err.response.status !== 404) {
+            console.error(err);
+          }
+        });
     }
 
     if (keys(result).length === 0) {
