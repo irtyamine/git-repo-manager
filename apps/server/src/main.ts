@@ -1,17 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { join } from 'path';
 import 'dotenv/config';
+import * as path from 'path';
 import * as compression from 'compression';
+import * as express from 'express';
 
-const express = require('express');
-
-const server = express();
-server.use(compression());
+const pathToClientSide = path.join(__dirname, '..', 'client');
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, server, {});
-  app.setBaseViewsDir(join(__dirname, '..', 'client'));
-  await app.listen(3000);
+  const instance = await NestFactory.create(AppModule);
+  instance.use(compression());
+
+  instance.use(express.static(pathToClientSide));
+
+  await instance.listen(process.env.PORT);
 }
-bootstrap();
+bootstrap().catch(error => {
+  console.error('Application bootstrap error!', error);
+});

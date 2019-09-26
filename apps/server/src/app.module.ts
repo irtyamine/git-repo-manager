@@ -6,7 +6,7 @@ import { ClientSideMiddleware } from './middlewares/client-side.middleware';
 @Module({
   imports: [
     GithubRepositoriesModule,
-    ClientSideModule
+    ClientSideModule,
   ],
   exports: [],
   providers: []
