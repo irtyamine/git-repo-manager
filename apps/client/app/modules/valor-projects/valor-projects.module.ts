@@ -7,14 +7,17 @@ import { TimestampPipe } from './template/pipes/timestamp.pipe';
 
 // services
 import { HelpersService } from './services/helpers.service';
+import { RepositoriesDataService } from './services/repositories-data.service';
 import { TooltipModule } from 'ngx-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [ ValorProjectsComponent, TimestampPipe ],
-  providers: [ HelpersService ],
+  providers: [ HelpersService, RepositoriesDataService ],
   imports: [
     CommonModule,
     TooltipModule.forRoot(),
+    HttpClientModule,
     ValorProjectsRoutingModule
   ],
   exports: []

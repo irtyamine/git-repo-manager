@@ -22,7 +22,8 @@ export class LayerService {
   public async getRepositories(organizationName: string, dataSource: string) {
     return await this.repositoriesModel.find({
         organization: organizationName,
-        dataSource: dataSource
+        dataSource: dataSource,
+        branches: { $exists: true }
       },
       (err, res) => {
       if (err) { throw err; }

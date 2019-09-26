@@ -13,7 +13,7 @@ async function bootstrap() {
 
   instance.use(express.static(pathToClientSide));
 
-  await instance.listen(process.env.PORT);
+  await instance.listen(3000);
 }
 bootstrap().catch(error => {
   console.error('Application bootstrap error!', error);

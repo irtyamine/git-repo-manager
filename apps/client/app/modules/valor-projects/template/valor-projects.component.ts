@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { tableHeader } from '../../../../mock-data/table-header';
-import { repositoriesData } from '../../../../mock-data/repositories';
 import { HelpersService } from '../services/helpers.service';
+import { RepositoriesDataService } from '../services/repositories-data.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-valor-projects',
@@ -10,12 +10,18 @@ import { HelpersService } from '../services/helpers.service';
 })
 
 export class ValorProjectsComponent implements OnInit {
-  public tHeader = tableHeader;
-  public repositories = repositoriesData;
+  public tableHeader: BehaviorSubject<any>;
+  public repositories: BehaviorSubject<any>;
 
-  constructor(private helpers: HelpersService) {  }
+  constructor(
+    private readonly helpers: HelpersService,
+    private readonly repositoriesService: RepositoriesDataService
+  ) {  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tableHeader = this.repositoriesService.packages;
+    this.repositories = this.repositoriesService.repositories;
+  }
 
   public getBranches(branches: object, rowIndex: number) {
     const id = 'branches' + rowIndex;
