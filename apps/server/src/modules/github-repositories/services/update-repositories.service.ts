@@ -4,7 +4,7 @@ import { LayerService } from './layer.service';
 import { PackagesService } from './packages.service';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
-const config = require('../../../config.json');
+const config = require('../../../configs/config.json');
 
 @Injectable()
 
