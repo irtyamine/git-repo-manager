@@ -5,7 +5,7 @@
   "author": "Nikita Glukhi <nikita.glukhi@valor-software.com>",
   "license": "MIT",
   "scripts": {
-    "build": "ng build",
+    "build": "ng build --watch=true",
     "build:server": "tsc -p apps/server/tsconfig.server.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ng serve",

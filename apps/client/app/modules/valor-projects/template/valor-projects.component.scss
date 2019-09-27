@@ -8,6 +8,10 @@
   &__caption {
     caption-side: top;
     color: #e1e1e1;
+    span {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__header {

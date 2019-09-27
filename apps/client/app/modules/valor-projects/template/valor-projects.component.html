@@ -1,6 +1,8 @@
 <table class="my-table">
-  <caption class="my-table__caption">Last Update: {{ (repositories | async)[0].timestamp| timestamp }}</caption>
-  <caption class="my-table__caption">Member: member</caption>
+  <caption class="my-table__caption">
+    <span>Last Update: {{ getTimestamp((repositories | async)[0]) | timestamp }}</span>
+    <span>Member: member</span>
+  </caption>
 
   <thead class="my-table__header">
     <tr class="my-table__header-row ">
@@ -30,7 +32,7 @@
       </td>
 
       <td class="my-table__body-row_element" *ngFor="let headElement of (tableHeader | async)" [id]="headElement.name+rowIndex">
-          {{ getRepoPackage(repository.branches, headElement.name, headElement.recommendVersion, headElement.isImportant, rowIndex) }}
+          {{ getRepoPackage(repository.branches, headElement, rowIndex) }}
       </td>
     </tr>
   </tbody>

@@ -4,71 +4,56 @@ import * as semver from 'semver';
 @Injectable()
 export class HelpersService {
 
-  public setRowBefore(className: string, rowId: string) {
+  public setRowBefore(newClassName: string, rowId: string) {
     const row = document.getElementById(rowId);
-    if (!row) {
-      return null;
+    if (row) {
+      row.classList.add(newClassName);
     }
-    row.className = '';
-    row.className = className;
-  }
-
-  public setbBgPublic(id: string) {
-    const row = document.getElementById(id);
-    row.className = 'public';
-  }
-
-  public setbBgPrivate(id: string) {
-    const row = document.getElementById(id);
-    row.className = 'private';
   }
 
   public setRowBgDanger(id: string) {
     const row = document.getElementById(id);
-    row.className = 'row-danger';
+    row.classList.add('row-danger');
   }
 
-  public setTextDangerForPackageImportant(
+  public setTextDangerForImportantPackage(
     firstPackage: string,
     packageName: string,
     secondPackage: string,
     cellId: string
   ) {
     const row = document.getElementById(cellId);
-    if (!row) {
-      return null;
-    }
-    if (firstPackage === '(none)') {
-      row.innerHTML = `<span class="text-danger">${firstPackage}</span> &#8594; <span>${secondPackage}</span>`;
-    }
-    else if (secondPackage === '(none)') {
-      row.innerHTML = `<span>${firstPackage}</span> &#8594; <span class="text-danger">${secondPackage}</span>`;
+    if (row) {
+      if (firstPackage === '(none)') {
+        row.innerHTML = `<span class="text-danger">${firstPackage}</span> &#8594; <span>${secondPackage}</span>`;
+      }
+      else if (secondPackage === '(none)') {
+        row.innerHTML = `<span>${firstPackage}</span> &#8594; <span class="text-danger">${secondPackage}</span>`;
+      }
     }
   }
 
   public checkPackageVersion(
     packageName: string,
     packageVersion: string,
-    recommendVersion: string
+    recommendVersion: string,
   ) {
-    if (
-      packageName === 'name'
-      || packageName === 'version'
-      || packageName === 'description'
-    ) {
+    const newElement = document.createElement('span');
+    const text = document.createTextNode(packageVersion);
+    newElement.appendChild(text);
+
+    if (!recommendVersion) {
       return `<span>${packageVersion}</span>`;
     }
 
     try {
-      const checkedResult = semver.lt(packageVersion, recommendVersion);
-      if (checkedResult) {
+      if (semver.lt(packageVersion, recommendVersion)) {
         return `<span class="text-danger">${packageVersion}</span>`;
       }
+      return `<span>${packageVersion}</span>`;
     } catch (err) {
       return `<span class="text-danger">${packageVersion}</span>`;
     }
-
-    return `<span>${packageVersion}</span>`;
   }
 
   public getPackageData(
@@ -78,65 +63,58 @@ export class HelpersService {
     recommendVersion: string,
     isImportant: boolean,
     cellId: string,
+    rowId: string
   ) {
     if (!firstPackage && !secondPackage) {
       if (isImportant) {
+        this.setRowBefore('before_danger', rowId);
         this.setRowBgDanger(cellId);
       }
       return '(none)';
     }
     else if (firstPackage === secondPackage) {
-      const row = document.getElementById(cellId);
-      row.innerHTML = this.checkPackageVersion(
-        packageName,
-        firstPackage,
-        recommendVersion
-      );
+      const cell = document.getElementById(cellId);
+      cell.innerHTML = this.checkPackageVersion(packageName, firstPackage, recommendVersion);
     }
     else if (!firstPackage) {
       if (isImportant) {
-        this.setTextDangerForPackageImportant(
-          '(none)',
-          packageName,
-          secondPackage,
-          cellId
-        );
+        this.setTextDangerForImportantPackage('(none)', packageName, secondPackage, cellId);
       } else {
-        const row = document.getElementById(cellId);
-        row.innerHTML = `<span>(none)</span> &#8594; 
-        ${this.checkPackageVersion(
-          packageName,
-          secondPackage,
-          recommendVersion
-        )}`;
+        const cell = document.getElementById(cellId);
+        cell.innerHTML = `<span>(none)</span> &#8594; 
+          ${this.checkPackageVersion(
+            packageName, 
+            secondPackage, 
+            recommendVersion
+          )}`;
       }
     }
     else if (!secondPackage) {
       if (isImportant) {
-        this.setTextDangerForPackageImportant(firstPackage, packageName, '(none)', cellId);
+        this.setTextDangerForImportantPackage(firstPackage, packageName, '(none)', cellId);
       } else {
-        const row = document.getElementById(cellId);
-        row.innerHTML = `${this.checkPackageVersion(
+        const cell = document.getElementById(cellId);
+        cell.innerHTML = `${this.checkPackageVersion(
           packageName,
           firstPackage,
-          recommendVersion
+          recommendVersion,
         )} &#8594; <span>(none)</span>`;
       }
     }
     else {
-      const row = document.getElementById(cellId);
-      row.innerHTML = `
-      ${this.checkPackageVersion(
-        packageName, 
-        firstPackage, 
-        recommendVersion
-      )} 
-      &#8594; 
-      ${this.checkPackageVersion(
-        packageName, 
-        secondPackage, 
-        recommendVersion
-      )}`;
+      const cell = document.getElementById(cellId);
+      cell.innerHTML = `
+        ${this.checkPackageVersion(
+          packageName, 
+          firstPackage, 
+          recommendVersion,
+        )} 
+        &#8594; 
+        ${this.checkPackageVersion(
+          packageName, 
+          secondPackage, 
+          recommendVersion,
+        )}`;
     }
   }
 }
