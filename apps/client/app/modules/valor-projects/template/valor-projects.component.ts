@@ -3,6 +3,7 @@ import { HelpersService } from '../services/helpers.service';
 import { RepositoriesDataService } from '../services/repositories-data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../../../../interfaces/package-info.interface';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-valor-projects',
@@ -13,6 +14,8 @@ import { PackageInfoInterface } from '../../../../interfaces/package-info.interf
 export class ValorProjectsComponent implements OnInit {
   public tableHeader: BehaviorSubject<any>;
   public repositories: BehaviorSubject<any>;
+  public elementsCounter = 0;
+  public errorCondition: boolean = false;
 
   constructor(
     private readonly helpers: HelpersService,
@@ -28,6 +31,75 @@ export class ValorProjectsComponent implements OnInit {
     if (time) {
       return time.timestamp;
     }
+  }
+
+  public checkForFiltersCount() {
+    const filters = document.getElementById('filters');
+
+    const tableHeaderLength = document.getElementsByTagName('th').length;
+    const filtersLength = filters.getElementsByTagName('div').length;
+
+    return filtersLength === tableHeaderLength;
+  }
+
+  public addNewFilter() {
+    this.elementsCounter ++;
+    const packagesData = this.tableHeader.getValue();
+    const packagesNames = Array.from(packagesData, (pkj: any) => pkj.name);
+
+    const addFilter = document.getElementById('addFilter');
+    const doc = document.getElementById('filters');
+    const table = document.getElementById('tableHeader');
+
+    const headerLength = table.getElementsByTagName('th').length;
+    const filtersLength = doc.getElementsByTagName('div').length;
+
+    const colon = document.createTextNode(' : ');
+
+    if (filtersLength === headerLength) {
+      return null;
+    } else {
+      const element = document.createElement('div');
+
+      // SELECT FIELD
+      const selectField = document.createElement('select');
+
+      const defaultOption = document.createElement('option');
+      const defaultOptionText = document.createTextNode('Choose filter...');
+
+      defaultOption.setAttribute('selected', '');
+      defaultOption.appendChild(defaultOptionText);
+      selectField.appendChild(defaultOption);
+      selectField.classList.add('select-field');
+
+      for (let packageName of packagesNames) {
+        const dataOption = document.createElement('option');
+        const dataOptionText = document.createTextNode(packageName);
+
+        dataOption.appendChild(dataOptionText);
+        selectField.appendChild(dataOption);
+      }
+
+      // REMOVE FILTER
+      const removeButton = document.createElement('button');
+      removeButton.addEventListener('click', () => {
+        this.removeElement(element.getAttribute('id'));
+      });
+      removeButton.innerHTML = '&#11198;';
+
+      element.setAttribute('id', `filter${this.elementsCounter}`);
+      element.classList.add('filters__filter');
+      element.appendChild(selectField);
+      element.appendChild(colon);
+      element.appendChild(removeButton);
+      doc.appendChild(element);
+      doc.insertBefore(element, addFilter);
+    }
+  }
+
+  public removeElement(id: string) {
+    const elementToRemove = document.getElementById(id);
+    elementToRemove.remove();
   }
 
   public getBranches(branches: object, rowIndex: number) {
@@ -57,7 +129,6 @@ export class ValorProjectsComponent implements OnInit {
       row.className = 'private';
       return typeName;
     }
-
   }
 
   public getRepoPackage(
