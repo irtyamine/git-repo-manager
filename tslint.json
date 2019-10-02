@@ -89,7 +89,9 @@
     "object-literal-shorthand": false,
     "align": false,
     "no-shadowed-variable": false,
-    "no-bitwise": false
+    "no-bitwise": false,
+    "no-angle-bracket-type-assertion": false,
+    "no-unused-expression": false
   },
   "rulesDirectory": [
     "codelyzer"

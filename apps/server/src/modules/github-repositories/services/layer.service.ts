@@ -27,7 +27,7 @@ export class LayerService {
       },
       (err, res) => {
       if (err) { throw err; }
-    }).select({ '_id': 0 });
+    }).select({ '_id': 0, 'organization': 0, 'dataSource': 0 });
   }
 
   public async updateRepositoryData(repository: GithubRepositoryInterface) {

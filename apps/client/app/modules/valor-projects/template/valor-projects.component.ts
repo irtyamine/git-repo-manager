@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
-import { RepositoriesDataService } from '../services/repositories-data.service';
-import { BehaviorSubject } from 'rxjs';
-import { PackageInfoInterface } from '../../../../interfaces/package-info.interface';
-import { timeout } from 'rxjs/operators';
+import { DataService } from '../services/data.service';
+import { FiltrationService } from '../services/filtration.service';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { PackageInfoInterface } from '../interfaces/package-info.interface';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-valor-projects',
@@ -14,23 +15,46 @@ import { timeout } from 'rxjs/operators';
 export class ValorProjectsComponent implements OnInit {
   public tableHeader: BehaviorSubject<any>;
   public repositories: BehaviorSubject<any>;
-  public elementsCounter = 0;
   public errorCondition: boolean = false;
+  private keyup = new Subject<any>();
+  private elementsCounter = 0;
+  private filteringKey: string;
+  private filteringValue: string;
+  private defaultRepos: BehaviorSubject<any>;
 
   constructor(
     private readonly helpers: HelpersService,
-    private readonly repositoriesService: RepositoriesDataService
-  ) {  }
+    private readonly repositoriesService: DataService,
+    private readonly filtration: FiltrationService
+  ) {
+    this.keyup
+      .pipe(
+        debounceTime(450),
+        map(filterValue => {
+          return filterValue;
+        })
+      ).subscribe((text: string) => {
+        this.filteringValue = text;
+        const newFilteringObject = {
+          key: this.filteringKey,
+          value: this.filteringValue
+        };
+        const result = this.filtration.setFilterOptions(newFilteringObject);
+        this.repositories.next(result);
+    });
+  }
 
   ngOnInit() {
     this.tableHeader = this.repositoriesService.packages;
     this.repositories = this.repositoriesService.repositories;
+    this.defaultRepos = this.repositoriesService.repositories;
   }
 
   public getTimestamp(time: any) {
     if (time) {
       return time.timestamp;
     }
+    return undefined;
   }
 
   public checkForFiltersCount() {
@@ -60,9 +84,13 @@ export class ValorProjectsComponent implements OnInit {
       return null;
     } else {
       const element = document.createElement('div');
+      element.setAttribute('id', `filter${this.elementsCounter}`);
+      element.classList.add('filters__filter');
 
       // SELECT FIELD
       const selectField = document.createElement('select');
+      selectField.setAttribute('id', `select${this.elementsCounter}`);
+      selectField.classList.add('select-field');
 
       const defaultOption = document.createElement('option');
       const defaultOptionText = document.createTextNode('Choose filter...');
@@ -70,35 +98,55 @@ export class ValorProjectsComponent implements OnInit {
       defaultOption.setAttribute('selected', '');
       defaultOption.appendChild(defaultOptionText);
       selectField.appendChild(defaultOption);
-      selectField.classList.add('select-field');
 
       for (let packageName of packagesNames) {
         const dataOption = document.createElement('option');
         const dataOptionText = document.createTextNode(packageName);
 
+        dataOption.setAttribute('value', packageName);
         dataOption.appendChild(dataOptionText);
         selectField.appendChild(dataOption);
       }
 
+      // INSERT FILTERING VALUE
+      const inputField = document.createElement('input');
+      inputField.setAttribute('placeholder', 'Input filtering parameter');
+      inputField.setAttribute('autocomplete', 'off');
+      inputField.addEventListener('keyup', (event: Event) => {
+        const selectId = selectField.getAttribute('id');
+        this.filteringKey = (<HTMLInputElement> document.getElementById(selectId)).value;
+
+        this.keyup.next((<HTMLTextAreaElement> event.target).value);
+      });
+
       // REMOVE FILTER
       const removeButton = document.createElement('button');
-      removeButton.addEventListener('click', () => {
-        this.removeElement(element.getAttribute('id'));
-      });
       removeButton.innerHTML = '&#11198;';
+      removeButton.classList.add('remove-button');
+      removeButton.addEventListener('click', () => {
+        this.removeElement(
+          element.getAttribute('id'),
+          selectField.getAttribute('id'
+          ));
+      });
 
-      element.setAttribute('id', `filter${this.elementsCounter}`);
-      element.classList.add('filters__filter');
       element.appendChild(selectField);
       element.appendChild(colon);
+      element.appendChild(inputField);
       element.appendChild(removeButton);
+
       doc.appendChild(element);
       doc.insertBefore(element, addFilter);
     }
   }
 
-  public removeElement(id: string) {
-    const elementToRemove = document.getElementById(id);
+  public removeElement(elementId: string, selectId: string) {
+    const elementToRemove = document.getElementById(elementId);
+    const selectToRemove = (<HTMLInputElement> document.getElementById(selectId)).value;
+
+    const result = this.filtration.removeFilter(selectToRemove);
+    this.repositories.next(result);
+
     elementToRemove.remove();
   }
 

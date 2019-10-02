@@ -10,10 +10,17 @@ import { HelpersService } from './services/helpers.service';
 import { RepositoriesDataService } from './services/repositories-data.service';
 import { TooltipModule } from 'ngx-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { FiltrationService } from './services/filtration.service';
+import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [ ValorProjectsComponent, TimestampPipe ],
-  providers: [ HelpersService, RepositoriesDataService ],
+  providers: [
+    HelpersService,
+    DataService,
+    RepositoriesDataService,
+    FiltrationService
+  ],
   imports: [
     CommonModule,
     TooltipModule.forRoot(),

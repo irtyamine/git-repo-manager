@@ -141,7 +141,7 @@
 
 .filters {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
   text-align: center;
   white-space: nowrap;
@@ -171,6 +171,13 @@
       }
     }
   }
+}
+
+.remove-button {
+  background-color: red;
+  color: white;
+  border: 0;
+  border-radius: 5px;
 }
 
 .select-field {
