@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RepositoriesDataService } from './repositories-data.service';
+import { DataService } from './data.service';
 
 import { FilteringOptionsInterface } from '../interfaces/filteringOptions.interface';
 import { RepositoryInterface } from '../interfaces/repository.interface';
@@ -10,7 +11,10 @@ export class FiltrationService {
   private filteringOptions = [];
   private repositories: any;
 
-  constructor(private readonly service: RepositoriesDataService) {
+  constructor(
+    private readonly service: RepositoriesDataService,
+    private readonly dataService: DataService
+  ) {
     this.service.getRepositories()
       .subscribe(repositories => {
         this.repositories = repositories;
@@ -32,7 +36,7 @@ export class FiltrationService {
       }
     }
 
-    return this.filterData(this.filteringOptions);
+    this.filterData(this.filteringOptions);
   }
 
   public removeFilter(removeOption: string) {
@@ -46,23 +50,34 @@ export class FiltrationService {
     return this.filterData(this.filteringOptions);
   }
 
-  public filterData(filteringOptions: Object[FilteringOptionsInterface]) {
+  public filterData(filteringOptions: FilteringOptionsInterface[]) {
 
-    return this.repositories.filter((repository: RepositoryInterface) => {
+    const filteredOptions = this.repositories.filter((repository: RepositoryInterface) => {
       const firstBranch = repository.branches[Object.keys(repository.branches)[0]];
       const secondBranch = repository.branches[Object.keys(repository.branches)[1]];
 
       return filteringOptions.every(option => {
-        let founded: boolean;
+
+        if ((firstBranch && firstBranch[option.key]) && (secondBranch && secondBranch[option.key])) {
+          return firstBranch[option.key].indexOf(option.value, 0) !== -1
+            || secondBranch[option.key].indexOf(option.value, 0) !== -1;
+        }
+
         if (firstBranch && firstBranch[option.key]) {
-          founded = firstBranch[option.key].indexOf(option.value) >= 0;
+          return firstBranch[option.key].indexOf(option.value, 0) !== -1;
         }
+
         if (secondBranch && secondBranch[option.key]) {
-          founded = secondBranch[option.key].indexOf(option.value) >= 0;
+          return secondBranch[option.key].indexOf(option.value, 0) !== -1;
         }
-        return founded;
+
+        return false;
       });
     });
+
+    console.log(filteredOptions);
+
+    this.dataService.setRepositories(filteredOptions);
   }
 
 }

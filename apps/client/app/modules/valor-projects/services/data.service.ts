@@ -15,7 +15,7 @@ export class DataService {
   public getPackagesData() {
     return this.reposDataService.getRepositories()
       .subscribe(repositories => {
-        this.companyRepositories.next(repositories);
+        this.setRepositories(repositories);
       });
 
   }
@@ -23,8 +23,16 @@ export class DataService {
   public getRepositoriesData() {
     return this.reposDataService.getPackages()
       .subscribe(packages => {
-        this.availablePackages.next(packages);
+        this.setPackagesData(packages);
       });
+  }
+
+  public setPackagesData(packages: any) {
+    this.availablePackages.next(packages);
+  }
+
+  public setRepositories(repositories: any) {
+    this.companyRepositories.next(repositories);
   }
 
   public get packages() {

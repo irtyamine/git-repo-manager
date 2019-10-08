@@ -1,0 +1,9 @@
+<select class="select-filter" (change)="chooseSelectOption($event.target.value)">
+  <option selected disabled hidden>Choose an option...</option>
+  <option class="select-option" *ngFor="let option of (filterOptions | async)" [value]="option.name">
+    {{ option.name }}
+  </option>
+</select>
+:
+<input class="input-field" type="text" autocomplete="off" placeholder="Input filter value" (keyup)="inputFilterValue($event.target.value)" />
+<button class="remove-filter" (click)="removeComponent(index)">&#9447;</button>
