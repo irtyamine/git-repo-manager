@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { ValorProjectsRoutingModule } from './valor-projects.routing.module';
+import { ComapnyProjectsRoutingModule } from './comapny-projects.routing.module';
 
-import { ValorProjectsComponent } from './template/valor-projects.component';
+import { ComapnyProjectsComponent } from './template/company-projects.component';
 import { CommonModule } from '@angular/common';
 import { TimestampPipe } from './template/pipes/timestamp.pipe';
 import { FiltersChildComponent } from './dynamic-components/filters/child-component/filters-child.component';
@@ -17,7 +17,7 @@ import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
-    ValorProjectsComponent,
+    ComapnyProjectsComponent,
     TimestampPipe,
     FiltersChildComponent,
     FiltersParentComponent
@@ -35,9 +35,9 @@ import { DataService } from './services/data.service';
     CommonModule,
     TooltipModule.forRoot(),
     HttpClientModule,
-    ValorProjectsRoutingModule
+    ComapnyProjectsRoutingModule
   ],
   exports: []
 })
 
-export class ValorProjectsModule {  }
+export class CompanyProjectsModule {  }

@@ -6,11 +6,11 @@ import { PackageInfoInterface } from '../interfaces/package-info.interface';
 
 @Component({
   selector: 'app-valor-projects',
-  templateUrl: './valor-projects.component.html',
-  styleUrls: ['./valor-projects.component.scss']
+  templateUrl: './company-projects.component.html',
+  styleUrls: ['./company-projects.component.scss']
 })
 
-export class ValorProjectsComponent implements OnInit {
+export class ComapnyProjectsComponent implements OnInit {
   public tableHeader: BehaviorSubject<any>;
   public repositories: BehaviorSubject<any>;
   public errorCondition: boolean = false;

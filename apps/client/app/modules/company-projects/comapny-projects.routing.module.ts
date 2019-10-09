@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ValorProjectsComponent } from './template/valor-projects.component';
+import { ComapnyProjectsComponent } from './template/company-projects.component';
 
 export const valorProjectsRoute: Routes = [
   {
@@ -11,7 +11,7 @@ export const valorProjectsRoute: Routes = [
   },
   {
     path: 'all-projects',
-    component: ValorProjectsComponent
+    component: ComapnyProjectsComponent
   }
 ];
 
@@ -20,4 +20,4 @@ export const valorProjectsRoute: Routes = [
   exports: [ RouterModule ]
 })
 
-export class ValorProjectsRoutingModule {  }
+export class ComapnyProjectsRoutingModule {  }
