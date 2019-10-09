@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { GetRepositoriesDataService } from '../services/get-repositories-data.service';
 import { PackagesService } from '../services/packages.service';
 
@@ -12,14 +12,12 @@ export class RepositoriesData {
   ) {  }
 
   @Get('all-repositories')
-  async getOrgRepositories(@Res() res) {
-    const result = await this.getRepositories.getRepositories('valor-software', 'github');
-    res.json(result);
+  async getOrgRepositories() {
+    return await this.getRepositories.getRepositories('valor-software', 'github');
   }
 
   @Get('packages')
-  async getPackages(@Res() res) {
-    const packages = await this.packagesService.getPackages();
-    res.json(packages);
+  async getPackages() {
+    return await this.packagesService.getPackages();
   }
 }

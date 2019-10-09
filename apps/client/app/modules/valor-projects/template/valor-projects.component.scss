@@ -8,6 +8,10 @@
   &__caption {
     caption-side: top;
     color: #e1e1e1;
+    span {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__header {
@@ -133,4 +137,49 @@
       background-color: $color-hover-danger;
     }
   }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  text-align: center;
+  white-space: nowrap;
+  &__button {
+    border: 0;
+    width: 150px;
+    border-radius: 5px;
+    font-size: 15px;
+    color: $color-white;
+    background-color: #7f8685;
+    @include transition(.3s);
+    &:hover {
+      cursor: pointer;
+      background-color: aliceblue;
+      color: black;
+    }
+  }
+  &__filter {
+    padding: 5px;
+    button {
+      border: 0;
+      border-radius: 5px;
+      max-width: 100px;
+      background-color: $color-danger;
+      &:hover {
+        background-color: $color-hover-danger;
+      }
+    }
+  }
+}
+
+.remove-button {
+  background-color: red;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+}
+
+.select-field {
+  border: 0;
 }

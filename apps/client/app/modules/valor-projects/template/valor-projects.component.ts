@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { tableHeader } from '../../../../mock-data/table-header';
-import { repositoriesData } from '../../../../mock-data/repositories';
 import { HelpersService } from '../services/helpers.service';
+import { DataService } from '../services/data.service';
+import { BehaviorSubject } from 'rxjs';
+import { PackageInfoInterface } from '../interfaces/package-info.interface';
 
 @Component({
   selector: 'app-valor-projects',
@@ -10,12 +11,28 @@ import { HelpersService } from '../services/helpers.service';
 })
 
 export class ValorProjectsComponent implements OnInit {
-  public tHeader = tableHeader;
-  public repositories = repositoriesData;
+  public tableHeader: BehaviorSubject<any>;
+  public repositories: BehaviorSubject<any>;
+  public errorCondition: boolean = false;
+  private defaultRepos: BehaviorSubject<any>;
 
-  constructor(private helpers: HelpersService) {  }
+  constructor(
+    private readonly helpers: HelpersService,
+    private readonly repositoriesService: DataService,
+  ) {  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tableHeader = this.repositoriesService.packages;
+    this.repositories = this.repositoriesService.repositories;
+    this.defaultRepos = this.repositoriesService.repositories;
+  }
+
+  public getTimestamp(time: any) {
+    if (time) {
+      return time.timestamp;
+    }
+    return undefined;
+  }
 
   public getBranches(branches: object, rowIndex: number) {
     const id = 'branches' + rowIndex;
@@ -35,27 +52,29 @@ export class ValorProjectsComponent implements OnInit {
 
   public getRepositoryType(typeName: string, rowIndex: number) {
     const id = 'repoType' + rowIndex;
+    const row = document.getElementById(id);
 
     if (typeName === 'Public') {
-      this.helpers.setbBgPublic(id);
+      row.className = 'public';
       return typeName;
     } else {
-      this.helpers.setbBgPrivate(id);
+      row.className = 'private';
       return typeName;
     }
-
   }
 
   public getRepoPackage(
     branches: object,
-    packageName: string,
-    recommendVersion: string,
-    isImportant: boolean,
+    packageData: PackageInfoInterface,
     rowIndex: number
   ) {
     const firstBranch = Object.keys(branches)[0];
     const secondBranch = Object.keys(branches)[1];
-    const cellId = packageName + rowIndex;
+    const packageName = packageData.name;
+    const recommendVersion = packageData.recommendVersion;
+    const isImportant = packageData.isImportant;
+    const cellId = packageData.name + rowIndex;
+    const rowId = 'row' + rowIndex;
 
     if (!firstBranch) {
       const secondBranchPackage = branches[secondBranch][packageName];
@@ -66,7 +85,8 @@ export class ValorProjectsComponent implements OnInit {
         secondBranchPackage,
         recommendVersion,
         isImportant,
-        cellId
+        cellId,
+        rowId
       );
     }
     else if (!secondBranch) {
@@ -78,7 +98,8 @@ export class ValorProjectsComponent implements OnInit {
         null,
         recommendVersion,
         isImportant,
-        cellId
+        cellId,
+        rowId
       );
     }
     else {
@@ -91,7 +112,8 @@ export class ValorProjectsComponent implements OnInit {
         secondBranchPackage,
         recommendVersion,
         isImportant,
-        cellId
+        cellId,
+        rowId
       );
     }
 

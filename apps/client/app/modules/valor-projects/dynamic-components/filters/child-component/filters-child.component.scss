@@ -1,0 +1,48 @@
+@import '../../../template/scss/variables';
+@import '../../../template/scss/transition';
+
+.select-filter {
+  border: 0;
+  outline: 0;
+  height: 26px;
+  background-color: transparent;
+  color: $color-white;
+}
+
+.select-option {
+  outline: 0;
+  border: 0;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+.input-field {
+  border: 0;
+  outline: 0;
+  color: $color-white;
+  text-overflow: ellipsis;
+  background-color: transparent;
+  &::placeholder {
+    @include transition(.3s);
+    color: #7f8685;
+  }
+  &:focus {
+    &::placeholder {
+      @include transition(.3s);
+      color: transparent;
+    }
+  }
+}
+
+.remove-filter {
+  border: 0;
+  outline: 0;
+  background-color: rgba(0, 0, 0, 0);
+  font-weight: 900;
+  color: $color-white;
+  @include transition(.3s);
+  &:hover {
+    cursor: pointer;
+  }
+}

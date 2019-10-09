@@ -1,0 +1,46 @@
+<div>
+  <span>
+    <select class="select-filter" (change)="chooseSelectOption($event.target.value)">
+      <optgroup class="select-option" label="Repository data">
+        <option selected disabled hidden value="nothing">Choose an option...</option>
+        <option class="select-option" value="repoName">repository name</option>
+        <option class="select-option" value="repoType">type of privacy</option>
+      </optgroup>
+
+      <optgroup class="select-option" label="Branches">
+          <option class="select-option" value="branches">single branch</option>
+          <option class="select-option" value="missingBranches">missed branches</option>
+      </optgroup>
+
+      <optgroup class="select-option" label="Branches data">
+        <option class="select-option" *ngFor="let option of (filterOptions | async)" [value]="option.name">
+          {{ option.name }}
+        </option>
+      </optgroup>
+    </select>
+  </span>
+
+  <span> &#58; </span>
+
+  <span [hidden]="filteringKey !== 'branches'">
+    <input class="input-field" type="text"
+           placeholder="input found branch name"
+           autocomplete="off"
+           [disabled]="filteringKey === 'nothing'"
+           (keyup)="inputFilterValue($event.target.value)"
+    />
+  </span>
+
+  <span [hidden]="filteringKey === 'branches'">
+    <input class="input-field" type="text"
+           placeholder="input found path"
+           autocomplete="off"
+           [disabled]="filteringKey === 'nothing'"
+           (keyup)="inputFilterValue($event.target.value)"
+    />
+  </span>
+
+  <span>
+    <button class="remove-filter" (click)="removeComponent(index)">&#9447;</button>
+  </span>
+</div>

@@ -22,11 +22,12 @@ export class LayerService {
   public async getRepositories(organizationName: string, dataSource: string) {
     return await this.repositoriesModel.find({
         organization: organizationName,
-        dataSource: dataSource
+        dataSource: dataSource,
+        branches: { $exists: true }
       },
       (err, res) => {
       if (err) { throw err; }
-    }).select({ '_id': 0 });
+    }).select({ '_id': 0, 'organization': 0, 'dataSource': 0 });
   }
 
   public async updateRepositoryData(repository: GithubRepositoryInterface) {

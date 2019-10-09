@@ -1,13 +1,20 @@
 <table class="my-table">
-  <caption class="my-table__caption">Last Update: {{ repositories[0].timestamp | timestamp }}</caption>
-  <caption class="my-table__caption">Member: member</caption>
+  <caption class="my-table__caption">
+    <span>Last Update: {{ getTimestamp((repositories | async)[0]) | timestamp }}</span>
+    <span class="member">Member: member</span>
+    <filters [options]="tableHeader"></filters>
+
+    <!--<div class="filters" id="filters">-->
+      <!--<button class="filters__button" id="addFilter" [hidden]="checkForFiltersCount()" (click)="addNewFilter()">Add filter</button>-->
+    <!--</div>-->
+  </caption>
 
   <thead class="my-table__header">
-    <tr class="my-table__header-row ">
+    <tr class="my-table__header-row" id="tableHeader">
       <th class="my-table__header-row_element">repository name</th>
       <th class="my-table__header-row_element">branches</th>
       <th class="my-table__header-row_element">type of privacy</th>
-      <th class="my-table__header-row_element" *ngFor="let headElement of tHeader">
+      <th class="my-table__header-row_element" *ngFor="let headElement of (tableHeader | async)">
         <span [tooltip]="headElement.recommendVersion">{{ headElement.name }}</span>
         <span [hidden]="!headElement.recommendVersion">: {{ headElement.recommendVersion }}</span>
         <span [hidden]="!headElement.isImportant" class="important" tooltip="Important Field"> *</span>
@@ -16,7 +23,7 @@
   </thead>
 
   <tbody class="my-table__body">
-    <tr class="my-table__body-row" *ngFor="let repository of repositories; let rowIndex = index" [id]="'row'+rowIndex">
+    <tr class="my-table__body-row" *ngFor="let repository of (repositories | async); let rowIndex = index" [id]="'row'+rowIndex">
       <td [id]="'repoName'+rowIndex" class="my-table__body-row_element">
         <span>{{ repository.repoName }}</span>
       </td>
@@ -29,8 +36,8 @@
         <span>{{ getRepositoryType(repository.repoType, rowIndex) }}</span>
       </td>
 
-      <td class="my-table__body-row_element" *ngFor="let headElement of tHeader" [id]="headElement.name+rowIndex">
-          {{ getRepoPackage(repository.branches, headElement.name, headElement.recommendVersion, headElement.isImportant, rowIndex) }}
+      <td class="my-table__body-row_element" *ngFor="let headElement of (tableHeader | async)" [id]="headElement.name+rowIndex">
+          {{ getRepoPackage(repository.branches, headElement, rowIndex) }}
       </td>
     </tr>
   </tbody>
