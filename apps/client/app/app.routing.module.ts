@@ -5,6 +5,10 @@ export const appRoutes: Routes = [
   {
     path: '',
     loadChildren: './modules/company-projects/company-projects.module#CompanyProjectsModule'
+  },
+  {
+    path: '',
+    loadChildren: './modules/user-authorization/user-authorization.module#UserAuthorizationModule'
   }
 ];
 

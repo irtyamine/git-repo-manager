@@ -1,0 +1,26 @@
+<form [formGroup]="loginForm" class="form">
+  <div class="form__header">
+    <span class="form__header-text">
+      Well Come!
+    </span>
+  </div>
+
+  <div class="organization">
+
+    <div class="organization__left-side">
+      <input class="input-field" type="text" placeholder="Organization name" autocomplete="off" formControlName="organization">
+    </div>
+
+    <div class="organization__middle-side"></div>
+
+    <div class="organization__right-side">
+      <div class="checkbox">
+        <input id="gitHub" type="checkbox" formControlName="dataSource">
+        <label for="gitHub">GitHub</label>
+      </div>
+
+      <div class="coming_soon">Coming soon...</div>
+    </div>
+
+  </div>
+</form>

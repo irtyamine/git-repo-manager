@@ -1,0 +1,148 @@
+@import 'scss/variables';
+@import 'scss/transition';
+
+.form {
+  border-radius: 10px;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px;
+  height: 400px;
+  background-color: rgba(255,255,255,0.1);
+
+  &__header {
+    height: 60px;
+    text-align: center;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: rgba(255,255,255,0.3);
+    &-text {
+      color: white;
+      font-size: 40px;
+    }
+  }
+}
+
+.organization {
+  margin-top: 85px;
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+
+  &__left-side {
+    text-align: center;
+    align-self: center;
+  }
+
+  &__middle-side {
+    border-radius: 10px;
+    background-color: $color-input-focus;
+  }
+
+  &__right-side {
+    text-align: center;
+  }
+}
+
+.input-field {
+  border: 2px solid $color-grey;
+  outline: 0;
+  border-radius: 5px;
+  color: $color-input;
+  font-size: 20px;
+  padding: 12px;
+  width: 18em;
+  background-color: $color-hover-black;
+
+  @include transition(.3s);
+
+  &::placeholder {
+    @include transition(.3s);
+    font-size: 22px;
+    color: $color-grey;
+  }
+
+  &:focus {
+    border: 2px solid $color-input-focus;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+}
+
+.test {
+  vertical-align: middle;
+}
+
+.coming_soon {
+  font-size: 30px;
+  color: $color-input-focus;
+}
+
+.checkbox {
+  & input {
+    opacity: 0;
+  }
+
+  & label {
+    position: relative;
+    font-size: 35px;
+    user-select: none;
+    color: $color-grey;
+    cursor: pointer;
+    @include transition(.3s);
+
+    &::before {
+      content: '';
+      cursor: pointer;
+      display: inline-block;
+      position: absolute;
+
+      height: 25px;
+      width: 25px;
+
+      @include transition(.3s);
+
+      background-color: $color-hover-black;
+      border-radius: 5px;
+      border: 2px solid $color-grey;
+      top: 15px;
+      left: -35px;
+    }
+
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+
+      height: 9px;
+      width: 15px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+
+      transform: rotate(-45deg);
+      left: -30px;
+      top: 20px;
+    }
+  }
+}
+
+.checkbox input + label {
+  &::after {
+    content: none;
+  }
+}
+.checkbox input {
+  &:checked + label {
+
+    color: $color-input-focus;
+
+    &::before {
+      border: 2px solid $color-input-focus;
+    }
+
+    &::after {
+      content: "";
+    }
+  }
+}

@@ -11,7 +11,7 @@ export class ClientSideMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: Function): any {
     const { url } = req;
 
-    if (url.indexOf('all-projects') > 0) {
+    if (url.indexOf('all-projects') > 0 || url.indexOf('login') > 0) {
       res.sendFile(resolvePath('index.html'));
     } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
       res.sendFile(resolvePath(url));

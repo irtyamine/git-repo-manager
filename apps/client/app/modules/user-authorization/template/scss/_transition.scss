@@ -1,0 +1,11 @@
+@mixin transition($duration: 0) {
+  -webkit-transition-duration: $duration;
+  -moz-transition-duration: $duration;
+  -o-transition-duration: $duration;
+  transition-duration: $duration;
+
+  -webkit-transition-property: border, color, cursor;
+  -moz-transition-property: border, color, cursor;
+  -o-transition-property: border, color, cursor;
+  transition-property: border, color, cursor;
+}
