@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -8,10 +10,16 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class UserAuthorizationComponent implements OnInit {
+  public errText: string;
+  public errCondition: boolean = false;
   public loginForm: FormGroup;
   public dataSource: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private readonly router: Router,
+    private readonly auth: AuthService,
+    private readonly formBuilder: FormBuilder
+  ) {  }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -21,6 +29,19 @@ export class UserAuthorizationComponent implements OnInit {
   }
 
   public login() {
-    console.log(this.loginForm.value);
+    return this.auth.authenticateUser(this.loginForm.value)
+      .subscribe(() => {
+        this.router.navigateByUrl('/all-projects');
+      }, err => {
+        if (err.indexOf('404', 0) !== -1) {
+
+         this.errText = 'AuthError: organization or data storage not found';
+         this.errCondition = true;
+
+         setTimeout(() => {
+           this.errCondition = false;
+         }, 3000);
+        }
+      });
   }
 }

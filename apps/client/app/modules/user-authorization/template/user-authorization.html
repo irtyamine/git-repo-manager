@@ -1,3 +1,7 @@
+<div class="error" [hidden]="!errCondition">
+  <span class="error__text">{{ errText }}</span>
+</div>
+
 <form [formGroup]="loginForm" class="form">
   <div class="form__header">
     <span class="form__header-text">

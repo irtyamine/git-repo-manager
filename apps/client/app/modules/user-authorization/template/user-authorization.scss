@@ -259,3 +259,27 @@
   padding: 10px;
   @include transition(.3s);
 }
+
+.error {
+  text-align: center;
+  display: block;
+  position: absolute;
+  background-color: $color-danger;
+  width: 500px;
+  height: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+
+  &__text {
+    padding: 5px;
+    font-size: 20px;
+    color: $color-white;
+
+    &:before {
+      content: '\26A0';
+      margin-right: 5px;
+      color: $color-white;
+    }
+  }
+}
