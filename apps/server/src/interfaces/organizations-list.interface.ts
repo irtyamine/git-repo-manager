@@ -1,5 +1,5 @@
 export interface OrganizationsListInterface {
   organizationName: string;
-  organizationDataStorage: string;
+  organizationDataStorage: any;
   organizationAccessToken: string;
 }

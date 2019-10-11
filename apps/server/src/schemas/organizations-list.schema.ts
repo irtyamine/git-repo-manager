@@ -6,7 +6,7 @@ export const OrganizationsListSchema = new mongoose.Schema({
     required: true
   },
   organizationDataStorage: {
-    type: String,
+    type: [String],
     required: true
   },
   organizationAccessToken: {

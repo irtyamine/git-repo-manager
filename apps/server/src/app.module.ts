@@ -1,12 +1,16 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+
+import { ClientSideMiddleware } from './middlewares/client-side.middleware';
+
 import { GithubRepositoriesModule } from './modules/github-repositories/github-repositories.module';
 import { ClientSideModule } from './modules/client-side/client-side.module';
-import { ClientSideMiddleware } from './middlewares/client-side.middleware';
+import { AuthModule } from './modules/authentication/auth.module';
 
 @Module({
   imports: [
-    GithubRepositoriesModule,
+    AuthModule,
     ClientSideModule,
+    GithubRepositoriesModule,
   ],
   exports: [],
   providers: []
