@@ -4,8 +4,8 @@
   -o-transition-duration: $duration;
   transition-duration: $duration;
 
-  -webkit-transition-property: border, color, cursor;
-  -moz-transition-property: border, color, cursor;
-  -o-transition-property: border, color, cursor;
-  transition-property: border, color, cursor;
+  -webkit-transition-property: border, color, cursor, background-color, font-size;
+  -moz-transition-property: border, color, cursor, background-color, font-size;
+  -o-transition-property: border, color, cursor, background-color, font-size;
+  transition-property: border, color, cursor, background-color, font-size;
 }

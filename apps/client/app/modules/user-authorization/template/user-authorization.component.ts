@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-authorization',
@@ -8,12 +8,19 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 
 export class UserAuthorizationComponent implements OnInit {
-  public loginForm = new FormGroup({
-    organization: new FormControl(''),
-    dataSource: new FormControl('')
-  });
+  public loginForm: FormGroup;
+  public dataSource: FormGroup;
 
-  constructor() {  }
+  constructor(private formBuilder: FormBuilder) {}
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.loginForm = this.formBuilder.group({
+      organization: ['', Validators.required],
+      dataSource: ['', Validators.required]
+    });
+  }
+
+  public login() {
+    console.log(this.loginForm.value);
+  }
 }

@@ -8,18 +8,35 @@
   <div class="organization">
 
     <div class="organization__left-side">
-      <input class="input-field" type="text" placeholder="Organization name" autocomplete="off" formControlName="organization">
+      <div class="input-text">
+        <label for="inputField">Please, set your organization name</label>
+        <input id="inputField" class="input-field" type="text"
+               placeholder="Organization name"
+               autocomplete="off"
+               formControlName="organization">
+      </div>
     </div>
 
     <div class="organization__middle-side"></div>
 
     <div class="organization__right-side">
-      <div class="checkbox">
-        <input id="gitHub" type="checkbox" formControlName="dataSource">
+
+      <div class="radio">
+        <input id="gitHub" type="radio" value="github" formControlName="dataSource">
         <label for="gitHub">GitHub</label>
       </div>
 
-      <div class="coming_soon">Coming soon...</div>
+      <div class="coming_soon">Other services - coming soon...</div>
+    </div>
+
+  </div>
+
+  <div class="form__footer">
+
+    <div class="form__footer-login">
+      <button class="login-button" [disabled]="!loginForm.valid" (click)="login()">
+        <span class="button-text">Login via (coming soon...)</span>
+      </button>
     </div>
 
   </div>
