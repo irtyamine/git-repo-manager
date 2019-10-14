@@ -1,19 +1,42 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, ErrorHandler } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { NotificationService } from '../../notifications/notification.service';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements ErrorHandler {
+  private errorText: string;
 
-  constructor(private readonly http: HttpClient) {  }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly notificationService: NotificationService
+  ) {  }
 
   public authenticateUser(authData) {
     return this.http.post(`${environment.url}/api/${authData.dataSource}/organization-check`, authData)
-      .pipe( catchError(err =>
-        err.code === 404 ? throwError('no found')
-          : throwError(err.message)));
+      .pipe(catchError(this.handleError))
+      .subscribe(() => {
+        this.notificationService.clear();
+      }, err => {
+        this.notificationService.clear();
+        this.notificationService.error(err);
+      });
+  }
+
+  handleError(err: HttpErrorResponse) {
+    if (err.error instanceof ErrorEvent) {
+      this.errorText = `${err.error.message}`;
+      console.error('An error occurred:', err.error.message);
+    } else {
+      this.errorText = `${err.error.error}: ${err.error.message}`;
+      console.error(
+        `Backend returned code ${err.status}, ` +
+        `body was: ${err.error}`);
+    }
+
+    return throwError(this.errorText);
   }
 
 }

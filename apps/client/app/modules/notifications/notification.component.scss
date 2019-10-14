@@ -1,0 +1,15 @@
+.notification {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 40px;
+  text-align: center;
+
+  &-error {
+    background-color: #9c0000;
+    color: #cdcdcd;
+    font-size: 25px;
+  }
+}

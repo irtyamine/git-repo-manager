@@ -29,19 +29,6 @@ export class UserAuthorizationComponent implements OnInit {
   }
 
   public login() {
-    return this.auth.authenticateUser(this.loginForm.value)
-      .subscribe(() => {
-        this.router.navigateByUrl('/all-projects');
-      }, err => {
-        if (err.indexOf('404', 0) !== -1) {
-
-         this.errText = 'AuthError: organization or data storage not found';
-         this.errCondition = true;
-
-         setTimeout(() => {
-           this.errCondition = false;
-         }, 3000);
-        }
-      });
+    return this.auth.authenticateUser(this.loginForm.value);
   }
 }
