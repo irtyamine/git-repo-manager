@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { GetRepositoriesDataService } from '../services/get-repositories-data.service';
 import { PackagesService } from '../services/packages.service';
 
-@Controller('github/repositories')
+@Controller('api/github/repositories')
 
 export class RepositoriesData {
 

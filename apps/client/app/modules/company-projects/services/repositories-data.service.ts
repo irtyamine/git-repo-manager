@@ -9,12 +9,12 @@ export class RepositoriesDataService {
   constructor(private readonly http: HttpClient) {  }
 
   public getPackages() {
-    return this.http.get(`${environment.url}/github/repositories/packages`)
+    return this.http.get(`${environment.url}/api/github/repositories/packages`)
       .pipe();
   }
 
   public getRepositories() {
-    return this.http.get(`${environment.url}/github/repositories/all-repositories`)
+    return this.http.get(`${environment.url}/api/github/repositories/all-repositories`)
       .pipe();
   }
 }

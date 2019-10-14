@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-authorization',
@@ -29,6 +30,7 @@ export class UserAuthorizationComponent implements OnInit {
   }
 
   public login() {
-    return this.auth.authenticateUser(this.loginForm.value);
+    window.location.href = `${environment.url}/api/github/login`;
+    // return this.auth.authenticateUser(this.loginForm.value);
   }
 }

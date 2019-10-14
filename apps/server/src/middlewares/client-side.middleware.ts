@@ -11,12 +11,12 @@ export class ClientSideMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: Function): any {
     const { url } = req;
 
-    if (url.indexOf('all-projects') > 0 || url.indexOf('login') > 0) {
-      res.sendFile(resolvePath('index.html'));
+    if (url.indexOf('api') > 0) {
+      return next();
     } else if (allowedExt.filter(ext => url.indexOf(ext) > 0).length > 0) {
       res.sendFile(resolvePath(url));
-    } else if (allowedDataSources.filter(dataSource => url.indexOf(dataSource) > 0)) {
-      return next();
+    } else {
+      res.sendFile(resolvePath('index.html'));
     }
   }
 }
