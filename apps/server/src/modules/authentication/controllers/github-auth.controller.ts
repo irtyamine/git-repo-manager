@@ -23,8 +23,17 @@ export class GithubAuthController {
       res.redirect('back');
     }
     else {
+      req.cookies('_auth_token', '111111111', { expires: new Date(Date.now() + (3600 * 5 * 1000)) });
       res.redirect('../../all-projects');
     }
   }
 
+  @Get('isAuthenticated')
+  checkIfUserAuthenticated(@Req() req) {
+    if (!req.cookies['_auth_token']) {
+      return false
+    }
+
+    return true;
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../notifications/notification.service';
@@ -24,6 +24,11 @@ export class AuthService implements ErrorHandler {
         this.notificationService.clear();
         this.notificationService.error(err);
       });
+  }
+
+  public check(): Observable<any> {
+    return this.http.get(`${environment.url}/api/*/isAuthenticated`)
+      .pipe();
   }
 
   handleError(err: HttpErrorResponse) {
