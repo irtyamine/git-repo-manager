@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, UseGuards, Res } from '@nestjs/common';
+import { Controller, Post, Get, Body, UseGuards, Req, Res } from '@nestjs/common';
 import { GithubAuthService } from '../services/github-auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -14,11 +14,17 @@ export class GithubAuthController {
 
   @Get('login')
   @UseGuards(AuthGuard('github'))
-  gitHubLogin() {}
+  gitHubLogin() {  }
 
   @Get('callback')
-  gitHubAuthCallback(@Res() res) {
-    res.redirect('http://localhost:3000/all-projects');
+  @UseGuards(AuthGuard('github'))
+  gitHubAuthCallback(@Req() req, @Res() res) {
+    if(!req.user.token) {
+      res.redirect('back');
+    }
+    else {
+      res.redirect('../../all-projects');
+    }
   }
 
 }

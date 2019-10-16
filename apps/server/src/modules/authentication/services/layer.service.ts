@@ -25,4 +25,10 @@ export class LayerService {
     return true;
   }
 
+  public async getOrganizations() {
+    return await this.organizationsList
+      .find()
+      .select({ '_id': 0, 'organizationName': 1 })
+  }
+
 }

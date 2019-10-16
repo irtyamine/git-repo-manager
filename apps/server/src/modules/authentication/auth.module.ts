@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 
 import { GithubAuthController } from './controllers/github-auth.controller';
 
@@ -10,7 +10,7 @@ import { GithubStrategy } from './starategies/github.strategy';
 
 @Module({
   controllers: [ GithubAuthController ],
-  imports: [],
+  imports: [ HttpModule ],
   exports: [],
   providers: [
     LayerService,

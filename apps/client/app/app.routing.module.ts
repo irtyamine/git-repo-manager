@@ -4,11 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 export const appRoutes: Routes = [
   {
     path: '',
-    loadChildren: './modules/company-projects/company-projects.module#CompanyProjectsModule'
+    loadChildren: './modules/user-authorization/user-authorization.module#UserAuthorizationModule'
   },
   {
     path: '',
-    loadChildren: './modules/user-authorization/user-authorization.module#UserAuthorizationModule'
+    loadChildren: './modules/company-projects/company-projects.module#CompanyProjectsModule'
   }
 ];
 

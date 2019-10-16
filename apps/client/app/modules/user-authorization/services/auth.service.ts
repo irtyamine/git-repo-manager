@@ -19,6 +19,7 @@ export class AuthService implements ErrorHandler {
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.clear();
+        window.location.href = `${environment.url}/api/github/login`;
       }, err => {
         this.notificationService.clear();
         this.notificationService.error(err);

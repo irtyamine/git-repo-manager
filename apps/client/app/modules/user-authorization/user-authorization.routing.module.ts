@@ -5,6 +5,11 @@ import { UserAuthorizationComponent } from './template/user-authorization.compon
 
 export const userAuthorizationRoutes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login'
+  },
+  {
     path: 'login',
     component: UserAuthorizationComponent
   }

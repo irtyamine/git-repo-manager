@@ -30,7 +30,6 @@ export class UserAuthorizationComponent implements OnInit {
   }
 
   public login() {
-    window.location.href = `${environment.url}/api/github/login`;
-    // return this.auth.authenticateUser(this.loginForm.value);
+    return this.auth.authenticateUser(this.loginForm.value);
   }
 }

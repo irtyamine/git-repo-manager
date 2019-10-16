@@ -5,11 +5,6 @@ import { ComapnyProjectsComponent } from './template/company-projects.component'
 
 export const valorProjectsRoute: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'all-projects'
-  },
-  {
     path: 'all-projects',
     component: ComapnyProjectsComponent
   }
