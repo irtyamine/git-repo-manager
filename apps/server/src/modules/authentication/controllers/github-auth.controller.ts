@@ -19,21 +19,29 @@ export class GithubAuthController {
   @Get('callback')
   @UseGuards(AuthGuard('github'))
   gitHubAuthCallback(@Req() req, @Res() res) {
-    if(!req.user.token) {
+    if (!req.user.token) {
       res.redirect('back');
     }
     else {
-      req.cookies('_auth_token', '111111111', { expires: new Date(Date.now() + (3600 * 5 * 1000)) });
+      res.cookie('_auth_token', '111111111', { expires: new Date(Date.now() + (3600 * 5 * 1000)) });
       res.redirect('../../all-projects');
     }
   }
 
   @Get('isAuthenticated')
   checkIfUserAuthenticated(@Req() req) {
+    console.log(req.session);
     if (!req.cookies['_auth_token']) {
-      return false
+      return false;
     }
+    else {
+      return true;
+    }
+  }
 
-    return true;
+  @Get('logout')
+  logOut(@Res() res) {
+    res.clearCookie('_auth_token');
+    res.redirect('../../login');
   }
 }

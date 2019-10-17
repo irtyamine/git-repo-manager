@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { NotificationService } from '../../notifications/notification.service';
+import { NotificationService } from '../../../shared/notifications/notification.service';
 
 @Injectable()
 export class AuthService implements ErrorHandler {
@@ -27,8 +27,7 @@ export class AuthService implements ErrorHandler {
   }
 
   public check(): Observable<any> {
-    return this.http.get(`${environment.url}/api/*/isAuthenticated`)
-      .pipe();
+    return this.http.get(`${environment.url}/api/github/isAuthenticated`);
   }
 
   handleError(err: HttpErrorResponse) {

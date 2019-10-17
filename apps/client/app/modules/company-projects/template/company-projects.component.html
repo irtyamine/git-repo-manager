@@ -1,12 +1,8 @@
+<header [lastUpdate]="getTimestamp((repositories | async)[0]) | timestamp" [dataSource]="'github'"></header>
+
 <table class="my-table">
   <caption class="my-table__caption">
-    <span>Last Update: {{ getTimestamp((repositories | async)[0]) | timestamp }}</span>
-    <span class="member">Member: member</span>
     <filters [options]="tableHeader"></filters>
-
-    <!--<div class="filters" id="filters">-->
-      <!--<button class="filters__button" id="addFilter" [hidden]="checkForFiltersCount()" (click)="addNewFilter()">Add filter</button>-->
-    <!--</div>-->
   </caption>
 
   <thead class="my-table__header">

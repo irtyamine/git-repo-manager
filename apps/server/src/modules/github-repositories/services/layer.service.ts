@@ -3,6 +3,7 @@ import { Model, Document } from 'mongoose';
 
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 import { GithubPackagesInterface } from '../../../interfaces/github-packages.interface';
+import { OrganizationsListInterface } from '../../../interfaces/organizations-list.interface';
 
 @Injectable()
 export class LayerService {

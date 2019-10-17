@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './components/app/app.component';
 import { AppRoutingModule } from './app.routing.module';
-import { NotificationModule } from './modules/notifications/notification.module';
+import { NotificationModule } from './shared/notifications/notification.module';
 import { AuthService } from './modules/user-authorization/services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -14,9 +14,10 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NotificationModule
+    NotificationModule,
+    HttpClientModule,
   ],
-  providers: [ AuthService, HttpClientModule ],
+  providers: [ AuthService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

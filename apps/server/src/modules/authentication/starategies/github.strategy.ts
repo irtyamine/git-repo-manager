@@ -28,7 +28,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
 
         if (!res) {
           const user = { token: '' };
-          done(null, user)
+          done(null, user);
         }
 
         const user = { token: accessToken };

@@ -14,11 +14,14 @@ import { TooltipModule } from 'ngx-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FiltrationService } from './services/filtration.service';
 import { DataService } from './services/data.service';
+import { AuthService } from '../user-authorization/services/auth.service';
+import { HeaderComponent } from '../header/header.component';
 
 @NgModule({
   declarations: [
     ComapnyProjectsComponent,
     TimestampPipe,
+    HeaderComponent,
     FiltersChildComponent,
     FiltersParentComponent
   ],
@@ -26,6 +29,7 @@ import { DataService } from './services/data.service';
     FiltersChildComponent
   ],
   providers: [
+    AuthService,
     HelpersService,
     DataService,
     RepositoriesDataService,

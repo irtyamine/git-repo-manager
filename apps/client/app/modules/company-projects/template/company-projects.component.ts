@@ -3,6 +3,7 @@ import { HelpersService } from '../services/helpers.service';
 import { DataService } from '../services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-valor-projects',
@@ -117,6 +118,10 @@ export class ComapnyProjectsComponent implements OnInit {
       );
     }
 
+  }
+
+  public logout() {
+    window.location.href = `${environment.url}/api/github/logout`;
   }
 
 }
