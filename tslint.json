@@ -91,7 +91,8 @@
     "no-shadowed-variable": false,
     "no-bitwise": false,
     "no-angle-bracket-type-assertion": false,
-    "no-unused-expression": false
+    "no-unused-expression": false,
+    "curly": false
   },
   "rulesDirectory": [
     "codelyzer"

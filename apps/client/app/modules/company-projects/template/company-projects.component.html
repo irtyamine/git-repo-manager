@@ -1,4 +1,4 @@
-<header [lastUpdate]="getTimestamp((repositories | async)[0]) | timestamp" [dataSource]="'github'"></header>
+<header [lastUpdate]="getTimestamp((repositories | async)[0]) | timestamp" [dataSource]="'github'" [userData]="usrData"></header>
 
 <table class="my-table">
   <caption class="my-table__caption">

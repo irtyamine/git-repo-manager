@@ -8,6 +8,10 @@ import { environment } from '../../../../environments/environment';
 export class RepositoriesDataService {
   constructor(private readonly http: HttpClient) {  }
 
+  public getUserData() {
+    return this.http.get(`${environment.url}/api/github/user`);
+  }
+
   public getPackages() {
     return this.http.get(`${environment.url}/api/github/repositories/packages`)
       .pipe();

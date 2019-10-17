@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 export class HeaderComponent {
   @Input() lastUpdate: string;
   @Input() dataSource: string;
+  @Input() userData: object;
 
   constructor() {}
 

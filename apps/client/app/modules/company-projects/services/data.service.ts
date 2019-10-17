@@ -27,6 +27,10 @@ export class DataService {
       });
   }
 
+  public getUserData() {
+    return this.reposDataService.getUserData();
+  }
+
   public setPackagesData(packages: any) {
     this.availablePackages.next(packages);
   }

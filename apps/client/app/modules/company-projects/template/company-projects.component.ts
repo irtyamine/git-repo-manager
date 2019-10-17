@@ -16,6 +16,7 @@ export class ComapnyProjectsComponent implements OnInit {
   public repositories: BehaviorSubject<any>;
   public errorCondition: boolean = false;
   private defaultRepos: BehaviorSubject<any>;
+  public usrData: object;
 
   constructor(
     private readonly helpers: HelpersService,
@@ -26,6 +27,8 @@ export class ComapnyProjectsComponent implements OnInit {
     this.tableHeader = this.repositoriesService.packages;
     this.repositories = this.repositoriesService.repositories;
     this.defaultRepos = this.repositoriesService.repositories;
+
+    this.getUserData();
   }
 
   public getTimestamp(time: any) {
@@ -118,6 +121,13 @@ export class ComapnyProjectsComponent implements OnInit {
       );
     }
 
+  }
+
+  public getUserData() {
+    return this.repositoriesService.getUserData()
+      .subscribe(res => {
+        this.usrData = res;
+      });
   }
 
   public logout() {

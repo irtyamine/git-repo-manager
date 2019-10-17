@@ -46,10 +46,12 @@
     "ngx-bootstrap": "5.1.1",
     "passport": "0.4.0",
     "passport-github2": "0.1.11",
+    "rand-token": "0.4.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "~6.4.0",
     "semver": "6.3.0",
+    "ts-token-generator": "1.0.4",
     "tslib": "^1.10.0",
     "typescript": "^3.0.1",
     "zone.js": "~0.9.1"
