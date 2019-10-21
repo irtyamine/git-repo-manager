@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { AuthService } from '../user-authorization/services/auth.service';
 
 @Component({
   selector: 'header',
@@ -12,10 +12,12 @@ export class HeaderComponent {
   @Input() dataSource: string;
   @Input() userData: object;
 
-  constructor() {}
+  constructor(
+    private readonly auth: AuthService
+  ) {}
 
   public logout() {
-    window.location.href = `${environment.url}/api/github/logout`;
+    this.auth.logout();
   }
 
   public setDataSource(dataSource: string) {

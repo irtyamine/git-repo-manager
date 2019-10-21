@@ -4,6 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../../shared/notifications/notification.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { StoreService } from '../../../shared/services/store.service';
 
 @Injectable()
 export class AuthService implements ErrorHandler {
@@ -11,7 +13,9 @@ export class AuthService implements ErrorHandler {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly store: StoreService,
+    private readonly lsService: LocalStorageService
   ) {  }
 
   public authenticateUser(authData) {
@@ -19,7 +23,9 @@ export class AuthService implements ErrorHandler {
       .pipe(catchError(this.handleError))
       .subscribe(() => {
         this.notificationService.clear();
-        window.location.href = `${environment.url}/api/github/login`;
+        this.lsService.setItem('org', authData.organization);
+        this.lsService.setItem('source', authData.dataSource);
+        window.location.href = `${environment.url}/api/${authData.dataSource}/login`;
       }, err => {
         this.notificationService.clear();
         this.notificationService.error(err);
@@ -44,4 +50,10 @@ export class AuthService implements ErrorHandler {
     return throwError(this.errorText);
   }
 
+  public logout() {
+    const { dataSource } = this.store.getAuthData();
+
+    this.lsService.clear();
+    window.location.href = `${environment.url}/api/${dataSource}/logout`;
+  }
 }

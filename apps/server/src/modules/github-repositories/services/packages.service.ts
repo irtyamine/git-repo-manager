@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LayerService } from './layer.service';
+import { RequestQuery } from '../../../interfaces/reques-query.interface';
 
 @Injectable()
 export class PackagesService {
@@ -8,8 +9,8 @@ export class PackagesService {
     private readonly repositoriesLayer: LayerService
   ) {  }
 
-  public async getPackages() {
-      return await this.repositoriesLayer.getPackages('valor-software', 'github');
+  public async getPackages(params: RequestQuery) {
+      return await this.repositoriesLayer.getPackages(params.organization, params.dataSource);
   }
 
 }

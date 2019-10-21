@@ -3,7 +3,7 @@ import { HelpersService } from '../services/helpers.service';
 import { DataService } from '../services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
-import { environment } from '../../../../environments/environment';
+import { StoreService } from '../../../shared/services/store.service';
 
 @Component({
   selector: 'app-valor-projects',
@@ -17,11 +17,16 @@ export class ComapnyProjectsComponent implements OnInit {
   public errorCondition: boolean = false;
   private defaultRepos: BehaviorSubject<any>;
   public usrData: object;
+  public authData: any;
 
   constructor(
+    private readonly store: StoreService,
     private readonly helpers: HelpersService,
     private readonly repositoriesService: DataService,
-  ) {  }
+  ) {
+    this.store.setAuthDataToStore();
+    this.authData = this.store.getAuthData();
+  }
 
   ngOnInit() {
     this.tableHeader = this.repositoriesService.packages;
@@ -129,9 +134,4 @@ export class ComapnyProjectsComponent implements OnInit {
         this.usrData = res;
       });
   }
-
-  public logout() {
-    window.location.href = `${environment.url}/api/github/logout`;
-  }
-
 }

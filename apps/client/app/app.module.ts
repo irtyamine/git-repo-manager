@@ -7,6 +7,10 @@ import { NotificationModule } from './shared/notifications/notification.module';
 import { AuthService } from './modules/user-authorization/services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 
+import { AuthReducer } from './shared/store/reducers/auth.reducer';
+import { StoreModule } from '@ngrx/store';
+import { StoreService } from './shared/services/store.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -16,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     NotificationModule,
     HttpClientModule,
+    StoreModule.forRoot({ 'auth': AuthReducer })
   ],
   providers: [ AuthService ],
   bootstrap: [AppComponent]

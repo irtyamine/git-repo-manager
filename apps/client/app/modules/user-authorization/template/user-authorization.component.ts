@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { environment } from '../../../../environments/environment';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-user-authorization',
@@ -19,10 +19,13 @@ export class UserAuthorizationComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly auth: AuthService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly lsService: LocalStorageService
   ) {  }
 
   ngOnInit(): void {
+    this.lsService.clear();
+
     this.loginForm = this.formBuilder.group({
       organization: ['', Validators.required],
       dataSource: ['', Validators.required]
