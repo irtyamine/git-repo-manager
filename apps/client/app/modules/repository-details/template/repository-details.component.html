@@ -1,11 +1,25 @@
+<header
+  [lastUpdate]="repositoryData.timestamp | timestamp"
+  [dataSource]="repositoryData.dataSource"
+  [userData]="usrData">
+</header>
+
 <div class="repository">
 
   <div class="repository__name">
-    {{ repository }}
+    {{ repositoryData?.repoName }}
   </div>
 
   <div class="warnings">
-    <div class="warning" *ngFor="let exp of warnings">Warning: {{ exp.warning }}</div>
+    <div class="warnings__head">
+      Warnings: {{ warningsCounter }}
+      <button class="warnings__button" (click)="showWarnings()" [hidden]="warningsCounter === 0">
+        <span [hidden]="showWarningsCondition" class="warnings__button-text">Show</span>
+        <span [hidden]="!showWarningsCondition" class="warnings__button-text">Hide</span>
+      </button>
+    </div>
+
+    <div class="warning" [hidden]="!showWarningsCondition" *ngFor="let exp of warnings">Warning: {{ exp.warning }}</div>
   </div>
 
   <div class="repository__default-info">
@@ -35,6 +49,10 @@
             </span>
           </span>
         </div>
+      </div>
+
+      <div class="info__custom-branches">
+        Custom branches - coming soon
       </div>
     </div>
   </div>

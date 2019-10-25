@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
-import { DataService } from '../services/data.service';
+import { DataService } from '../../../shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
 import { StoreService } from '../../../shared/services/store.service';

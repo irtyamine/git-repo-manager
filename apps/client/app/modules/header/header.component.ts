@@ -28,5 +28,4 @@ export class HeaderComponent {
         return 'GitLab';
     }
   }
-
 }

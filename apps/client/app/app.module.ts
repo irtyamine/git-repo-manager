@@ -10,12 +10,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthReducer } from './shared/store/reducers/auth.reducer';
 import { WarningsReducer } from './shared/store/reducers/warnings.reducer';
 import { StoreModule } from '@ngrx/store';
-import { DataService } from './modules/company-projects/services/data.service';
-import { RepositoriesDataService } from './modules/company-projects/services/repositories-data.service';
+import { DataService } from './shared/services/data.service';
+import { RepositoriesDataService } from './shared/services/repositories-data.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +25,7 @@ import { RepositoriesDataService } from './modules/company-projects/services/rep
     StoreModule.forRoot({
       'auth': AuthReducer,
       'warnings': WarningsReducer
-    })
+    }),
   ],
   providers: [ AuthService, DataService, RepositoriesDataService ],
   bootstrap: [AppComponent]

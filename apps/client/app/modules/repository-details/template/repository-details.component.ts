@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { RepositoryDetailsService } from '../services/repository-details.service';
 import { StoreService } from '../../../shared/services/store.service';
-import { DataService } from '../../company-projects/services/data.service';
 import { ShieldsService } from '../../../shared/services/shields.service';
-import * as semver from 'semver';
+import { DependenciesService } from '../services/dependencies.service';
 
 @Component({
   selector: 'repository-details',
@@ -13,30 +12,35 @@ import * as semver from 'semver';
 })
 
 export class RepositoryDetailsComponent implements OnInit {
-  public repository: string;
   public repositoryData: any;
   public warnings: Object[];
   public warningsCounter: number = 0;
   public defaultBranchesShield: string;
   public defaultBranches: Object[] = [];
   public dependencies: Object[] = [];
+  public showWarningsCondition: boolean = true;
+  public usrData: object;
 
   constructor(
     private readonly lsService: LocalStorageService,
     private readonly repoDetailsService: RepositoryDetailsService,
     private readonly store: StoreService,
-    private readonly dataService: DataService,
-    private readonly shields: ShieldsService
+    private readonly shields: ShieldsService,
+    private readonly dependenciesService: DependenciesService
   ) {  }
 
   ngOnInit(): void {
-    this.repository = this.lsService.getItem('repository');
-    this.getRepositoryDetails(this.repository);
+    this.getRepositoryDetails();
+    this.repoDetailsService
+      .getUserData()
+      .subscribe(user => {
+        this.usrData = user;
+      });
   }
 
-  private getRepositoryDetails(repository: string) {
+  private getRepositoryDetails() {
     this.repoDetailsService
-      .getRepositoryDetails(repository)
+      .getRepositoryDetails()
       .subscribe((res: any) => {
         this.repositoryData = res;
 
@@ -67,28 +71,24 @@ export class RepositoryDetailsComponent implements OnInit {
     );
   }
 
+
+  private checkForImportantDependencies(dependencies: any) {
+    this.dependenciesService.checkForImportantDependencies(dependencies);
+
+    this.warnings = this.store.getWarnings();
+    this.warningsCounter = this.warnings.length;
+  }
+
+
   public getDependenciesFromBranch(branchData: any) {
     return Object.keys(branchData);
   }
 
   public setVersionStatus(dependency: string, branch: string) {
-    const packages = this.dataService.packages.getValue();
-    const { recommendVersion } = packages.find((pkg: any) => pkg.name === dependency);
-    const dependencyVersion = this.repositoryData.branches[branch][dependency];
-
-    if (!recommendVersion) {
-      return 'success';
-    }
-
-    try {
-     if (semver.lt(dependencyVersion, recommendVersion)) {
-       return 'danger';
-     }
-    } catch (error) {
-      return 'danger';
-    }
-
-    return 'success';
+    return this.dependenciesService.compareVersions(
+      { dependency, branch },
+      this.repositoryData
+    );
   }
 
   public setShieldForDependency(dependency: string) {
@@ -99,19 +99,7 @@ export class RepositoryDetailsComponent implements OnInit {
     return this.shields.setRepositoryDependencies(dependency);
   }
 
-  private checkForImportantDependencies(dependencies: any) {
-    const packages = this.dataService.packages.getValue();
-    const importantDependencies = packages.filter((pkg: any) => pkg.isImportant);
-
-    for (let importantDependency of importantDependencies) {
-     const res = dependencies.find((dependency: any) => dependency === importantDependency.name);
-
-      if (!res) {
-        this.store.setWarnings(importantDependency.name, `important dependency '${importantDependency.name}' missed`);
-      }
-
-      this.warnings = this.store.getWarnings();
-      this.warningsCounter = this.warnings.length;
-    }
+  public showWarnings() {
+    this.showWarningsCondition = !this.showWarningsCondition;
   }
 }

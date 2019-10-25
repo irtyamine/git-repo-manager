@@ -58,7 +58,7 @@
 .controls {
   height: 35px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 0;
 
   &__control {
@@ -79,6 +79,14 @@
 
     &:hover {
       background-color: #c0c0c0;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: #d9d9d9;
+      }
     }
   }
 

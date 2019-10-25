@@ -6,8 +6,9 @@ import { RepositoryDetailsService } from './services/repository-details.service'
 import { RepositoryDetailsRoutingModule } from './repository-details.routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { DataService } from '../company-projects/services/data.service';
-import { RepositoriesDataService } from '../company-projects/services/repositories-data.service';
+import { DependenciesService } from './services/dependencies.service';
+import { HeaderModule } from '../header/header.module';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -16,12 +17,13 @@ import { RepositoriesDataService } from '../company-projects/services/repositori
   imports: [
     CommonModule,
     RepositoryDetailsRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    HeaderModule,
+    PipesModule
   ],
   providers: [
-    DataService,
-    RepositoriesDataService,
-    RepositoryDetailsService
+    RepositoryDetailsService,
+    DependenciesService
   ]
 })
 

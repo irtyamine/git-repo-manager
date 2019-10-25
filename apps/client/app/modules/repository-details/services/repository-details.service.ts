@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { StoreService } from '../../../shared/services/store.service';
-
-import { environment } from '../../../../environments/environment';
+import { DataService } from '../../../shared/services/data.service';
 
 @Injectable()
 export class RepositoryDetailsService {
@@ -10,21 +8,13 @@ export class RepositoryDetailsService {
 
   constructor(
     private readonly store: StoreService,
-    private readonly http: HttpClient
+    private readonly dataService: DataService
   ) {
     this.authData = this.store.getAuthData();
   }
 
-  public getRepositoryDetails(repoName: string) {
-    const options = {
-      params: new HttpParams()
-        .set('repoName', repoName)
-        .set('organization', this.authData.organization)
-    };
-
-    return this.http
-      .get(`${environment.url}/api/${this.authData.dataSource}/repositories/repository-details`, options)
-      .pipe();
+  public getRepositoryDetails() {
+    return this.dataService.getRepositoryDetails();
   }
 
   public getDefaultBranchesData(branches?: Object[]) {
@@ -50,6 +40,10 @@ export class RepositoryDetailsService {
 
       }
     }
+  }
+
+  public getUserData() {
+    return this.dataService.getUserData();
   }
 
 }

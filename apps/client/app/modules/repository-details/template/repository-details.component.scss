@@ -35,6 +35,33 @@
   top: 20px;
   right: 50px;
   text-align: right;
+
+  &__head {
+    color: $color-white;
+    font-family: Cabin, 'sans-serif';
+  }
+
+  &__button {
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    width: 50px;
+    font-size: 15px;
+    margin-left: 10px;
+    background-color: $color-public;
+
+    @include transition(.3s);
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-hover-public;
+    }
+
+    &-text {
+      font-family: Cabin, 'sans-serif';
+      color: $color-white;
+    }
+  }
 }
 
 .warning {
@@ -42,6 +69,7 @@
   width: 100%;
   padding: 3px 15px;
   text-align: center;
+  margin-top: 5px;
   margin-bottom: 10px;
   font-size: 15px;
   user-select: none;
@@ -68,6 +96,17 @@
     margin-top: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  &__custom-branches {
+    margin-left: -50px;
+    border-top: 1px solid #616161;
+    text-align: center;
+    color: #616161;
+    font-family: Cabin, 'sans-serif';
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 50px;
   }
 }
 

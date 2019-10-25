@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../../modules/company-projects/services/data.service';
+import { DataService } from './data.service';
 
 @Injectable({ providedIn: 'root' })
 export class ShieldsService {
@@ -11,13 +11,17 @@ export class ShieldsService {
 
   public setShieldsForDependencies(dependency: string) {
     const packages = this.dataService.packages.getValue();
-    const { recommendVersion } = packages.find((pkj: any) => pkj.name === dependency);
+    const packageData = packages.find((pkj: any) => pkj.name === dependency);
 
-    if (!recommendVersion) {
+    if (!packageData) {
+      return;
+    }
+
+    if (!packageData.recommendVersion) {
       return `https://img.shields.io/badge/-${dependency}-blue?style=flat-square`;
     }
 
-    return `https://img.shields.io/badge/${dependency}-${recommendVersion}-blue?style=flat-square`;
+    return `https://img.shields.io/badge/${dependency}-${packageData.recommendVersion}-blue?style=flat-square`;
   }
 
   public setRepositoryDependencies(dependency: string) {
