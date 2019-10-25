@@ -5,7 +5,7 @@ import { ComapnyProjectsComponent } from './template/company-projects.component'
 
 export const valorProjectsRoute: Routes = [
   {
-    path: 'all-projects',
+    path: 'repositories',
     component: ComapnyProjectsComponent
   }
 ];

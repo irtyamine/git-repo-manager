@@ -48,4 +48,13 @@ export class LayerService {
     );
   }
 
+  public async getRepoDetails(query: string) {
+    return await this.repositoriesModel
+      .findOne(query)
+      .select({
+        '_id': 0,
+        'organization': 0
+      });
+  }
+
 }

@@ -24,7 +24,7 @@ export class GithubAuthController {
     }
     else {
       res.cookie('_auth_token', req.user.authToken, { expires: new Date(req.user.expiresTime) });
-      res.redirect('../../all-projects');
+      res.redirect('../../repositories');
     }
   }
 

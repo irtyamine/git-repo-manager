@@ -10,9 +10,7 @@ export class RepositoriesDataService {
   constructor(
     private readonly http: HttpClient,
     private readonly store: StoreService
-  ) {
-    this.store.setAuthDataToStore();
-  }
+  ) {  }
 
   public getUserData() {
     const { dataSource } = this.store.getAuthData();

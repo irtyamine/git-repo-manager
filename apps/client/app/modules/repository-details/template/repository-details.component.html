@@ -1,0 +1,42 @@
+<div class="repository">
+
+  <div class="repository__name">
+    {{ repository }}
+  </div>
+
+  <div class="warnings">
+    <div class="warning" *ngFor="let exp of warnings">Warning: {{ exp.warning }}</div>
+  </div>
+
+  <div class="repository__default-info">
+    <div class="subhead">
+      <img src="{{ defaultBranchesShield }}" alt="">
+    </div>
+
+    <div class="info">
+      <div>Type of privacy: {{ repositoryData?.repoType }}</div>
+
+      <div>
+        <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
+      </div>
+
+      <div class="info__branches">
+        <div class="branch" *ngFor="let branch of defaultBranches">
+          <span class="branch__name">{{ branch }}:</span>
+          <span class="branch__body">
+            <span class="branch__dependency"
+                  *ngFor="let dependency of
+                    getDependenciesFromBranch(
+                    repositoryData?.branches[branch])">
+              <img src="{{ setShieldForDependency(dependency) }}" alt="" />
+              <span class="version version-{{ setVersionStatus(dependency, branch) }}">
+                {{ repositoryData?.branches[branch][dependency] }}
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

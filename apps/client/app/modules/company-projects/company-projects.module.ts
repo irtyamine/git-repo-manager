@@ -3,7 +3,7 @@ import { ComapnyProjectsRoutingModule } from './comapny-projects.routing.module'
 
 import { ComapnyProjectsComponent } from './template/company-projects.component';
 import { CommonModule } from '@angular/common';
-import { TimestampPipe } from './template/pipes/timestamp.pipe';
+import { TimestampPipe } from './pipes/timestamp.pipe';
 import { FiltersChildComponent } from './dynamic-components/filters/child-component/filters-child.component';
 import { FiltersParentComponent } from './dynamic-components/filters/parent-component/filters-parent.component';
 
@@ -15,13 +15,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FiltrationService } from './services/filtration.service';
 import { DataService } from './services/data.service';
 import { AuthService } from '../user-authorization/services/auth.service';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderModule } from '../header/header.module';
 
 @NgModule({
   declarations: [
     ComapnyProjectsComponent,
     TimestampPipe,
-    HeaderComponent,
     FiltersChildComponent,
     FiltersParentComponent
   ],
@@ -39,7 +38,8 @@ import { HeaderComponent } from '../header/header.component';
     CommonModule,
     TooltipModule.forRoot(),
     HttpClientModule,
-    ComapnyProjectsRoutingModule
+    ComapnyProjectsRoutingModule,
+    HeaderModule
   ],
   exports: []
 })

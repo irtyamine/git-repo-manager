@@ -183,3 +183,10 @@
 .select-field {
   border: 0;
 }
+
+.repo-name {
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

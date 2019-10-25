@@ -8,8 +8,10 @@ import { AuthService } from './modules/user-authorization/services/auth.service'
 import { HttpClientModule } from '@angular/common/http';
 
 import { AuthReducer } from './shared/store/reducers/auth.reducer';
+import { WarningsReducer } from './shared/store/reducers/warnings.reducer';
 import { StoreModule } from '@ngrx/store';
-import { StoreService } from './shared/services/store.service';
+import { DataService } from './modules/company-projects/services/data.service';
+import { RepositoriesDataService } from './modules/company-projects/services/repositories-data.service';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,12 @@ import { StoreService } from './shared/services/store.service';
     AppRoutingModule,
     NotificationModule,
     HttpClientModule,
-    StoreModule.forRoot({ 'auth': AuthReducer })
+    StoreModule.forRoot({
+      'auth': AuthReducer,
+      'warnings': WarningsReducer
+    })
   ],
-  providers: [ AuthService ],
+  providers: [ AuthService, DataService, RepositoriesDataService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

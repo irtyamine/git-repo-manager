@@ -26,4 +26,8 @@ export class LocalStorageService {
     }
   }
 
+  public removeItem(key: string) {
+    this.ls.removeItem(key);
+  }
+
 }

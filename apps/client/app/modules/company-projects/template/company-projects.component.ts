@@ -4,6 +4,8 @@ import { DataService } from '../services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
 import { StoreService } from '../../../shared/services/store.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-valor-projects',
@@ -23,16 +25,19 @@ export class ComapnyProjectsComponent implements OnInit {
     private readonly store: StoreService,
     private readonly helpers: HelpersService,
     private readonly repositoriesService: DataService,
+    private readonly router: Router,
+    private readonly lsService: LocalStorageService
   ) {
-    this.store.setAuthDataToStore();
     this.authData = this.store.getAuthData();
   }
 
   ngOnInit() {
+    this.store.clearWarnings();
     this.tableHeader = this.repositoriesService.packages;
     this.repositories = this.repositoriesService.repositories;
     this.defaultRepos = this.repositoriesService.repositories;
 
+    this.lsService.removeItem('repository');
     this.getUserData();
   }
 
@@ -133,5 +138,10 @@ export class ComapnyProjectsComponent implements OnInit {
       .subscribe(res => {
         this.usrData = res;
       });
+  }
+
+  public navigateToDetailsPage(route: string) {
+    this.lsService.setItem('repository', route);
+    this.router.navigate(['repositories', route]);
   }
 }

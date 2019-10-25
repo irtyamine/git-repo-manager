@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { RepositoryDetailsGuard } from './shared/guards/repository-details.guard';
 
 export const appRoutes: Routes = [
   {
@@ -9,8 +10,13 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    canActivate: [AuthGuard],
+    canActivate: [ AuthGuard ],
     loadChildren: './modules/company-projects/company-projects.module#CompanyProjectsModule'
+  },
+  {
+    path: '',
+    canActivate: [ AuthGuard, RepositoryDetailsGuard ],
+    loadChildren: './modules/repository-details/repository-details.module#RepositoryDetailsModule'
   }
 ];
 
