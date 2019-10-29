@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Body, UseGuards, Req, Res } from '@nestjs/common';
 import { GithubAuthService } from '../services/github-auth.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Cookies } from '../../../decorators/cookies.decorator';
 
 @Controller('api/github')
 export class GithubAuthController {
@@ -34,8 +35,8 @@ export class GithubAuthController {
   }
 
   @Get('isAuthenticated')
-  checkIfUserAuthenticated(@Req() req) {
-    if (!req.cookies['_auth_token']) {
+  checkIfUserAuthenticated(@Cookies() cookies) {
+    if (!cookies['_auth_token']) {
       return false;
     }
     else {
