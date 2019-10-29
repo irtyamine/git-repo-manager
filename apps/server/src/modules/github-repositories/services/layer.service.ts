@@ -10,8 +10,17 @@ export class LayerService {
 
   constructor(
     @Inject('NewRepositoryModelToken') private readonly repositoriesModel: Model<GithubRepositoryInterface&Document>,
-    @Inject('PackagesModelToken') private readonly packagesModel: Model<GithubPackagesInterface&Document>
+    @Inject('PackagesModelToken') private readonly packagesModel: Model<GithubPackagesInterface&Document>,
+    @Inject('OrganizationsModelToken') private readonly organizationsListModel: Model<OrganizationsListInterface&Document>
   ) {  }
+
+  public async getOrganizations(dataSource: string) {
+    return await this.organizationsListModel
+      .find({
+        organizationDataStorage: { $elemMatch: { $in: dataSource }}
+      })
+      .select({'_id': 0, 'organizationName': 1});
+  }
 
   public async getPackages(orgName: string, dataSource: string) {
     return await this.packagesModel.find({

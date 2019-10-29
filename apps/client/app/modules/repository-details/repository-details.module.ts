@@ -7,7 +7,7 @@ import { RepositoryDetailsRoutingModule } from './repository-details.routing.mod
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { DependenciesService } from './services/dependencies.service';
-import { HeaderModule } from '../header/header.module';
+import { HeaderModule } from '../../shared/header/header.module';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({

@@ -21,7 +21,7 @@ async function bootstrap() {
     secret: 'Shh, its a secret!'
   }));
 
-  await instance.listen(3000);
+  await instance.listen(process.env.PORT);
 }
 bootstrap().catch(error => {
   console.error('Application bootstrap error!', error);

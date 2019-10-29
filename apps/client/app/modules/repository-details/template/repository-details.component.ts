@@ -4,6 +4,7 @@ import { RepositoryDetailsService } from '../services/repository-details.service
 import { StoreService } from '../../../shared/services/store.service';
 import { ShieldsService } from '../../../shared/services/shields.service';
 import { DependenciesService } from '../services/dependencies.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'repository-details',
@@ -26,7 +27,8 @@ export class RepositoryDetailsComponent implements OnInit {
     private readonly repoDetailsService: RepositoryDetailsService,
     private readonly store: StoreService,
     private readonly shields: ShieldsService,
-    private readonly dependenciesService: DependenciesService
+    private readonly dependenciesService: DependenciesService,
+    private readonly router: Router
   ) {  }
 
   ngOnInit(): void {
@@ -101,5 +103,15 @@ export class RepositoryDetailsComponent implements OnInit {
 
   public showWarnings() {
     this.showWarningsCondition = !this.showWarningsCondition;
+  }
+
+  public click(nameId: string, bodyId: string, btnId: string) {
+    document.getElementById(btnId).classList.toggle('btn-clicked');
+    document.getElementById(nameId).classList.toggle('name-clicked');
+    document.getElementById(bodyId).classList.toggle('body-clicked');
+  }
+
+  public back() {
+    this.router.navigateByUrl('repositories');
   }
 }

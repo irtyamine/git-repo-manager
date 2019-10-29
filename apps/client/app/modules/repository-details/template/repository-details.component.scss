@@ -118,11 +118,22 @@
     &:after {
       content: '  {';
     }
+
+    &.name-clicked {
+      &:after {
+        content: '  { . . . }';
+        color: $color-white
+      }
+    }
   }
 
   &__body {
     display: flex;
     flex-direction: column;
+
+    &.body-clicked {
+      display: none;
+    }
 
     &:after {
       display: inline-block;
@@ -156,4 +167,67 @@
 
 .image {
   margin-right: 10px;
+}
+
+.toggle-button {
+  position: relative;
+  text-align: center;
+  border: 0;
+  outline: 0;
+  border-radius: 5px;
+  width: 34px;
+  background-color: $color-light-black;
+  cursor: pointer;
+
+  @include transition(.3s);
+
+  &__text {
+    text-align: center;
+    color: transparent;
+    user-select: none;
+
+    &:before {
+      display: inline-block;
+      content: '\2304';
+      color: $color-white;
+      @include transition(.3s);
+    }
+
+    &.btn-clicked {
+      &:before {
+        content: '\2304';
+        color: $color-white;
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  &:hover {
+    background-color: $color-private;
+  }
+}
+
+.back-button {
+  border: 0;
+  outline: 0;
+  background-color: $color-light-black;
+  margin-top: 20px;
+  margin-left: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  @include transition(.3s);
+
+  &__text {
+    color: $color-white;
+    padding: 10px;
+
+    &:before {
+      content: '\2B88  ';
+      color: $color-white;
+    }
+  }
+
+  &:hover {
+    background-color: $color-private;
+  }
 }

@@ -1,10 +1,14 @@
 <header
-  [lastUpdate]="repositoryData.timestamp | timestamp"
-  [dataSource]="repositoryData.dataSource"
+  [lastUpdate]="repositoryData?.timestamp | timestamp"
+  [dataSource]="repositoryData?.dataSource"
   [userData]="usrData">
 </header>
 
 <div class="repository">
+
+  <button class="back-button" (click)="back()">
+    <span class="back-button__text">Back to main page</span>
+  </button>
 
   <div class="repository__name">
     {{ repositoryData?.repoName }}
@@ -35,9 +39,15 @@
       </div>
 
       <div class="info__branches">
-        <div class="branch" *ngFor="let branch of defaultBranches">
-          <span class="branch__name">{{ branch }}:</span>
-          <span class="branch__body">
+        <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
+          <span class="branch__name" [id]="'name' + i">
+            <button class="toggle-button" (click)="click('name' + i, 'body' + i, 'btn' + i)">
+              <span class="toggle-button__text" [id]="'btn' + i">'</span>
+            </button>
+            {{ branch }}:
+          </span>
+
+          <span class="branch__body" [id]="'body' + i">
             <span class="branch__dependency"
                   *ngFor="let dependency of
                     getDependenciesFromBranch(
