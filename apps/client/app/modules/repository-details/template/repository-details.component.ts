@@ -97,7 +97,7 @@ export class RepositoryDetailsComponent implements OnInit {
     return this.shields.setShieldsForDependencies(dependency);
   }
 
-  public setRepoDependenciesShields(dependency: string) {
+  public setRepoDependenciesShields(dependency: any) {
     return this.shields.setRepositoryDependencies(dependency);
   }
 

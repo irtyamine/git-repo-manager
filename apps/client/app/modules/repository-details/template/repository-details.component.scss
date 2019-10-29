@@ -113,6 +113,7 @@
 .branch {
 
   &__name {
+    cursor: pointer;
     font-size: 20px;
 
     &:after {
@@ -121,6 +122,7 @@
 
     &.name-clicked {
       &:after {
+        cursor: text;
         content: '  { . . . }';
         color: $color-white
       }
@@ -175,30 +177,26 @@
   border: 0;
   outline: 0;
   border-radius: 5px;
-  width: 34px;
+  width: 33px;
   background-color: $color-light-black;
+  user-select: none;
+  align-content: center;
   cursor: pointer;
 
   @include transition(.3s);
 
   &__text {
+    display: inline-block;
+    font-size: 21px;
     text-align: center;
-    color: transparent;
-    user-select: none;
+    color: $color-white;
+    transform: rotate(90deg);
 
-    &:before {
-      display: inline-block;
-      content: '\2304';
-      color: $color-white;
-      @include transition(.3s);
-    }
+    @include transition(.3s);
 
     &.btn-clicked {
-      &:before {
-        content: '\2304';
-        color: $color-white;
-        transform: rotate(-90deg);
-      }
+      text-align: center;
+      transform: rotate(0);
     }
   }
 
