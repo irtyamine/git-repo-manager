@@ -233,14 +233,15 @@
 .login-button {
   border: 0;
   outline: 0;
-  border-radius: 5px;
+  border-radius: 3px;
   cursor: pointer;
-  height: 55px;
+  height: 40px;
   width: 250px;
   background-color: rgba(0, 39, 169, 0.65);
   @include transition(.3s);
 
   &:disabled {
+    cursor: not-allowed;
     background-color: #7f8685;
   }
 
@@ -248,7 +249,6 @@
     background-color: rgba(0, 50, 217, 0.65);
 
     .button-text {
-      font-size: 18px;
       color: #d9d9d9;
     }
   }
@@ -256,7 +256,8 @@
 
 .button-text {
   color: #aaaaaa;
-  padding: 10px;
+  padding: 5px;
+  font-weight: 300;
   @include transition(.3s);
 }
 

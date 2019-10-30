@@ -15,6 +15,7 @@ export class UserAuthorizationComponent implements OnInit {
   public errCondition: boolean = false;
   public loginForm: FormGroup;
   public dataSource: FormGroup;
+  public loginText: string = 'Choose organization and VCS';
 
   constructor(
     private readonly router: Router,
@@ -32,7 +33,18 @@ export class UserAuthorizationComponent implements OnInit {
     });
   }
 
+  public setVCS(vcs: string) {
+    switch (vcs) {
+      case 'github':
+        this.loginText =  'Log in via GitHub';
+        break;
+      default:
+        this.loginText = 'Choose organization and VCS';
+    }
+  }
   public login() {
+    document.getElementById('LoginButton').setAttribute('disabled', 'disabled');
+    this.loginText = 'Loading...';
     return this.auth.authenticateUser(this.loginForm.value);
   }
 }

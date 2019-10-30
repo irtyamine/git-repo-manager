@@ -22,7 +22,7 @@
     <div class="organization__right-side">
 
       <div class="radio">
-        <input id="gitHub" type="radio" value="github" formControlName="dataSource">
+        <input id="gitHub" type="radio" value="github" formControlName="dataSource" (click)="setVCS('github')">
         <label for="gitHub">GitHub</label>
       </div>
 
@@ -34,8 +34,8 @@
   <div class="form__footer">
 
     <div class="form__footer-login">
-      <button class="login-button" [disabled]="!loginForm.valid" (click)="login()">
-        <span class="button-text">Login via {{ loginForm.value.dataSource }}</span>
+      <button class="login-button" id="LoginButton" [disabled]="!loginForm.valid" (click)="login()">
+        <span class="button-text">{{ loginText }}</span>
       </button>
     </div>
 

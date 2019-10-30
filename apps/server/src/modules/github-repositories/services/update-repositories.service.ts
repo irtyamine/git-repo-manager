@@ -4,10 +4,9 @@ import { LayerService } from './layer.service';
 import { PackagesService } from './packages.service';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
-const config = require('../../../configs/config.json');
+import { ALIASES_OF_BRANCH } from '../../../configs/config';
 
 @Injectable()
-
 export class UpdateRepositoriesService {
 
   constructor(
@@ -93,7 +92,7 @@ export class UpdateRepositoriesService {
       }
     };
 
-    for (let branchName of config.ALIASES_OF_BRANCH[branchAlias]) {
+    for (let branchName of ALIASES_OF_BRANCH[branchAlias]) {
       const url = `https://raw.githubusercontent.com/${repositoryName}/${branchName}/package.json`;
        await this.httpService.get(url, headsOptions)
         .toPromise()
