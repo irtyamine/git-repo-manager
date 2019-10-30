@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../../modules/user-authorization/services/auth.service';
+import { AuthDataInterface } from '../interfaces/auth-data.interface';
 
 @Component({
   selector: 'header',
@@ -10,7 +11,7 @@ import { AuthService } from '../../modules/user-authorization/services/auth.serv
 export class HeaderComponent {
   @Input() lastUpdate: string;
   @Input() dataSource: string;
-  @Input() userData: object;
+  @Input() userData: AuthDataInterface;
 
   constructor(
     private readonly auth: AuthService
