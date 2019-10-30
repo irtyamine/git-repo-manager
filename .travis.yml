@@ -15,7 +15,7 @@ cache:
     - node_modules
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_c9d41320e7eb_key -iv $encrypted_c9d41320e7eb_iv -in .env.enc -out .env -d
+  - openssl aes-256-cbc -K $encrypted_9450048ccb67_key -iv $encrypted_9450048ccb67_iv -in .env.enc -out .env -d
   - npm install -g npm@latest
   - python2 -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
 
