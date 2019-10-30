@@ -8,7 +8,7 @@
     margin-left: 40px;
     align-self: center;
     color: black;
-    font-family: Cambria,'sans-serif';
+    font-family: Cabin,'sans-serif';
     font-size: 20px;
     font-weight: 500;
   }
@@ -21,7 +21,7 @@
 
   &__text {
     font-weight: 500;
-    font-family: Cambria,'sans-serif';
+    font-family: Cabin,'sans-serif';
     padding-right: 20px;
     padding-left: 20px;
   }
@@ -58,7 +58,7 @@
 .controls {
   height: 35px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 0;
 
   &__control {
@@ -80,11 +80,19 @@
     &:hover {
       background-color: #c0c0c0;
     }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: #d9d9d9;
+      }
+    }
   }
 
   &__text {
     font-size: 14px;
-    font-family: Cambria,'sans-serif';
+    font-family: Cabin, 'sans-serif';
     font-weight: 500;
 
     transition-duration: .3s;
@@ -95,5 +103,5 @@
 .button-text {
   color: #e1e1e1;
   padding: 10px;
-  font-family: Cambria,'sans-serif';
+  font-family: Cabin, 'sans-serif';
 }

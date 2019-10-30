@@ -1,6 +1,5 @@
-@import './scss/transition';
-@import './scss/blink';
-@import './scss/variables';
+@import '../../../shared/scss/variables';
+@import '../../../shared/scss/transition';
 
 .my-table {
   margin: 5% auto;
@@ -182,4 +181,11 @@
 
 .select-field {
   border: 0;
+}
+
+.repo-name {
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 }

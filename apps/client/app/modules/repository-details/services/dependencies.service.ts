@@ -1,0 +1,58 @@
+import { Injectable } from '@angular/core';
+import { StoreService } from '../../../shared/services/store.service';
+import { DataService } from '../../../shared/services/data.service';
+import { BehaviorSubject } from 'rxjs';
+import * as semver from 'semver';
+
+@Injectable()
+export class DependenciesService {
+
+  private packages: BehaviorSubject<any>;
+
+  constructor(
+    private readonly store: StoreService,
+    private readonly dataService: DataService
+  ) {
+    this.packages = this.dataService.packages;
+  }
+
+  public compareVersions(data: { dependency: string, branch: string }, repositoryData: any) {
+    const { recommendVersion } = this.packages.getValue().find(
+      (pkg: any) => pkg.name === data.dependency);
+    const dependencyVersion = repositoryData.branches[data.branch][data.dependency];
+
+    if (!recommendVersion) {
+      return 'success';
+    }
+
+    try {
+      if (semver.lt(dependencyVersion, recommendVersion)) {
+        return 'danger';
+      }
+    } catch (error) {
+      return 'danger';
+    }
+
+    return 'success';
+  }
+
+  public checkForImportantDependencies(dependencies) {
+    const importantDependencies = this.packages.getValue().filter(
+      (pkg: any) => pkg.isImportant);
+
+    for (let importantDependency of importantDependencies) {
+      const res = dependencies.find(
+        (dependency: any) =>
+          dependency === importantDependency.name);
+
+      if (!res) {
+        this.store
+          .setWarnings(
+            importantDependency.name,
+            `important dependency '${importantDependency.name}' missed`
+          );
+      }
+    }
+  }
+
+}

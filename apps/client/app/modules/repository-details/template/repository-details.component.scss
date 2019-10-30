@@ -1,0 +1,231 @@
+@import '../../../shared/scss/variables';
+@import '../../../shared/scss/transition';
+
+.repository {
+  position: relative;
+  margin: 100px auto 0;
+  width: 65%;
+  background-color: $color-light-black;
+
+  &__name {
+    font-family: Cabin,'sans-serif';
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 50px;
+    font-size: 35px;
+    color: white;
+  }
+
+  &__default-info {
+    margin-bottom: 50px;
+  }
+}
+
+.subhead {
+  width: 40%;
+  color: $color-white;
+  font-family: Cabin, 'sans-serif';
+  font-size: 25px;
+  margin-left: 50px;
+  border-bottom: 1px solid $color-white;
+}
+
+.warnings {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  text-align: right;
+
+  &__head {
+    color: $color-white;
+    font-family: Cabin, 'sans-serif';
+  }
+
+  &__button {
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    width: 50px;
+    font-size: 15px;
+    margin-left: 10px;
+    background-color: $color-public;
+
+    @include transition(.3s);
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-hover-public;
+    }
+
+    &-text {
+      font-family: Cabin, 'sans-serif';
+      color: $color-white;
+    }
+  }
+}
+
+.warning {
+  position: relative;
+  width: 100%;
+  padding: 3px 15px;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  user-select: none;
+  font-family: Cabin, 'sans-serif';
+  color: $color-hover-danger;
+  border: 1px solid $color-hover-danger;
+  background-color: rgba(102, 0, 0, 0.16);
+  border-radius: 4px;
+
+  &:before {
+    content: '\26A0';
+    margin-right: 10px;
+    font-size: 25px;
+  }
+}
+
+.info {
+  margin-top: 10px;
+  margin-left: 50px;
+  font-family: Cabin, 'sans-serif';
+  color: $color-white;
+
+  &__branches {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &__custom-branches {
+    margin-left: -50px;
+    border-top: 1px solid #616161;
+    text-align: center;
+    color: #616161;
+    font-family: Cabin, 'sans-serif';
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 50px;
+  }
+}
+
+.branch {
+
+  &__name {
+    cursor: pointer;
+    font-size: 20px;
+
+    &:after {
+      content: '  {';
+    }
+
+    &.name-clicked {
+      &:after {
+        cursor: text;
+        content: '  { . . . }';
+        color: $color-white
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    &.body-clicked {
+      display: none;
+    }
+
+    &:after {
+      display: inline-block;
+      content: '}';
+      font-size: 20px;
+    }
+  }
+
+  &__dependency {
+    margin-left: 15px;
+  }
+}
+
+.version {
+
+  &-success {
+    color: $color-success;
+  }
+
+  &-danger {
+    color: $color-hover-danger;
+  }
+
+  &:before {
+    display: inline-block;
+    content: ':';
+    margin-left: 2px;
+    color: $color-white;
+  }
+}
+
+.image {
+  margin-right: 10px;
+}
+
+.toggle-button {
+  position: relative;
+  text-align: center;
+  border: 0;
+  outline: 0;
+  border-radius: 5px;
+  width: 33px;
+  background-color: $color-light-black;
+  user-select: none;
+  align-content: center;
+  cursor: pointer;
+
+  @include transition(.3s);
+
+  &__text {
+    display: inline-block;
+    font-size: 21px;
+    text-align: center;
+    color: $color-white;
+    transform: rotate(90deg);
+
+    @include transition(.3s);
+
+    &.btn-clicked {
+      text-align: center;
+      transform: rotate(0);
+    }
+  }
+
+  &:hover {
+    background-color: $color-private;
+  }
+}
+
+.back-button {
+  border: 0;
+  outline: 0;
+  background-color: $color-light-black;
+  margin-top: 20px;
+  margin-left: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  @include transition(.3s);
+
+  &__text {
+    color: $color-white;
+    padding: 10px;
+
+    &:before {
+      content: '\2B88  ';
+      color: $color-white;
+    }
+  }
+
+  &:hover {
+    background-color: $color-private;
+  }
+}

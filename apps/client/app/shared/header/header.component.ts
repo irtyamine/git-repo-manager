@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '../user-authorization/services/auth.service';
+import { AuthService } from '../../modules/user-authorization/services/auth.service';
 
 @Component({
   selector: 'header',
@@ -28,5 +28,4 @@ export class HeaderComponent {
         return 'GitLab';
     }
   }
-
 }

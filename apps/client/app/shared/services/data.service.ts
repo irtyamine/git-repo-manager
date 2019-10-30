@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RepositoriesDataService } from './repositories-data.service';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DataService {
   private availablePackages = new BehaviorSubject<any>([]);
   private companyRepositories = new BehaviorSubject<any>([]);
@@ -29,6 +29,10 @@ export class DataService {
 
   public getUserData() {
     return this.reposDataService.getUserData();
+  }
+
+  public getRepositoryDetails() {
+    return this.reposDataService.getRepositoryDetails();
   }
 
   public setPackagesData(packages: any) {

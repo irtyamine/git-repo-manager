@@ -4,10 +4,9 @@ import { LayerService } from './layer.service';
 import { PackagesService } from './packages.service';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
-const config = require('../../../configs/config.json');
+import { ALIASES_OF_BRANCH } from '../../../configs/config';
 
 @Injectable()
-
 export class UpdateRepositoriesService {
 
   constructor(
@@ -16,8 +15,12 @@ export class UpdateRepositoriesService {
     private readonly repositoryLayer: LayerService
   ) {  }
 
-  private async getPackagesNames(): Promise<Object[]> {
-    let packages = await this.packagesService.getPackages();
+  private async getPackagesNames(organizationName: string): Promise<Object[]> {
+    let packages = await this.packagesService.getPackages({
+      organization: organizationName,
+      dataSource: 'github'
+    });
+
     return Array.from(packages, singlePackage => singlePackage.name);
   }
 
@@ -33,28 +36,39 @@ export class UpdateRepositoriesService {
   }
 
   public async getOrgRepositories() {
-    const url = `https://api.github.com/orgs/valor-software/repos?per_page=150`;
-    const headOptions = {
-      headers: {
-        authorization: `token ${process.env.ACCESS_TOKEN}`
-      }
-    };
+    const organizations = await this.repositoryLayer.getOrganizations('github');
 
-    const { data } = await this.httpService.get(url, headOptions).toPromise();
-    const repos = this.getTypeOfPrivacyAndReposNames(data);
+    for (let org of organizations) {
+      const url = `https://api.github.com/orgs/${org.organizationName}/repos?per_page=150`;
+      const headOptions = {
+        headers: {
+          authorization: `token ${process.env.ACCESS_TOKEN}`
+        }
+      };
 
-    await this.getRepositoryPackageJson(repos);
+      const { data } = await this.httpService.get(url, headOptions).toPromise();
+      const repos = this.getTypeOfPrivacyAndReposNames(data);
+
+      await this.getRepositoryPackageJson(repos, org.organizationName);
+    }
   }
 
-  private async getRepositoryPackageJson(repositories) {
-    let packages = await this.getPackagesNames();
+  private async getRepositoryPackageJson(repositories, organizationName: string) {
+    let packages = await this.getPackagesNames(organizationName);
 
     for (let repository of repositories) {
-      const master = await this.getDataFromGithub(repository.repoName, 'master', packages);
-      const development = await this.getDataFromGithub(repository.repoName, 'development', packages);
+      const master = await this.getDataFromGithub(
+        repository.repoName,
+        'master',
+        packages);
+
+      const development = await this.getDataFromGithub(
+        repository.repoName,
+        'development',
+        packages);
 
       const newRepository: GithubRepositoryInterface = assign(repository, {
-        organization: 'valor-software',
+        organization: organizationName,
         dataSource: 'github',
         timestamp: Date.now(),
         branches: { master, development }
@@ -65,7 +79,11 @@ export class UpdateRepositoriesService {
     console.log('GitHub data updated');
   }
 
-  private async getDataFromGithub(repositoryName: string, branchAlias: string, packages: any) {
+  private async getDataFromGithub(
+    repositoryName: string,
+    branchAlias: string,
+    packages: any
+  ) {
     let result = {};
 
     const headsOptions = {
@@ -74,7 +92,7 @@ export class UpdateRepositoriesService {
       }
     };
 
-    for (let branchName of config.ALIASES_OF_BRANCH[branchAlias]) {
+    for (let branchName of ALIASES_OF_BRANCH[branchAlias]) {
       const url = `https://raw.githubusercontent.com/${repositoryName}/${branchName}/package.json`;
        await this.httpService.get(url, headsOptions)
         .toPromise()

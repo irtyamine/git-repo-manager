@@ -10,7 +10,7 @@ import { UserDataInterface } from '../../../interfaces/user-data.interface';
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
   constructor(private readonly authService: GithubAuthService) {
     super({
-      callbackURL: 'http://localhost:3000/api/github/callback',
+      callbackURL: `${process.env.APP_URL}/api/github/callback`,
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       scope: [

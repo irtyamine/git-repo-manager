@@ -20,4 +20,9 @@ export class RepositoriesData {
   async getPackages(@Query() query) {
     return await this.packagesService.getPackages(query);
   }
+
+  @Get('repository-details')
+  async getRepositoryDetails(@Query() query) {
+    return await this.getRepositories.getRepoDetails(query);
+  }
 }

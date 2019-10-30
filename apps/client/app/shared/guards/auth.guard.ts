@@ -20,7 +20,6 @@ export class AuthGuard implements CanActivate {
           if (!res) {
             this.notification.clear();
             this.notification.error('You should be an authorized to get this page');
-            this.router.navigateByUrl('login');
             return false;
           }
           else {

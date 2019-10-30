@@ -8,21 +8,26 @@ import { AuthService } from './modules/user-authorization/services/auth.service'
 import { HttpClientModule } from '@angular/common/http';
 
 import { AuthReducer } from './shared/store/reducers/auth.reducer';
+import { WarningsReducer } from './shared/store/reducers/warnings.reducer';
 import { StoreModule } from '@ngrx/store';
-import { StoreService } from './shared/services/store.service';
+import { DataService } from './shared/services/data.service';
+import { RepositoriesDataService } from './shared/services/repositories-data.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NotificationModule,
     HttpClientModule,
-    StoreModule.forRoot({ 'auth': AuthReducer })
+    StoreModule.forRoot({
+      'auth': AuthReducer,
+      'warnings': WarningsReducer
+    }),
   ],
-  providers: [ AuthService ],
+  providers: [ AuthService, DataService, RepositoriesDataService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

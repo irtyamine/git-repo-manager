@@ -13,4 +13,8 @@ export class GetRepositoriesDataService {
     return await this.repositoryLayer.getRepositories(query.organization, query.dataSource);
   }
 
+  public async getRepoDetails(query: any) {
+    return await this.repositoryLayer.getRepoDetails(query);
+  }
+
 }

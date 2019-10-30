@@ -3,25 +3,22 @@ import { ComapnyProjectsRoutingModule } from './comapny-projects.routing.module'
 
 import { ComapnyProjectsComponent } from './template/company-projects.component';
 import { CommonModule } from '@angular/common';
-import { TimestampPipe } from './template/pipes/timestamp.pipe';
 import { FiltersChildComponent } from './dynamic-components/filters/child-component/filters-child.component';
 import { FiltersParentComponent } from './dynamic-components/filters/parent-component/filters-parent.component';
 
 // services
 import { HelpersService } from './services/helpers.service';
-import { RepositoriesDataService } from './services/repositories-data.service';
 import { TooltipModule } from 'ngx-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FiltrationService } from './services/filtration.service';
-import { DataService } from './services/data.service';
 import { AuthService } from '../user-authorization/services/auth.service';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderModule } from '../../shared/header/header.module';
+import { TimestampPipe } from '../../shared/pipes/timestamp.pipe';
+import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
     ComapnyProjectsComponent,
-    TimestampPipe,
-    HeaderComponent,
     FiltersChildComponent,
     FiltersParentComponent
   ],
@@ -31,17 +28,18 @@ import { HeaderComponent } from '../header/header.component';
   providers: [
     AuthService,
     HelpersService,
-    DataService,
-    RepositoriesDataService,
     FiltrationService
   ],
   imports: [
     CommonModule,
     TooltipModule.forRoot(),
     HttpClientModule,
-    ComapnyProjectsRoutingModule
+    ComapnyProjectsRoutingModule,
+    HeaderModule,
+    PipesModule
   ],
   exports: []
+
 })
 
 export class CompanyProjectsModule {  }

@@ -1,0 +1,70 @@
+<header
+  [lastUpdate]="repositoryData?.timestamp | timestamp"
+  [dataSource]="repositoryData?.dataSource"
+  [userData]="usrData">
+</header>
+
+<div class="repository">
+
+  <button class="back-button" (click)="back()">
+    <span class="back-button__text">Back to main page</span>
+  </button>
+
+  <div class="repository__name">
+    {{ repositoryData?.repoName }}
+  </div>
+
+  <div class="warnings">
+    <div class="warnings__head">
+      Warnings: {{ warningsCounter }}
+      <button class="warnings__button" (click)="showWarnings()" [hidden]="warningsCounter === 0">
+        <span [hidden]="showWarningsCondition" class="warnings__button-text">Show</span>
+        <span [hidden]="!showWarningsCondition" class="warnings__button-text">Hide</span>
+      </button>
+    </div>
+
+    <div class="warning" [hidden]="!showWarningsCondition" *ngFor="let exp of warnings">Warning: {{ exp.warning }}</div>
+  </div>
+
+  <div class="repository__default-info">
+    <div class="subhead">
+      <img src="{{ defaultBranchesShield }}" alt="">
+    </div>
+
+    <div class="info">
+      <div>Type of privacy: {{ repositoryData?.repoType }}</div>
+
+      <div>
+        <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
+      </div>
+
+      <div class="info__branches">
+        <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
+          <span class="branch__name" [id]="'name' + i" (click)="click('name' + i, 'body' + i, 'btn' + i)">
+            <button class="toggle-button">
+              <span class="toggle-button__text" [id]="'btn' + i"> > </span>
+            </button>
+            {{ branch }}:
+          </span>
+
+          <span class="branch__body" [id]="'body' + i">
+            <span class="branch__dependency"
+                  *ngFor="let dependency of
+                    getDependenciesFromBranch(
+                    repositoryData?.branches[branch])">
+              <img src="{{ setShieldForDependency(dependency) }}" alt="" />
+              <span class="version version-{{ setVersionStatus(dependency, branch) }}">
+                {{ repositoryData?.branches[branch][dependency] }}
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="info__custom-branches">
+        Custom branches - coming soon
+      </div>
+    </div>
+  </div>
+
+</div>
