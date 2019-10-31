@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ComapnyProjectsRoutingModule } from './comapny-projects.routing.module';
 
-import { ComapnyProjectsComponent } from './template/company-projects.component';
+import { CompanyProjectsComponent } from './template/company-projects.component';
 import { CommonModule } from '@angular/common';
 import { FiltersChildComponent } from './dynamic-components/filters/child-component/filters-child.component';
 import { FiltersParentComponent } from './dynamic-components/filters/parent-component/filters-parent.component';
@@ -18,7 +18,7 @@ import { PipesModule } from '../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
-    ComapnyProjectsComponent,
+    CompanyProjectsComponent,
     FiltersChildComponent,
     FiltersParentComponent
   ],

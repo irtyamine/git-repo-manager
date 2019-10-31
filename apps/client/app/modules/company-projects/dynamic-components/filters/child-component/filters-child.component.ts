@@ -18,6 +18,7 @@ export class FiltersChildComponent implements OnInit {
   public compInteraction: MyInterface;
   public filterOptions: BehaviorSubject<any>;
   public filteringKey: string;
+  public filteringValue: string;
   public hideCondition: boolean = false;
   private keyUp = new Subject();
 
@@ -43,7 +44,9 @@ export class FiltersChildComponent implements OnInit {
   }
 
   public inputFilterValue(value: string) {
-    this.keyUp.next(value);
+    this.filteringValue = value;
+
+    this.keyUp.next(this.filteringValue);
   }
 
   public removeComponent(index: number) {

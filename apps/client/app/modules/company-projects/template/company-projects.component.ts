@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
 import { DataService } from '../../../shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
 import { StoreService } from '../../../shared/services/store.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { FiltrationService } from '../services/filtration.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,10 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./company-projects.component.scss']
 })
 
-export class ComapnyProjectsComponent implements OnInit {
+export class CompanyProjectsComponent implements OnInit, OnDestroy {
   public tableHeader: BehaviorSubject<any>;
   public repositories: BehaviorSubject<any>;
-  public errorCondition: boolean = false;
   private defaultRepos: BehaviorSubject<any>;
   public usrData: object;
   public authData: any;
@@ -26,6 +26,7 @@ export class ComapnyProjectsComponent implements OnInit {
     private readonly helpers: HelpersService,
     private readonly repositoriesService: DataService,
     private readonly router: Router,
+    private readonly filterService: FiltrationService,
     private readonly lsService: LocalStorageService
   ) {
     this.authData = this.store.getAuthData();
@@ -39,6 +40,10 @@ export class ComapnyProjectsComponent implements OnInit {
 
     this.lsService.removeItem('repository');
     this.getUserData();
+  }
+
+  ngOnDestroy(): void {
+    this.filterService.clearFilters();
   }
 
   public getTimestamp(time: any) {

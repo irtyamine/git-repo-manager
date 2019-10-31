@@ -21,19 +21,10 @@ export class FiltersParentComponent {
 
   public index: number = 0;
   public componentReferences = [];
-  public tableColumns: number;
 
-  constructor(private CFR: ComponentFactoryResolver) {
-    this.tableColumns = document.getElementsByTagName('th').length;
-  }
-
-  public checkForComponents() {
-    return this.componentReferences.length === this.tableColumns;
-  }
+  constructor(private CFR: ComponentFactoryResolver) {  }
 
   public createNewComponent() {
-    this.tableColumns = document.getElementsByTagName('th').length;
-
     const componentFactory = this.CFR.resolveComponentFactory(FiltersChildComponent);
     const componentRef: ComponentRef<FiltersChildComponent> = this.VCR.createComponent(componentFactory);
     const currentComponent = componentRef.instance;

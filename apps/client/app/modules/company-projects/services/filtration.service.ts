@@ -22,6 +22,11 @@ export class FiltrationService {
       });
   }
 
+  public clearFilters() {
+    this.filteringOptions.length = 0;
+    return this.filterData(this.filteringOptions);
+  }
+
   public setFilterOptions(newFilteringOptions: FilteringOptionsInterface) {
     const result = this.filteringOptions.find((option: FilteringOptionsInterface) => option.key === newFilteringOptions.key);
     const branchesFilter = this.filteringOptions.find((option: FilteringOptionsInterface) => option.key === 'branches');
