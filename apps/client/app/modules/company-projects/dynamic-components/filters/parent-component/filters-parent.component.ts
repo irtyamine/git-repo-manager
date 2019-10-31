@@ -21,10 +21,15 @@ export class FiltersParentComponent {
 
   public index: number = 0;
   public componentReferences = [];
+  public hideConditions: boolean = false;
 
   constructor(private CFR: ComponentFactoryResolver) {  }
 
   public createNewComponent() {
+    const countColumns = document
+      .getElementById('tableHeader')
+      .getElementsByTagName('th').length;
+
     const componentFactory = this.CFR.resolveComponentFactory(FiltersChildComponent);
     const componentRef: ComponentRef<FiltersChildComponent> = this.VCR.createComponent(componentFactory);
     const currentComponent = componentRef.instance;
@@ -35,6 +40,10 @@ export class FiltersParentComponent {
     currentComponent.compInteraction = this;
 
     this.componentReferences.push(componentRef);
+
+    if (this.componentReferences.length === countColumns) {
+      this.hideConditions = !this.hideConditions
+    }
   }
 
   public removeComponent(index: number) {
@@ -47,5 +56,7 @@ export class FiltersParentComponent {
 
     this.VCR.remove(vcrIndex);
     this.componentReferences = this.componentReferences.filter(component => component.instance.index !== index);
+
+    this.hideConditions = false;
   }
 }
