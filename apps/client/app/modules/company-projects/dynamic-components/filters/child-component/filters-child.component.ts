@@ -28,7 +28,12 @@ export class FiltersChildComponent implements OnInit {
         map(value => value),
         debounceTime(450)
       )
-      .subscribe(text => {
+      .subscribe((text: string) => {
+
+        if (text.length !== 0 && this.filteringKey === 'repoType') {
+          text = text[0].toUpperCase() + text.slice(1);
+        }
+
         const newFilterObject = {
           key: this.filteringKey,
           value: text
@@ -40,6 +45,7 @@ export class FiltersChildComponent implements OnInit {
   ngOnInit(): void {  }
 
   public chooseSelectOption(option: string) {
+
     this.filteringKey = option;
   }
 
