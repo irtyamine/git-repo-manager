@@ -1,0 +1,44 @@
+sudo: required
+language: node_js
+node_js: 10.15.0
+notifications:
+  email: false
+
+services: docker
+
+stages:
+  - name: Deploy
+
+cache:
+  directories:
+    - "$HOME/google-cloud-sdk"
+    - node_modules
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_9450048ccb67_key -iv $encrypted_9450048ccb67_iv -in .env.enc -out .env -d
+  - npm install -g npm@latest
+  - python2 -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
+
+before_deploy:
+  - gcloud version || true
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash >/dev/null; fi
+
+  # Add gcloud to $PATH
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+  - gcloud --quiet version
+  - gcloud --quiet components update
+
+addons:
+  chrome: stable
+
+jobs:
+  fast_finish: true
+  include:
+    - stage: Deploy
+      script: echo "Start deploying"
+      deploy:
+        - provider: script
+          script: ./deploy.sh
+          skip_cleanup: true
+          on:
+            branch: development

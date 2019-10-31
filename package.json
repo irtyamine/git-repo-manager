@@ -12,7 +12,6 @@
     "client:build:watch": "ng build --watch",
     "server:build": "tsc -p apps/server/tsconfig.server.json",
     "server:start": "ts-node --compiler typescript --project apps/server/tsconfig.server.json apps/server/src/main.ts",
-    "prestart:prod": "rimraf dist && tsc",
     "start:prod": "node ./dist/server/main.js",
     "lint": "ng lint",
     "test": "ng test"
@@ -54,7 +53,7 @@
     "semver": "6.3.0",
     "ts-token-generator": "1.0.4",
     "tslib": "1.10.0",
-    "typescript": "3.4.5",
+    "typescript": "3.5.3",
     "zone.js": "0.9.1"
   },
   "devDependencies": {
