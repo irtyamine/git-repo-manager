@@ -2,7 +2,7 @@
 @import '../../../shared/scss/transition';
 
 .my-table {
-  margin: 5% auto;
+  margin: 3% auto;
   position: relative;
   &__caption {
     caption-side: top;
@@ -66,6 +66,11 @@
         }
       }
     }
+  }
+
+  &__filters {
+    margin-top: 50px;
+    margin-left: 43px;
   }
 }
 

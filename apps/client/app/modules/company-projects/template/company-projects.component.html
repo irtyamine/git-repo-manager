@@ -2,11 +2,11 @@
         [dataSource]="authData.dataSource" [userData]="usrData">
 </header>
 
-<table class="my-table">
-  <caption class="my-table__caption">
-    <filters [options]="tableHeader"></filters>
-  </caption>
+<div class="my-table__filters">
+  <filters [options]="tableHeader"></filters>
+</div>
 
+<table class="my-table">
   <thead class="my-table__header">
     <tr class="my-table__header-row" id="tableHeader">
       <th class="my-table__header-row_element">repository name</th>
