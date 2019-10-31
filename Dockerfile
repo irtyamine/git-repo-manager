@@ -2,10 +2,10 @@ FROM node:10
 
 RUN mkdir -p /git-repo
 WORKDIR /git-repo
-COPY ../../package.json ./package.json
-COPY ../../package-lock.json ./package-lock.json
+COPY package.json ./package.json
+COPY package-lock.json ./package-lock.json
 RUN npm ci
-COPY ../.. ./
+COPY ./ ./
 RUN npm run server:build
 RUN npm run client:build:prod
 
@@ -31,6 +31,5 @@ RUN npm run client:build:prod
 
 
 EXPOSE 8080
-ADD deploy app/
 
 CMD ["npm", "run", "start:prod"]

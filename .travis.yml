@@ -38,7 +38,7 @@ jobs:
       script: echo "Start deploying"
       deploy:
         - provider: script
-          script: ./apps/deploy/deploy.sh
+          script: ./deploy.sh
           skip_cleanup: true
           on:
-            all_branches: true
+            branch: development
