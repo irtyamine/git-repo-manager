@@ -33,13 +33,14 @@ export class UserAuthorizationComponent implements OnInit {
     });
   }
 
-  public setVCS(vcs: string) {
-    switch (vcs) {
-      case 'github':
-        this.loginText =  'Log in via GitHub';
-        break;
+  public setVCS() {
+    let orgNameLength = this.loginForm.value.organization.length;
+    
+    switch (this.loginForm.value.dataSource) {
+      case orgNameLength !== 0 && 'github':
+        return 'Log in via GitHub';
       default:
-        this.loginText = 'Choose organization and VCS';
+        return 'Choose organization and VCS';
     }
   }
   public login() {

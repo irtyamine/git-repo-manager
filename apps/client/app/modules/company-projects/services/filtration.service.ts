@@ -4,12 +4,11 @@ import { DataService } from '../../../shared/services/data.service';
 
 import { FilteringOptionsInterface } from '../interfaces/filteringOptions.interface';
 import { RepositoryInterface } from '../interfaces/repository.interface';
-import { options } from 'tsconfig-paths/lib/options';
 
 @Injectable()
 export class FiltrationService {
 
-  private filteringOptions = [];
+  public filteringOptions = [];
   private repositories: any;
 
   constructor(
@@ -28,45 +27,28 @@ export class FiltrationService {
   }
 
   public setFilterOptions(newFilteringOptions: FilteringOptionsInterface) {
-    const result = this.filteringOptions.find((option: FilteringOptionsInterface) => option.key === newFilteringOptions.key);
-    const branchesFilter = this.filteringOptions.find((option: FilteringOptionsInterface) => option.key === 'branches');
-    const missedBranchesFilter = this.filteringOptions.find((option: FilteringOptionsInterface) => option.key === 'missingBranches');
+    const optionByCompIndex = this.filteringOptions.find((
+      option: FilteringOptionsInterface) =>
+        option.compIndex === newFilteringOptions.compIndex);
 
-    if (this.filteringOptions.length === 0) {
-      this.filteringOptions.push(newFilteringOptions);
-      return this.filterData(this.filteringOptions);
-    }
-
-    if (newFilteringOptions.key === 'branches' && missedBranchesFilter) {
-      const optionIndex = this.filteringOptions.indexOf(missedBranchesFilter);
-      this.filteringOptions.splice(optionIndex, 1, newFilteringOptions);
-      return this.filterData(this.filteringOptions);
-    }
-
-    if (newFilteringOptions.key === 'missingBranches' && branchesFilter) {
-      const optionIndex = this.filteringOptions.indexOf(branchesFilter);
-      this.filteringOptions.splice(optionIndex, 1, newFilteringOptions);
-      return this.filterData(this.filteringOptions);
-    }
-
-    if (!result) {
+    if (!optionByCompIndex) {
       this.filteringOptions.push(newFilteringOptions);
     }
     else {
-      const optionIndex = this.filteringOptions.indexOf(result);
+      const optionIndex = this.filteringOptions.indexOf(optionByCompIndex);
       this.filteringOptions.splice(optionIndex, 1, newFilteringOptions);
     }
 
     return this.filterData(this.filteringOptions);
   }
 
-  public removeFilter(removeOption: string) {
-    for (let option of this.filteringOptions) {
-      if (option.key === removeOption) {
-        const elementIndex = this.filteringOptions.indexOf(option);
-        this.filteringOptions.splice(elementIndex, 1);
-      }
-    }
+  public removeFilter(removeIndex: number) {
+    const optionByCompIndex = this.filteringOptions.find((
+      option: FilteringOptionsInterface) =>
+        option.compIndex === removeIndex);
+
+    const elementIndex = this.filteringOptions.indexOf(optionByCompIndex);
+    this.filteringOptions.splice(elementIndex, 1);
 
     return this.filterData(this.filteringOptions);
   }

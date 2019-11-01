@@ -19,8 +19,8 @@ export class FiltersChildComponent implements OnInit {
   public filterOptions: BehaviorSubject<any>;
   public filteringKey: string;
   public filteringValue: string;
-  public hideCondition: boolean = false;
   private keyUp = new Subject();
+  private filteringOptions = [];
 
   constructor(private readonly filtration: FiltrationService) {
     this.keyUp
@@ -35,6 +35,7 @@ export class FiltersChildComponent implements OnInit {
         }
 
         const newFilterObject = {
+          compIndex: this.index,
           key: this.filteringKey,
           value: text
         };
@@ -42,7 +43,18 @@ export class FiltersChildComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+    this.filteringOptions = this.filtration.filteringOptions;
+  }
+
+  public checkForSelectedOptions(listOption: string) {
+    if (this.filteringOptions.length === 0) {
+      return false;
+    }
+
+    const findOption = this.filteringOptions.find((option: any) => option.key === listOption);
+    return !!findOption;
+  }
 
   public chooseSelectOption(option: string) {
 
@@ -56,7 +68,7 @@ export class FiltersChildComponent implements OnInit {
   }
 
   public removeComponent(index: number) {
-    this.filtration.removeFilter(this.filteringKey);
+    this.filtration.removeFilter(this.index);
     this.compInteraction.removeComponent(index);
   }
 

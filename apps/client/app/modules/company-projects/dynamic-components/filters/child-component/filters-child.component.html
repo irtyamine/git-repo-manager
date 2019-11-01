@@ -3,16 +3,33 @@
     <select class="select-filter" (change)="chooseSelectOption($event.target.value)">
       <optgroup class="select-option" label="Repository data">
         <option selected disabled hidden value="nothing">Choose an option...</option>
-        <option class="select-option" value="repoName">repository name</option>
-        <option class="select-option" value="repoType">type of privacy</option>
+
+        <option class="select-option"
+                value="repoName"
+                [hidden]="checkForSelectedOptions('repoName')">
+          repository name
+        </option>
+
+        <option class="select-option"
+                value="repoType"
+                [hidden]="checkForSelectedOptions('repoType')">
+          type of privacy
+        </option>
       </optgroup>
 
       <optgroup class="select-option" label="Branches">
-          <option class="select-option" value="missingBranches">missed branches</option>
+          <option class="select-option"
+                  value="missingBranches"
+                  [hidden]="checkForSelectedOptions('missingBranches')">
+            missed branches
+          </option>
       </optgroup>
 
       <optgroup class="select-option" label="Branches data">
-        <option class="select-option" *ngFor="let option of (filterOptions | async)" [value]="option.name">
+        <option class="select-option"
+                *ngFor="let option of (filterOptions | async)"
+                [value]="option.name"
+                [hidden]="checkForSelectedOptions(option.name)">
           {{ option.name }}
         </option>
       </optgroup>
