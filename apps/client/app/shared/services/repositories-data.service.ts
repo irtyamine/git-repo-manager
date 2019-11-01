@@ -63,4 +63,13 @@ export class RepositoriesDataService {
       .get(`${environment.url}/api/${dataSource}/repositories/repository-details`, options)
       .pipe();
   }
+
+  public getAllRepoBranchesData(repoName: string) {
+    const options = { params: new HttpParams().set('repoName', repoName) };
+    const { dataSource } = this.store.getAuthData();
+
+    return this.http
+      .get(`${environment.url}/api/${dataSource}/repositories/branches`, options)
+      .pipe();
+  }
 }

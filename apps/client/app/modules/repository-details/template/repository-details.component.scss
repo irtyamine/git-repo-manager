@@ -1,5 +1,6 @@
 @import '../../../shared/scss/variables';
 @import '../../../shared/scss/transition';
+@import '../../../shared/scss/button';
 
 .repository {
   position: relative;
@@ -89,6 +90,7 @@
 .info {
   margin-top: 10px;
   margin-left: 50px;
+  margin-bottom: 50px;
   font-family: Cabin, 'sans-serif';
   color: $color-white;
 
@@ -99,14 +101,7 @@
   }
 
   &__custom-branches {
-    margin-left: -50px;
-    border-top: 1px solid #616161;
-    text-align: center;
-    color: #616161;
-    font-family: Cabin, 'sans-serif';
-    font-size: 40px;
     margin-top: 30px;
-    margin-bottom: 50px;
   }
 }
 

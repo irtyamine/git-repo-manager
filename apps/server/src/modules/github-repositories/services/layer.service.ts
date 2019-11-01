@@ -4,6 +4,7 @@ import { Model, Document } from 'mongoose';
 import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 import { GithubPackagesInterface } from '../../../interfaces/github-packages.interface';
 import { OrganizationsListInterface } from '../../../interfaces/organizations-list.interface';
+import { UserDataInterface } from '../../../interfaces/user-data.interface';
 
 @Injectable()
 export class LayerService {
@@ -11,7 +12,8 @@ export class LayerService {
   constructor(
     @Inject('NewRepositoryModelToken') private readonly repositoriesModel: Model<GithubRepositoryInterface&Document>,
     @Inject('PackagesModelToken') private readonly packagesModel: Model<GithubPackagesInterface&Document>,
-    @Inject('OrganizationsModelToken') private readonly organizationsListModel: Model<OrganizationsListInterface&Document>
+    @Inject('OrganizationsModelToken') private readonly organizationsListModel: Model<OrganizationsListInterface&Document>,
+    @Inject('UsersModelToken') private readonly usersModel: Model<UserDataInterface&Document>
   ) {  }
 
   public async getOrganizations(dataSource: string) {
@@ -64,6 +66,12 @@ export class LayerService {
         '_id': 0,
         'organization': 0
       });
+  }
+
+  public async getUserAccessToken(authToken: string) {
+    return await this.usersModel
+      .findOne({ authToken: authToken })
+      .select({ '_id': 0, 'accessToken': 1 })
   }
 
 }

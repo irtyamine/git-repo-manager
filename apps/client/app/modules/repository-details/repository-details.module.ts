@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { DependenciesService } from './services/dependencies.service';
 import { HeaderModule } from '../../shared/header/header.module';
 import { PipesModule } from '../../shared/pipes/pipes.module';
+import { ModalModule } from 'ngx-bootstrap';
+import { RepositoryBranchesService } from './services/repository-branches.service';
 
 @NgModule({
   declarations: [
@@ -19,11 +21,13 @@ import { PipesModule } from '../../shared/pipes/pipes.module';
     RepositoryDetailsRoutingModule,
     HttpClientModule,
     HeaderModule,
-    PipesModule
+    PipesModule,
+    ModalModule.forRoot()
   ],
   providers: [
     RepositoryDetailsService,
-    DependenciesService
+    DependenciesService,
+    RepositoryBranchesService
   ]
 })
 

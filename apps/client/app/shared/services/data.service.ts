@@ -35,6 +35,10 @@ export class DataService {
     return this.reposDataService.getRepositoryDetails();
   }
 
+  public getAllRepoBranches(repoName: string) {
+    return this.reposDataService.getAllRepoBranchesData(repoName);
+  }
+
   public setPackagesData(packages: any) {
     this.availablePackages.next(packages);
   }

@@ -35,7 +35,7 @@ export class UserAuthorizationComponent implements OnInit {
 
   public setVCS() {
     let orgNameLength = this.loginForm.value.organization.length;
-    
+
     switch (this.loginForm.value.dataSource) {
       case orgNameLength !== 0 && 'github':
         return 'Log in via GitHub';

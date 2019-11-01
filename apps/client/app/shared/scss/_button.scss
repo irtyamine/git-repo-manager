@@ -6,6 +6,7 @@
   outline: 0;
   border-radius: 2px;
   background-color: $button-bg;
+  width: 270px;
 
   @include transition(.3s);
 
@@ -22,6 +23,7 @@
   }
 
   &:disabled {
-
+    background-color: $color-input-focus;
+    cursor: not-allowed;
   }
 }

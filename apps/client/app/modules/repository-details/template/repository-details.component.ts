@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { RepositoryDetailsService } from '../services/repository-details.service';
 import { StoreService } from '../../../shared/services/store.service';
 import { ShieldsService } from '../../../shared/services/shields.service';
 import { DependenciesService } from '../services/dependencies.service';
 import { Router } from '@angular/router';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { RepositoryBranchesService } from '../services/repository-branches.service';
 
 @Component({
   selector: 'repository-details',
@@ -21,6 +23,10 @@ export class RepositoryDetailsComponent implements OnInit {
   public dependencies: Object[] = [];
   public showWarningsCondition: boolean = true;
   public usrData: object;
+  public modalRef: BsModalRef;
+  public repositoryBranches: any[];
+  public disableButtonCondition: boolean = false;
+  public btnText: string = 'Compare custom branches';
 
   constructor(
     private readonly lsService: LocalStorageService,
@@ -28,7 +34,9 @@ export class RepositoryDetailsComponent implements OnInit {
     private readonly store: StoreService,
     private readonly shields: ShieldsService,
     private readonly dependenciesService: DependenciesService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modelService: BsModalService,
+    private readonly branchesService: RepositoryBranchesService
   ) {  }
 
   ngOnInit(): void {
@@ -37,6 +45,22 @@ export class RepositoryDetailsComponent implements OnInit {
       .getUserData()
       .subscribe(user => {
         this.usrData = user;
+      });
+  }
+
+  public openCompareCustomBranchesModal(template: TemplateRef<any>) {
+    this.disableButtonCondition = true;
+    this.btnText = 'Loading...';
+
+    this.branchesService
+      .getAllBranches('valor-software/ngx-bootstrap')
+      .subscribe((res: any) => {
+        this.repositoryBranches = res;
+
+        this.disableButtonCondition = false;
+        this.btnText = 'Compare custom branches';
+
+        this.modalRef = this.modelService.show(template);
       });
   }
 
