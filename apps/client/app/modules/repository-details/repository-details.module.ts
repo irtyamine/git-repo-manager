@@ -9,8 +9,9 @@ import { CommonModule } from '@angular/common';
 import { DependenciesService } from './services/dependencies.service';
 import { HeaderModule } from '../../shared/header/header.module';
 import { PipesModule } from '../../shared/pipes/pipes.module';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, TypeaheadModule } from 'ngx-bootstrap';
 import { RepositoryBranchesService } from './services/repository-branches.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,11 +19,14 @@ import { RepositoryBranchesService } from './services/repository-branches.servic
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RepositoryDetailsRoutingModule,
     HttpClientModule,
     HeaderModule,
     PipesModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TypeaheadModule.forRoot()
   ],
   providers: [
     RepositoryDetailsService,

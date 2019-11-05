@@ -5,6 +5,7 @@ import { GithubRepositoryInterface } from '../../../interfaces/github-repository
 import { GithubPackagesInterface } from '../../../interfaces/github-packages.interface';
 import { OrganizationsListInterface } from '../../../interfaces/organizations-list.interface';
 import { UserDataInterface } from '../../../interfaces/user-data.interface';
+import { CustomBranchesInterface } from '../../../interfaces/custom-branches.interface';
 
 @Injectable()
 export class LayerService {
@@ -13,7 +14,8 @@ export class LayerService {
     @Inject('NewRepositoryModelToken') private readonly repositoriesModel: Model<GithubRepositoryInterface&Document>,
     @Inject('PackagesModelToken') private readonly packagesModel: Model<GithubPackagesInterface&Document>,
     @Inject('OrganizationsModelToken') private readonly organizationsListModel: Model<OrganizationsListInterface&Document>,
-    @Inject('UsersModelToken') private readonly usersModel: Model<UserDataInterface&Document>
+    @Inject('UsersModelToken') private readonly usersModel: Model<UserDataInterface&Document>,
+    @Inject('CustomBranchesToken') private readonly customBranchesModel: Model<CustomBranchesInterface&Document>
   ) {  }
 
   public async getOrganizations(dataSource: string) {
@@ -72,6 +74,25 @@ export class LayerService {
     return await this.usersModel
       .findOne({ authToken: authToken })
       .select({ '_id': 0, 'accessToken': 1 })
+  }
+
+  public async getAllCustomBranches(userName: string, vcs: string) {
+    return await this.customBranchesModel
+      .find({ addedBy: userName, vcs: vcs })
+      .select({ '_id': 0, 'customBranches': 1 })
+  }
+
+  public async setCustomBranches(customBranches: CustomBranchesInterface) {
+    const newCustomBranches = new this.customBranchesModel(customBranches);
+
+    return await this.customBranchesModel
+      .create(newCustomBranches)
+      .then(async () => {
+        return await this.getAllCustomBranches(
+          customBranches.addedBy,
+          customBranches.vcs
+        );
+      })
   }
 
 }

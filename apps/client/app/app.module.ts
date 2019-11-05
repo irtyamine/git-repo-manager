@@ -12,6 +12,7 @@ import { WarningsReducer } from './shared/store/reducers/warnings.reducer';
 import { StoreModule } from '@ngrx/store';
 import { DataService } from './shared/services/data.service';
 import { RepositoriesDataService } from './shared/services/repositories-data.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RepositoriesDataService } from './shared/services/repositories-data.ser
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     NotificationModule,
     HttpClientModule,

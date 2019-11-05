@@ -7,6 +7,8 @@ import { DependenciesService } from '../services/dependencies.service';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { RepositoryBranchesService } from '../services/repository-branches.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'repository-details',
@@ -22,11 +24,14 @@ export class RepositoryDetailsComponent implements OnInit {
   public defaultBranches: Object[] = [];
   public dependencies: Object[] = [];
   public showWarningsCondition: boolean = true;
-  public usrData: object;
+  public usrData: any;
   public modalRef: BsModalRef;
-  public repositoryBranches: any[];
+  public repositoryBranches: string[];
   public disableButtonCondition: boolean = false;
   public btnText: string = 'Compare custom branches';
+  public customBranchesForm: FormGroup;
+  public modalWarning = new BehaviorSubject<string>('');
+  public customBranches = new BehaviorSubject<any>([]);
 
   constructor(
     private readonly lsService: LocalStorageService,
@@ -36,11 +41,18 @@ export class RepositoryDetailsComponent implements OnInit {
     private readonly dependenciesService: DependenciesService,
     private readonly router: Router,
     private readonly modelService: BsModalService,
-    private readonly branchesService: RepositoryBranchesService
+    private readonly branchesService: RepositoryBranchesService,
+    private readonly formBuilder: FormBuilder,
   ) {  }
 
   ngOnInit(): void {
     this.getRepositoryDetails();
+
+    this.customBranchesForm = this.formBuilder.group({
+      baseBranch: ['', Validators.required],
+      compareBranch: ['', Validators.required]
+    });
+
     this.repoDetailsService
       .getUserData()
       .subscribe(user => {
@@ -137,5 +149,44 @@ export class RepositoryDetailsComponent implements OnInit {
 
   public back() {
     this.router.navigateByUrl('repositories');
+  }
+
+  public checkNewBranches() {
+    const { baseBranch } = this.customBranchesForm.value;
+    const { compareBranch } = this.customBranchesForm.value;
+
+    this.modalWarning.next('');
+
+    if (baseBranch === compareBranch) {
+      this.modalWarning.next(`You can't compare branch '${baseBranch}' with itself`);
+      return false
+    }
+
+    if ((baseBranch === 'master' && compareBranch === 'development')
+      || (baseBranch === 'development' && compareBranch === 'master'))
+    {
+      this.modalWarning.next(`Default branches are already compared`);
+      return false;
+    }
+
+    return true;
+  }
+
+  public addBranches() {
+    return this.branchesService
+      .setNewCustomBranchesData(
+        this.customBranchesForm.value,
+        this.repositoryData.repoName,
+        this.usrData.login
+      )
+      .subscribe(res => {
+        this.customBranchesForm.reset();
+        this.customBranches.next(res);
+        this.modalRef.hide();
+      })
+  }
+
+  public getCustomBranches(branches: any) {
+    return Object.keys(branches.customBranches);
   }
 }

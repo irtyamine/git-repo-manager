@@ -1,6 +1,7 @@
 @import '../../../shared/scss/variables';
 @import '../../../shared/scss/transition';
 @import '../../../shared/scss/button';
+@import '../../../shared/scss/helpers';
 
 .repository {
   position: relative;
@@ -102,6 +103,12 @@
 
   &__custom-branches {
     margin-top: 30px;
+
+    &-display {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 }
 
@@ -223,4 +230,49 @@
   &:hover {
     background-color: $color-private;
   }
+}
+
+.custom-branches {
+  display: flex;
+  flex-direction: row;
+
+  &__base {
+    position: relative;
+    padding-right: 50px;
+
+    &:after {
+      position: absolute;
+      display: inline-block;
+      right: 15px;
+      top: 27px;
+      font-size: 25px;
+      content: '\2190';
+    }
+  }
+
+  &__compare {
+
+  }
+}
+
+.new-branch {
+  outline: 0;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid #b8b8b8;
+  @include transition(.3s);
+
+  &::placeholder {
+    @include transition(.3s);
+    color: #616161;
+  }
+
+  &:focus {
+    &::placeholder {
+      color: transparent;
+    }
+
+    box-shadow: 0 0 0 1px rgba(17, 165, 247, 0.58);
+  }
+
 }

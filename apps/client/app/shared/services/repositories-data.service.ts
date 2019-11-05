@@ -72,4 +72,21 @@ export class RepositoriesDataService {
       .get(`${environment.url}/api/${dataSource}/repositories/branches`, options)
       .pipe();
   }
+
+  public setCustomBranchesData(branches: { baseBranch: string, compareBranch: string }, repoName: string, userName: string) {
+    const { organization } = this.store.getAuthData();
+    const { dataSource } = this.store.getAuthData();
+
+    const body = {
+      repoName: repoName,
+      userName: userName,
+      organization: organization,
+      baseBranch: branches.baseBranch,
+      compareBranch: branches.compareBranch
+    };
+
+    return this.http
+      .post(`${environment.url}/api/${dataSource}/repositories/add-custom-branches`, body)
+      .pipe();
+  }
 }

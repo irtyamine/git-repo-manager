@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { GetRepositoriesDataService } from '../services/get-repositories-data.service';
 import { PackagesService } from '../services/packages.service';
 import { BranchesService } from '../services/branches.service';
@@ -36,5 +36,10 @@ export class RepositoriesData {
         query.repoName,
         cookies['_auth_token']
       );
+  }
+
+  @Post('add-custom-branches')
+  async addCustomBranches(@Body() body) {
+    return await this.branchesService.setCustomBranchesData(body);
   }
 }

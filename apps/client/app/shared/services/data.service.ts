@@ -27,6 +27,10 @@ export class DataService {
       });
   }
 
+  public setCustomBranchesData(branches: { baseBranch: string, compareBranch }, repoName: string, userName: string) {
+    return this.reposDataService.setCustomBranchesData(branches, repoName, userName)
+  }
+
   public getUserData() {
     return this.reposDataService.getUserData();
   }

@@ -1,3 +1,5 @@
+@import '../scss/variables';
+
 .notification {
   position: absolute;
   top: 0;
@@ -5,11 +7,13 @@
   transform: translateX(-50%);
   width: 600px;
   height: 40px;
+  border-radius: 4px;
   text-align: center;
 
   &-error {
-    background-color: #9c0000;
-    color: #cdcdcd;
+    color: $color-hover-danger;
+    border: 1px solid $color-hover-danger;
+    background-color: rgba(102, 0, 0, 0.16);
     font-size: 25px;
   }
 }
