@@ -32,13 +32,23 @@ export class BranchesService {
     return data.map(branch => branch.name);
   }
 
+  public async getCustomBranchesByUserName(
+    query: {
+      repoName: string,
+      organization: string,
+      addedBy: string,
+      vcs: string }
+      ) {
+    return await this.layerService.getAllCustomBranches(query)
+  }
+
   public async setCustomBranchesData(body: CBReqBodyInterface) {
     const newCustomBranches: CustomBranchesInterface = {
       repoName: body.repoName,
       addedBy: body.userName,
       organization: body.organization,
       vcs: 'github',
-      customBranches: {
+      branches: {
         [ body.baseBranch ]: await this.getCustomBranchesData(body.repoName, body.organization, body.baseBranch),
         [ body.compareBranch ]: await this.getCustomBranchesData(body.repoName, body.organization, body.compareBranch)
       }

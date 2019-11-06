@@ -76,10 +76,22 @@ export class LayerService {
       .select({ '_id': 0, 'accessToken': 1 })
   }
 
-  public async getAllCustomBranches(userName: string, vcs: string) {
+  public async getAllCustomBranches(
+    query: {
+      repoName: string,
+      addedBy: string,
+      organization: string,
+      vcs: string
+    }) {
+
     return await this.customBranchesModel
-      .find({ addedBy: userName, vcs: vcs })
-      .select({ '_id': 0, 'customBranches': 1 })
+      .find({
+        repoName: query.repoName,
+        addedBy: query.addedBy,
+        organization: query.organization,
+        vcs: query.vcs
+      })
+      .select({ '_id': 0, 'branches': 1 })
   }
 
   public async setCustomBranches(customBranches: CustomBranchesInterface) {
@@ -88,10 +100,12 @@ export class LayerService {
     return await this.customBranchesModel
       .create(newCustomBranches)
       .then(async () => {
-        return await this.getAllCustomBranches(
-          customBranches.addedBy,
-          customBranches.vcs
-        );
+        return await this.getAllCustomBranches({
+          repoName: newCustomBranches.repoName,
+          addedBy: newCustomBranches.addedBy,
+          organization: newCustomBranches.organization,
+          vcs: newCustomBranches.vcs
+        });
       })
   }
 

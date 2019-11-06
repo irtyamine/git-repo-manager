@@ -12,6 +12,10 @@ export class RepositoryBranchesService {
     return this.dataService.getAllRepoBranches(repositoryName);
   }
 
+  public getCustomBranches(userName: string, repositoryName: string) {
+    return this.dataService.getCustomBranches(userName, repositoryName)
+  }
+
   public setNewCustomBranchesData(branches: { baseBranch: string, compareBranch: string }, repoName: string, userName: string) {
     return this.dataService.setCustomBranchesData(branches, repoName, userName);
   }

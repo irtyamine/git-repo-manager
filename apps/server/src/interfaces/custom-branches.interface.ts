@@ -3,5 +3,5 @@ export interface CustomBranchesInterface {
   addedBy: string;
   organization: string;
   vcs: string;
-  customBranches: object;
+  branches: object;
 }

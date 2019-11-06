@@ -73,7 +73,30 @@ export class RepositoriesDataService {
       .pipe();
   }
 
-  public setCustomBranchesData(branches: { baseBranch: string, compareBranch: string }, repoName: string, userName: string) {
+  public getCustomBranches(userName: string, repoName: string) {
+    const { organization } = this.store.getAuthData();
+    const { dataSource } = this.store.getAuthData();
+
+    const options = {
+      params: new HttpParams()
+        .set('addedBy', userName)
+        .set('repoName', repoName)
+        .set('organization', organization)
+        .set('vcs', dataSource)
+    };
+
+    return this.http.get(`${environment.url}/api/${dataSource}/repositories/custom-branches`, options)
+      .pipe()
+  }
+
+  public setCustomBranchesData(
+    branches: {
+      baseBranch: string,
+      compareBranch: string
+    },
+    repoName: string,
+    userName: string
+  ) {
     const { organization } = this.store.getAuthData();
     const { dataSource } = this.store.getAuthData();
 

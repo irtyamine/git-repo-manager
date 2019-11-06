@@ -9,6 +9,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { RepositoryBranchesService } from '../services/repository-branches.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { DataService } from '../../../shared/services/data.service';
 
 @Component({
   selector: 'repository-details',
@@ -31,7 +32,7 @@ export class RepositoryDetailsComponent implements OnInit {
   public btnText: string = 'Compare custom branches';
   public customBranchesForm: FormGroup;
   public modalWarning = new BehaviorSubject<string>('');
-  public customBranches = new BehaviorSubject<any>([]);
+  public customBranches: BehaviorSubject<any>;
 
   constructor(
     private readonly lsService: LocalStorageService,
@@ -43,21 +44,21 @@ export class RepositoryDetailsComponent implements OnInit {
     private readonly modelService: BsModalService,
     private readonly branchesService: RepositoryBranchesService,
     private readonly formBuilder: FormBuilder,
+    private readonly dataService: DataService
   ) {  }
 
   ngOnInit(): void {
-    this.getRepositoryDetails();
-
     this.customBranchesForm = this.formBuilder.group({
       baseBranch: ['', Validators.required],
       compareBranch: ['', Validators.required]
     });
 
-    this.repoDetailsService
-      .getUserData()
-      .subscribe(user => {
-        this.usrData = user;
-      });
+    this.getRepositoryDetails();
+    this.getUserData();
+  }
+
+  public showData(data: any) {
+    console.log(data);
   }
 
   public openCompareCustomBranchesModal(template: TemplateRef<any>) {
@@ -77,7 +78,7 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   private getRepositoryDetails() {
-    this.repoDetailsService
+    return this.repoDetailsService
       .getRepositoryDetails()
       .subscribe((res: any) => {
         this.repositoryData = res;
@@ -87,6 +88,22 @@ export class RepositoryDetailsComponent implements OnInit {
 
         this.dependencies = this.setRepositoryDependencies(res.branches);
         this.checkForImportantDependencies(this.dependencies);
+      });
+  }
+
+  private getUserData() {
+    return this.repoDetailsService
+      .getUserData()
+      .subscribe((user: any) => {
+        this.usrData = user;
+
+        this.branchesService
+          .getCustomBranches(
+            user.login,
+            this.repositoryData.repoName
+          );
+
+        this.customBranches = this.dataService.customBranches;
       });
   }
 
@@ -122,10 +139,10 @@ export class RepositoryDetailsComponent implements OnInit {
     return Object.keys(branchData);
   }
 
-  public setVersionStatus(dependency: string, branch: string) {
+  public setVersionStatus(dependency: string, branchesData: any, branch: string) {
     return this.dependenciesService.compareVersions(
       { dependency, branch },
-      this.repositoryData
+      branchesData
     );
   }
 
@@ -187,6 +204,6 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   public getCustomBranches(branches: any) {
-    return Object.keys(branches.customBranches);
+    return Object.keys(branches.branches);
   }
 }

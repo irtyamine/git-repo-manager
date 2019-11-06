@@ -38,43 +38,64 @@
         <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
       </div>
 
+      <div class="info__branches-header">
+        <span>Default branches</span>
+      </div>
+
       <div class="info__branches">
+
         <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
-          <span class="branch__name" [id]="'name' + i" (click)="click('name' + i, 'body' + i, 'btn' + i)">
+          <div class="branch__name" [id]="'name' + i" (click)="click('name' + i, 'body' + i, 'btn' + i)">
             <button class="toggle-button">
               <span class="toggle-button__text" [id]="'btn' + i"> > </span>
             </button>
             {{ branch }} :
-          </span>
+          </div>
 
-          <span class="branch__body" [id]="'body' + i">
+          <div class="branch__body" [id]="'body' + i">
             <span class="branch__dependency"
                   *ngFor="let dependency of
                     getDependenciesFromBranch(
                     repositoryData?.branches[branch])">
               <img src="{{ setShieldForDependency(dependency) }}" alt="" />
-              <span class="version version-{{ setVersionStatus(dependency, branch) }}">
+              <span class="version version-{{ setVersionStatus(dependency, repositoryData, branch) }}">
                 {{ repositoryData?.branches[branch][dependency] }}
               </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
 
       <div class="info__custom-branches">
+        <div class="info__custom-branches-header">
+          <span>Custom branches</span>
+        </div>
+
         <button class="button" (click)="openCompareCustomBranchesModal(template)" [disabled]="disableButtonCondition">
           <span class="button__text">{{ btnText }}</span>
         </button>
 
-        <div *ngFor="let customBranch of (customBranches | async)">
+        <div *ngFor="let customBranch of (customBranches | async); let i = index">
           <div class="info__custom-branches-display">
-            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch); let i = index">
-              <div class="branch__name">
+            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch); let j = index">
+              <div class="branch__name" [id]="'customName' + i + j"
+                   (click)="click('customName' + i + j, 'customBody' + i + j, 'customBtn' + i + j)">
                 <button class="toggle-button">
-                  <span class="toggle-button__text"> > </span>
+                  <span class="toggle-button__text" [id]="'customBtn' + i + j"> > </span>
                 </button>
 
                 {{ branch }} :
+              </div>
+
+              <div class="branch__body" [id]="'customBody' + i + j">
+                <span class="branch__dependency"
+                      *ngFor="let dependency of
+                        getDependenciesFromBranch(customBranch.branches[branch])">
+                  <img src="{{ setShieldForDependency(dependency) }}" alt="" />
+                  <span class="version version-{{ setVersionStatus(dependency, customBranch, branch) }}">
+                    {{ customBranch.branches[branch][dependency] }}
+                  </span>
+                </span>
               </div>
             </div>
           </div>

@@ -91,7 +91,8 @@
 .info {
   margin-top: 10px;
   margin-left: 50px;
-  margin-bottom: 50px;
+  margin-right: 50px;
+  padding-bottom: 30px;
   font-family: Cabin, 'sans-serif';
   color: $color-white;
 
@@ -99,10 +100,25 @@
     margin-top: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+
+    &-header {
+      position: relative;
+      margin-top: 30px;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 0;
+    }
   }
 
   &__custom-branches {
     margin-top: 30px;
+
+    &-header {
+      position: relative;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
 
     &-display {
       margin-top: 30px;
@@ -115,28 +131,29 @@
 .branch {
 
   &__name {
+    user-select: none;
     cursor: pointer;
     font-size: 20px;
 
     &:after {
-      content: '  {';
+      cursor: text;
+      content: '  { . . . }';
+      color: $color-white
     }
 
     &.name-clicked {
       &:after {
-        cursor: text;
-        content: '  { . . . }';
-        color: $color-white
+        content: '  {';
       }
     }
   }
 
   &__body {
-    display: flex;
-    flex-direction: column;
+    display: none;
 
     &.body-clicked {
-      display: none;
+      display: flex;
+      flex-direction: column;
     }
 
     &:after {
@@ -192,13 +209,13 @@
     font-size: 21px;
     text-align: center;
     color: $color-white;
-    transform: rotate(90deg);
+    transform: rotate(0);
 
     @include transition(.3s);
 
     &.btn-clicked {
       text-align: center;
-      transform: rotate(0);
+      transform: rotate(90deg);
     }
   }
 

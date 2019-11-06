@@ -9,11 +9,15 @@ export const CustomBranchesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  organization: {
+    type: String,
+    required: true
+  },
   vcs: {
     type: String,
     required: true
   },
-  customBranches: {
+  branches: {
     type: Object,
     required: true
   }

@@ -38,6 +38,11 @@ export class RepositoriesData {
       );
   }
 
+  @Get('custom-branches')
+  async getCustomBranchesFromBd(@Query() query) {
+    return await this.branchesService.getCustomBranchesByUserName(query);
+  }
+
   @Post('add-custom-branches')
   async addCustomBranches(@Body() body) {
     return await this.branchesService.setCustomBranchesData(body);
