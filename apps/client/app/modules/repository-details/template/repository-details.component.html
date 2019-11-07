@@ -1,6 +1,6 @@
 <header
-  [lastUpdate]="repositoryData?.timestamp | timestamp"
-  [dataSource]="repositoryData?.dataSource"
+  [lastUpdate]="(repositoryDetails | async).timestamp | timestamp"
+  [dataSource]="(repositoryDetails | async).dataSource"
   [userData]="usrData">
 </header>
 
@@ -11,7 +11,7 @@
   </button>
 
   <div class="repository__name">
-    {{ repositoryData?.repoName }}
+    {{ (repositoryDetails | async).repoName }}
   </div>
 
   <div class="warnings">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="info">
-      <div>Type of privacy: {{ repositoryData?.repoType }}</div>
+      <div>Type of privacy: {{ (repositoryDetails | async).repoType }}</div>
 
       <div>
         <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
@@ -56,10 +56,10 @@
             <span class="branch__dependency"
                   *ngFor="let dependency of
                     getDependenciesFromBranch(
-                    repositoryData?.branches[branch])">
+                    (repositoryDetails | async).branches[branch])">
               <img src="{{ setShieldForDependency(dependency) }}" alt="" />
-              <span class="version version-{{ setVersionStatus(dependency, repositoryData, branch) }}">
-                {{ repositoryData?.branches[branch][dependency] }}
+              <span class="version version-{{ setVersionStatus(dependency, (repositoryDetails | async), branch) }}">
+                {{ (repositoryDetails | async).branches[branch][dependency] }}
               </span>
             </span>
           </div>
@@ -108,7 +108,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <span>Choose branches for <b>{{ repositoryData.repoName }}</b></span>
+    <span>Choose branches for <b>{{ (repositoryDetails | async).repoName }}</b></span>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()" id="getBranchesButton">
       <span aria-hidden="true">&times;</span>
     </button>

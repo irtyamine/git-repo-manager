@@ -25,12 +25,20 @@ export class UserAuthorizationComponent implements OnInit {
   ) {  }
 
   ngOnInit(): void {
-    this.lsService.clear();
-
     this.loginForm = this.formBuilder.group({
       organization: ['', Validators.required],
       dataSource: ['', Validators.required]
     });
+
+    this.auth.check()
+      .subscribe(res => {
+        if (!res) {
+          this.lsService.clear();
+        }
+        else {
+          this.router.navigateByUrl('repositories');
+        }
+      })
   }
 
   public setVCS() {

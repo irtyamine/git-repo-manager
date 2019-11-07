@@ -20,7 +20,7 @@ import { ModalNotifications } from './modal-notifications';
 })
 
 export class RepositoryDetailsComponent implements OnInit {
-  public repositoryData: any;
+  public repositoryDetails = new BehaviorSubject<any>({});
   public warnings: Object[];
   public warningsCounter: number = 0;
   public defaultBranchesShield: string;
@@ -79,12 +79,13 @@ export class RepositoryDetailsComponent implements OnInit {
     return this.repoDetailsService
       .getRepositoryDetails()
       .subscribe((res: any) => {
-        this.repositoryData = res;
+        this.repositoryDetails.next(res);
+        const repoBranches = this.repositoryDetails.getValue().branches;
 
-        this.setDefaultBranchesShields(res.branches);
-        this.getBranches(res.branches);
+        this.setDefaultBranchesShields(repoBranches);
+        this.getBranches(repoBranches);
 
-        this.dependencies = this.setRepositoryDependencies(res.branches);
+        this.dependencies = this.setRepositoryDependencies(repoBranches);
         this.checkForImportantDependencies(this.dependencies);
       });
   }
@@ -98,7 +99,7 @@ export class RepositoryDetailsComponent implements OnInit {
         this.branchesService
           .getCustomBranches(
             user.login,
-            this.repositoryData.repoName
+            this.repositoryDetails.getValue().repoName
           );
 
         this.customBranches = this.dataService.customBranches;
@@ -210,7 +211,7 @@ export class RepositoryDetailsComponent implements OnInit {
     return this.branchesService
       .setNewCustomBranchesData(
         this.customBranchesForm.value,
-        this.repositoryData.repoName,
+        this.repositoryDetails.getValue().repoName,
         this.usrData.login
       )
       .subscribe(res => {

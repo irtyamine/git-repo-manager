@@ -13,10 +13,6 @@ export class ShieldsService {
     const packages = this.dataService.packages.getValue();
     const packageData = packages.find((pkj: any) => pkj.name === dependency);
 
-    if (!packageData) {
-      return;
-    }
-
     if (!packageData.recommendVersion) {
       return `https://img.shields.io/badge/-${dependency}-blue?style=flat-square`;
     }
@@ -26,14 +22,18 @@ export class ShieldsService {
 
   public setRepositoryDependencies(dependency: string) {
     const packages = this.dataService.packages.getValue();
-    const { isImportant } = packages.find((pkg: any) => pkg.name === dependency);
+    const { isImportant } = packages.find((pkg: any) => {
+      if (!pkg) {
+        return;
+      }
+      return pkg.name === dependency
+    });
 
-    if (isImportant) {
-      return `https://img.shields.io/badge/-${dependency}-important?style=flat-square`;
-    }
-    else {
+    if (!isImportant) {
       return `https://img.shields.io/badge/-${dependency}-blue?style=flat-square`;
     }
+
+    return `https://img.shields.io/badge/-${dependency}-important?style=flat-square`;
   }
 
 }
