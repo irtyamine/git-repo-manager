@@ -64,7 +64,7 @@ export class RepositoryDetailsComponent implements OnInit {
     this.btnText = 'Loading...';
 
     this.branchesService
-      .getAllBranches('valor-software/ngx-bootstrap')
+      .getAllBranches(this.repositoryDetails.getValue().repoName)
       .subscribe((res: any) => {
         this.repositoryBranches = res;
 
