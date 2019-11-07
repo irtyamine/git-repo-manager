@@ -11,6 +11,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { DataService } from '../../../shared/services/data.service';
 
+import { ModalNotifications } from './modal-notifications';
+
 @Component({
   selector: 'repository-details',
   templateUrl: './repository-details.component.html',
@@ -55,10 +57,6 @@ export class RepositoryDetailsComponent implements OnInit {
 
     this.getRepositoryDetails();
     this.getUserData();
-  }
-
-  public showData(data: any) {
-    console.log(data);
   }
 
   public openCompareCustomBranchesModal(template: TemplateRef<any>) {
@@ -172,17 +170,36 @@ export class RepositoryDetailsComponent implements OnInit {
     const { baseBranch } = this.customBranchesForm.value;
     const { compareBranch } = this.customBranchesForm.value;
 
+    const customBranchesNames = this.customBranches.getValue()
+      .map(branches => {
+        const keys = Object.keys(branches.branches);
+        return {
+          baseBranch: keys[0],
+          compareBranch: keys[1]
+        };
+      });
+
     this.modalWarning.next('');
 
+    const checkForMultiples = customBranchesNames.find(branches => {
+      return (branches.baseBranch === baseBranch && branches.compareBranch === compareBranch)
+        || (branches.baseBranch === compareBranch && branches.compareBranch === baseBranch);
+    });
+
+    if (checkForMultiples) {
+      this.modalWarning.next(ModalNotifications.ALREADY_COMPARED_BRANCHES);
+      return false;
+    }
+
     if (baseBranch === compareBranch) {
-      this.modalWarning.next(`You can't compare branch '${baseBranch}' with itself`);
+      this.modalWarning.next(ModalNotifications.COMPARE_BRANCH_WITH_ITSELF);
       return false
     }
 
     if ((baseBranch === 'master' && compareBranch === 'development')
       || (baseBranch === 'development' && compareBranch === 'master'))
     {
-      this.modalWarning.next(`Default branches are already compared`);
+      this.modalWarning.next(ModalNotifications.COMPARE_DEFAULT_BRANCHES);
       return false;
     }
 

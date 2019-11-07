@@ -37,8 +37,8 @@ export class BranchesService {
       repoName: string,
       organization: string,
       addedBy: string,
-      vcs: string }
-      ) {
+      vcs: string
+    }) {
     return await this.layerService.getAllCustomBranches(query)
   }
 

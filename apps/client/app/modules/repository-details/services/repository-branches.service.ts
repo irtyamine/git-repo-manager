@@ -16,7 +16,14 @@ export class RepositoryBranchesService {
     return this.dataService.getCustomBranches(userName, repositoryName)
   }
 
-  public setNewCustomBranchesData(branches: { baseBranch: string, compareBranch: string }, repoName: string, userName: string) {
+  public setNewCustomBranchesData(
+    branches: {
+      baseBranch: string,
+      compareBranch: string
+    },
+    repoName: string,
+    userName: string
+  ) {
     return this.dataService.setCustomBranchesData(branches, repoName, userName);
   }
 }

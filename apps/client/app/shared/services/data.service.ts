@@ -7,6 +7,7 @@ export class DataService {
   private availablePackages = new BehaviorSubject<any>([]);
   private companyRepositories = new BehaviorSubject<any>([]);
   private _customBranches = new BehaviorSubject<any>([]);
+  private customBrancesNames = new BehaviorSubject<object>([]);
 
   constructor(private readonly reposDataService: RepositoriesDataService) {
     this.getPackagesData();
@@ -28,7 +29,14 @@ export class DataService {
       .subscribe((customBranches: any) => this._customBranches.next(customBranches));
   }
 
-  public setCustomBranchesData(branches: { baseBranch: string, compareBranch }, repoName: string, userName: string) {
+  public setCustomBranchesData(
+    branches: {
+      baseBranch: string,
+      compareBranch
+    },
+    repoName: string,
+    userName: string
+  ) {
     return this.reposDataService.setCustomBranchesData(branches, repoName, userName)
   }
 
