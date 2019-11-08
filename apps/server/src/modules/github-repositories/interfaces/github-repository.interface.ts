@@ -4,5 +4,8 @@ export interface GithubRepositoryInterface {
   organization: string;
   dataSource: string;
   timestamp: number;
-  branches: object;
+  branches: {
+    baseBranch?: any;
+    compareBranch?: any;
+  };
 }

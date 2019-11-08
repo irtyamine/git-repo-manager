@@ -1,88 +1,100 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { assign, pick, keys } from 'lodash';
+import { assign, pick } from 'lodash';
 import { LayerService } from './layer.service';
 import { PackagesService } from './packages.service';
-import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
 
-import { ALIASES_OF_BRANCH } from '../../../configs/config';
+import { BranchesAliasesInterface } from '../interfaces/branches-aliases.interface';
+import { GithubRepositoryInterface } from '../interfaces/github-repository.interface';
+import { GithubPackagesInterface } from '../interfaces/github-packages.interface';
 
 @Injectable()
 export class UpdateRepositoriesService {
 
+  private packages: any;
+  private branches: any;
+
   constructor(
-    private readonly httpService: HttpService,
+    private readonly http: HttpService,
     private readonly packagesService: PackagesService,
-    private readonly repositoryLayer: LayerService
+    private readonly layerService: LayerService
   ) {  }
 
-  private async getPackagesNames(organizationName: string): Promise<Object[]> {
-    let packages = await this.packagesService.getPackages({
-      organization: organizationName,
-      dataSource: 'github'
-    });
+  public async updateRepositories() {
+    const organizations = await this.layerService.getOrganizations('github');
 
-    return Array.from(packages, singlePackage => singlePackage.name);
-  }
-
-  private getTypeOfPrivacyAndReposNames(repositories: Object[]): Object[] {
-    return Array.from(repositories, repository =>
-      assign(
-      {},
-      {
-        repoName: repository['full_name'],
-        repoType: repository['private'] ? 'Private' : 'Public'
-      })
-    );
-  }
-
-  public async getOrgRepositories() {
-    const organizations = await this.repositoryLayer.getOrganizations('github');
-
-    for (let org of organizations) {
-      const url = `https://api.github.com/orgs/${org.organizationName}/repos?per_page=150`;
+    for (let organization of organizations) {
+      const url = `https://api.github.com/orgs/${organization.organizationName}/repos?per_page=150`;
       const headOptions = {
         headers: {
           authorization: `token ${process.env.ACCESS_TOKEN}`
         }
       };
 
-      const { data } = await this.httpService.get(url, headOptions).toPromise();
-      const repos = this.getTypeOfPrivacyAndReposNames(data);
+      this.packages = await this.getPackages(organization.organizationName);
+      this.branches = await this.layerService.getBranchesAliases();
 
-      await this.getRepositoryPackageJson(repos, org.organizationName);
+      await this.http.get(url, headOptions)
+        .subscribe(async res => {
+          const { data } = res;
+          const repositories = this.getRepositoryTypeAndName(data);
+
+          await this.setRepositoryData(repositories, organization.organizationName);
+        });
     }
   }
 
-  private async getRepositoryPackageJson(repositories, organizationName: string) {
-    let packages = await this.getPackagesNames(organizationName);
+  private getRepositoryTypeAndName(repositories: object[]) {
+    return repositories.map(repository => {
+      return {
+        repoName: repository['full_name'],
+        repoType: repository['private'] ? 'Private' : 'Public'
+      }
+    })
+  }
 
-    for (let repository of repositories) {
-      const master = await this.getDataFromGithub(
-        repository.repoName,
-        'master',
-        packages);
-
-      const development = await this.getDataFromGithub(
-        repository.repoName,
-        'development',
-        packages);
-
-      const newRepository: GithubRepositoryInterface = assign(repository, {
-        organization: organizationName,
+  private async getPackages(organization: string) {
+    return await this.packagesService
+      .getPackages({
+        organization: organization,
         dataSource: 'github',
-        timestamp: Date.now(),
-        branches: { master, development }
+      })
+      .then(packages => {
+        return packages.map(pkg => {
+          return pkg.name
+        })
       });
-
-      await this.repositoryLayer.updateRepositoryData(newRepository);
-    }
-    console.log('GitHub data updated');
   }
 
-  private async getDataFromGithub(
+  private async setRepositoryData(repositories: any, organization: string) {
+    for (let repository of repositories) {
+      const master = await this.getRepositoryDataFromGithub(
+        repository.repoName,
+        'master'
+      );
+
+      const development = await this.getRepositoryDataFromGithub(
+        repository.repoName,
+        'development'
+      );
+
+      const repositoryToUpdate: GithubRepositoryInterface = assign(
+        repository, {
+          organization: organization,
+          dataSource: 'github',
+          timestamp: Date.now(),
+          branches: {
+            baseBranch: master,
+            compareBranch: development
+          }
+        });
+      await this.layerService.updateRepositoryData(repositoryToUpdate);
+    }
+    console.log(`GitHub data updated`);
+  }
+
+  private async getRepositoryDataFromGithub(
     repositoryName: string,
-    branchAlias: string,
-    packages: any
+    branchAlias: string
   ) {
     let result = {};
 
@@ -92,30 +104,33 @@ export class UpdateRepositoriesService {
       }
     };
 
-    for (let branchName of ALIASES_OF_BRANCH[branchAlias]) {
-      const url = `https://raw.githubusercontent.com/${repositoryName}/${branchName}/package.json`;
-       await this.httpService.get(url, headsOptions)
+    for (let branch of this.branches[branchAlias]) {
+      const url = `https://raw.githubusercontent.com/${repositoryName}/${branch}/package.json`;
+      await this.http.get(url, headsOptions)
         .toPromise()
-        .then((res: any) => {
-          const { data } = res;
+        .then(repositoryData => {
+          const { data } = repositoryData;
+
           const dependencies = assign(
             data,
             data.dependencies,
             data.devDependencies
           );
-          result = pick(dependencies, packages);
-        })
-        .catch(err => {
-          if (err.response.status !== 404) {
-            console.error(err);
-          }
-        });
-    }
 
-    if (keys(result).length === 0) {
-      return undefined;
+          result = assign(
+            { branchName: branchAlias },
+            pick(dependencies, this.packages)
+          );
+        })
+        .catch(error => {
+          switch (error.response.status) {
+            case 404:
+              return undefined;
+          }
+        })
     }
 
     return result;
   }
+
 }

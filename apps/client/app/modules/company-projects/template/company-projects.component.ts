@@ -53,90 +53,68 @@ export class CompanyProjectsComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  public getBranches(branches: object, rowIndex: number) {
+  public getBranches(branches: any, rowIndex: number) {
     const id = 'branches' + rowIndex;
     const rowId = 'row' + rowIndex;
-    const firstBranch = Object.keys(branches)[0];
-    const secondBranch = Object.keys(branches)[1];
+    const { baseBranch, compareBranch } = branches;
 
-    if (Object.keys(branches).length > 1) {
-      this.helpers.setRowBefore('before_success', rowId);
-      return `${firstBranch} \u2192 ${secondBranch}`;
-    } else {
+    if (!baseBranch) {
       this.helpers.setRowBefore('before_danger', rowId);
       this.helpers.setRowBgDanger(id);
-      return firstBranch;
+      return `${compareBranch.branchName}`
     }
+
+    if (!compareBranch) {
+      this.helpers.setRowBefore('before_danger', rowId);
+      this.helpers.setRowBgDanger(id);
+      return `${baseBranch.branchName}`
+    }
+
+    this.helpers.setRowBefore('before_success', rowId);
+    return `${baseBranch.branchName} \u2192 ${compareBranch.branchName}`
   }
 
-  public getRepositoryType(typeName: string, rowIndex: number) {
-    const id = 'repoType' + rowIndex;
-    const row = document.getElementById(id);
-
-    if (typeName === 'Public') {
-      row.className = 'public';
-      return typeName;
-    } else {
-      row.className = 'private';
-      return typeName;
-    }
+  public setRepositoryType(typeName: string) {
+    return typeName.toLowerCase();
   }
 
-  public getRepoPackage(
-    branches: object,
+  public getPkjData(
+    branches: any,
     packageData: PackageInfoInterface,
     rowIndex: number
   ) {
-    const firstBranch = Object.keys(branches)[0];
-    const secondBranch = Object.keys(branches)[1];
-    const packageName = packageData.name;
-    const recommendVersion = packageData.recommendVersion;
-    const isImportant = packageData.isImportant;
-    const cellId = packageData.name + rowIndex;
-    const rowId = 'row' + rowIndex;
+    const { name, isImportant, recommendVersion } = packageData;
+    const { baseBranch, compareBranch } = branches;
 
-    if (!firstBranch) {
-      const secondBranchPackage = branches[secondBranch][packageName];
+    const data = {
+      base: '',
+      compare: '',
+      isImportant: isImportant,
+      minVersion: recommendVersion,
+      rowId: 'row' + rowIndex,
+      id: name + rowIndex,
+    };
 
-      return this.helpers.getPackageData(
-        packageName,
-        null,
-        secondBranchPackage,
-        recommendVersion,
-        isImportant,
-        cellId,
-        rowId
-      );
-    }
-    else if (!secondBranch) {
-      const firstBranchPackage = branches[firstBranch][packageName];
+    if (!baseBranch) {
+      data.base = 'N/A';
+      data.compare = compareBranch[name];
 
-      return this.helpers.getPackageData(
-        packageName,
-        firstBranchPackage,
-        null,
-        recommendVersion,
-        isImportant,
-        cellId,
-        rowId
-      );
-    }
-    else {
-      const secondBranchPackage = branches[secondBranch][packageName];
-      const firstBranchPackage = branches[firstBranch][packageName];
-
-      return this.helpers.getPackageData(
-        packageName,
-        firstBranchPackage,
-        secondBranchPackage,
-        recommendVersion,
-        isImportant,
-        cellId,
-        rowId
-      );
+      return this.helpers.getDependencies(data);
     }
 
+    if (!compareBranch) {
+      data.base = baseBranch[name];
+      data.compare = 'N/A';
+
+      return this.helpers.getDependencies(data);
+    }
+
+    data.base = baseBranch[name];
+    data.compare = compareBranch[name];
+
+    return this.helpers.getDependencies(data);
   }
+
 
   public getUserData() {
     return this.repositoriesService.getUserData()

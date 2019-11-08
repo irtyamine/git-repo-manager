@@ -30,12 +30,14 @@
         <span>{{ getBranches(repository.branches, rowIndex) }}</span>
       </td>
 
-      <td [id]="'repoType'+rowIndex" class="my-table__body-row_element">
-        <span>{{ getRepositoryType(repository.repoType, rowIndex) }}</span>
+      <td class="my-table__body-row_element {{ setRepositoryType(repository.repoType) }}">
+        <span>{{ repository.repoType }}</span>
       </td>
 
       <td class="my-table__body-row_element" *ngFor="let headElement of (tableHeader | async)" [id]="headElement.name+rowIndex">
-          {{ getRepoPackage(repository.branches, headElement, rowIndex) }}
+        <span>
+          {{ getPkjData(repository.branches, headElement, rowIndex) }}
+        </span>
       </td>
     </tr>
   </tbody>
