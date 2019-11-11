@@ -80,12 +80,12 @@ export class RepositoryDetailsComponent implements OnInit {
       .getRepositoryDetails()
       .subscribe((res: any) => {
         this.repositoryDetails.next(res);
-        const repoBranches = this.repositoryDetails.getValue().branches;
+        const { branches } = this.repositoryDetails.getValue();
 
-        this.setDefaultBranchesShields(repoBranches);
-        this.getBranches(repoBranches);
+        this.setDefaultBranchesShields(branches);
+        this.getBranches(branches);
 
-        this.dependencies = this.setRepositoryDependencies(repoBranches);
+        this.dependencies = this.setRepositoryDependencies(branches);
         this.checkForImportantDependencies(this.dependencies);
       });
   }
@@ -106,11 +106,17 @@ export class RepositoryDetailsComponent implements OnInit {
       });
   }
 
+  public getDependenciesFromBranch(branch: any) {
+    const dependencies = Object.keys(branch);
+
+    dependencies.splice(0, 1);
+
+    return dependencies;
+  }
+
   private setDefaultBranchesShields(branches: any) {
     this.defaultBranchesShield = this.repoDetailsService
-      .getDefaultBranchesData(
-        Object.keys(branches)
-      );
+      .getDefaultBranchesData(branches);
   }
 
   private getBranches(branches: any) {
@@ -120,9 +126,15 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   private setRepositoryDependencies(branches: any) {
-    return Object.keys(
-      Object.assign({}, branches['master'], branches['development'])
+    const { baseBranch, compareBranch } = branches;
+
+    const dependencies = Object.keys(
+      Object.assign({}, baseBranch, compareBranch)
     );
+
+    dependencies.splice(0, 1);
+
+    return dependencies;
   }
 
 
@@ -134,15 +146,8 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
 
-  public getDependenciesFromBranch(branchData: any) {
-    return Object.keys(branchData);
-  }
-
-  public setVersionStatus(dependency: string, branchesData: any, branch: string) {
-    return this.dependenciesService.compareVersions(
-      { dependency, branch },
-      branchesData
-    );
+  public setVersionStatus(dependency: string, branchesData: any) {
+    return this.dependenciesService.compareVersions(dependency, branchesData);
   }
 
   public setShieldForDependency(dependency: string) {
