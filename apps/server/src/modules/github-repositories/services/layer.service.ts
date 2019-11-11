@@ -4,7 +4,7 @@ import { Model, Document } from 'mongoose';
 import { GithubPackagesInterface } from '../interfaces/github-packages.interface';
 import { OrganizationsListInterface } from '../../../interfaces/organizations-list.interface';
 import { UserDataInterface } from '../../../interfaces/user-data.interface';
-import { CustomBranchesInterface } from '../../../interfaces/custom-branches.interface';
+import { CustomBranchesInterface } from '../interfaces/custom-branches.interface';
 import { BranchesAliasesInterface } from '../interfaces/branches-aliases.interface';
 import { GithubRepositoryInterface } from '../interfaces/github-repository.interface';
 

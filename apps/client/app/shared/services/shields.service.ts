@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
+import { StoreService } from './store.service';
 
 @Injectable({ providedIn: 'root' })
 export class ShieldsService {
@@ -7,7 +8,8 @@ export class ShieldsService {
   private shieldsUrl: string = 'https://img.shields.io/badge';
 
   constructor(
-    private readonly dataService: DataService
+    private readonly dataService: DataService,
+    private readonly store: StoreService
   ) {  }
 
 
@@ -35,10 +37,12 @@ export class ShieldsService {
 
   public setShieldsForRepositoryDefaultBranches(baseBranch: any, compareBranch: any) {
     if (!baseBranch) {
+      this.store.setWarnings('baseBranch', 'default base branch missed');
       return `${this.shieldsUrl}/default%20branches-${compareBranch.branchName}-red?style=flat-square`
     }
 
     if (!compareBranch) {
+      this.store.setWarnings('compareBranch', 'default compare branch missed');
       return `${this.shieldsUrl}/default%20branches-${baseBranch.branchName}-red?style=flat-square`
     }
 

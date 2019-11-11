@@ -227,6 +227,10 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   public getCustomBranches(branches: any) {
-    return Object.keys(branches.branches);
+    return Object.keys(branches);
+  }
+
+  public removeComparing(branch: any) {
+    console.log(branch);
   }
 }

@@ -18,7 +18,13 @@ export const CustomBranchesSchema = new mongoose.Schema({
     required: true
   },
   branches: {
-    type: Object,
-    required: true
+    baseBranch: {
+      type: Object,
+      required: true
+    },
+    compareBranch: {
+      type: Object,
+      required: true
+    }
   }
 }, { versionKey: false });

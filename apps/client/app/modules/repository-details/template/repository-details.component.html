@@ -48,9 +48,9 @@
         <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
           <div class="branch__name" [id]="'name'+i" (click)="click('name'+i, 'body'+i, 'btn'+i)">
             <button class="toggle-button">
-              <span class="toggle-button__text" [id]="'btn'+i">></span>
+              <span class="toggle-button__text" [id]="'btn'+i"> > </span>
             </button>
-            <span>{{ (repositoryDetails | async).branches[branch].branchName }}</span>
+            {{ (repositoryDetails | async).branches[branch].branchName }}
           </div>
 
           <div class="branch__body" [id]="'body'+i">
@@ -74,55 +74,37 @@
         <button class="button" (click)="openCompareCustomBranchesModal(template)" [disabled]="disableButtonCondition">
           <span class="button__text">{{ btnText }}</span>
         </button>
+
+        <div *ngFor="let customBranch of (customBranches | async); let i = index">
+          <div class="info__custom-branches-display">
+            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch.branches); let j = index">
+              <div class="branch__name" [id]="'name'+i+j" (click)="click('name'+i+j, 'body'+i+j, 'btn'+i+j)">
+                <button class="toggle-button">
+                  <span class="toggle-button__text" [id]="'btn'+i+j"> > </span>
+                </button>
+                {{ customBranch.branches[branch].branchName }}
+              </div>
+
+              <div class="branch__body" [id]="'body'+i+j">
+                <div class="branch__dependency" *ngFor="let dependency of getDependenciesFromBranch(customBranch.branches[branch])">
+                  <img src="{{ setShieldForDependency(dependency) }}" alt="" />
+                  <span class="version version-{{ setVersionStatus(dependency, customBranch.branches[branch]) }}">
+                    {{ customBranch.branches[branch][dependency] }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button class="remove-comparing" (click)="removeComparing(customBranch)">
+              <span class="remove-comparing__cross">&times;</span>
+              <span class="remove-comparing__text">Remove comparing</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-    <!--<div class="info">-->
-      <!--<div class="info__custom-branches">-->
-        <!--<div class="info__custom-branches-header">-->
-          <!--<span>Custom branches</span>-->
-        <!--</div>-->
-
-        <!--<button class="button" (click)="openCompareCustomBranchesModal(template)" [disabled]="disableButtonCondition">-->
-          <!--<span class="button__text">{{ btnText }}</span>-->
-        <!--</button>-->
-
-        <!--<div *ngFor="let customBranch of (customBranches | async); let i = index">-->
-          <!--<div class="info__custom-branches-display">-->
-            <!--<div class="branch" *ngFor="let branch of getCustomBranches(customBranch); let j = index">-->
-              <!--<div class="branch__name" [id]="'customName' + i + j"-->
-                   <!--(click)="click('customName' + i + j, 'customBody' + i + j, 'customBtn' + i + j)">-->
-                <!--<button class="toggle-button">-->
-                  <!--<span class="toggle-button__text" [id]="'customBtn' + i + j"> > </span>-->
-                <!--</button>-->
-
-                <!--{{ branch }} :-->
-              <!--</div>-->
-
-              <!--<div class="branch__body" [id]="'customBody' + i + j">-->
-                <!--<span class="branch__dependency"-->
-                      <!--*ngFor="let dependency of-->
-                        <!--getDependenciesFromBranch(customBranch.branches[branch])">-->
-                  <!--<img src="{{ setShieldForDependency(dependency) }}" alt="" />-->
-                  <!--<span class="version version-{{ setVersionStatus(dependency, customBranch, branch) }}">-->
-                    <!--{{ customBranch.branches[branch][dependency] }}-->
-                  <!--</span>-->
-                <!--</span>-->
-              <!--</div>-->
-            <!--</div>-->
-
-            <!--<button class="remove-comparing" (click)="removeComparing(customBranch)">-->
-              <!--<span class="remove-comparing__cross">&times;</span>-->
-              <!--<span class="remove-comparing__text">Remove comparing</span>-->
-            <!--</button>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-<!--</div>-->
 
 <ng-template #template>
   <div class="modal-header">

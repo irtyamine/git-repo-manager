@@ -3,7 +3,7 @@ import { OrganizationsListSchema } from '../schemas/organizations-list.schema';
 import { GithubRepositoriesSchema } from '../modules/github-repositories/schemas/repository.schema';
 import { PackgesSchema } from '../modules/github-repositories/schemas/packages.schema';
 import { UserDataSchema } from '../schemas/user-data.schema';
-import { CustomBranchesSchema } from '../schemas/custom-branches.schema';
+import { CustomBranchesSchema } from '../modules/github-repositories/schemas/custom-branches.schema';
 import { BranchesAliasesSchema } from '../modules/github-repositories/schemas/branches-aliases.schema';
 
 export const gitHubRepositoriesProviders = [
