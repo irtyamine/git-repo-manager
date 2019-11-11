@@ -32,10 +32,12 @@
     </div>
 
     <div class="info">
-      <div>Type of privacy: {{ (repositoryDetails | async).repoType }}</div>
+      <span>Type of privacy: {{ (repositoryDetails | async).repoType }}</span>
 
       <div>
-        <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
+        <img *ngFor="let dependency of dependencies"
+             src="{{ setRepoDependenciesShields(dependency) }}"
+             class="image" alt="" />
       </div>
 
       <div class="info__branches-header">
@@ -43,22 +45,20 @@
       </div>
 
       <div class="info__branches">
-
         <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
-          <div class="branch__name" [id]="'name' + i" (click)="click('name' + i, 'body' + i, 'btn' + i)">
+          <div class="branch__name" [id]="'name'+i" (click)="click('name'+i, 'body'+i, 'btn'+i)">
             <button class="toggle-button">
-              <span class="toggle-button__text" [id]="'btn' + i"> > </span>
+              <span class="toggle-button__text" [id]="'btn'+i"> > </span>
             </button>
-            {{ branch }} :
+            {{ (repositoryDetails | async).branches[branch].branchName }}
           </div>
 
-          <div class="branch__body" [id]="'body' + i">
+          <div class="branch__body" [id]="'body'+i">
             <span class="branch__dependency"
-                  *ngFor="let dependency of
-                    getDependenciesFromBranch(
-                    (repositoryDetails | async).branches[branch])">
+                  *ngFor="let dependency of getDependenciesFromBranch((repositoryDetails | async).branches[branch])">
               <img src="{{ setShieldForDependency(dependency) }}" alt="" />
-              <span class="version version-{{ setVersionStatus(dependency, (repositoryDetails | async), branch) }}">
+
+              <span class="version version-{{setVersionStatus(dependency, (repositoryDetails | async).branches[branch])}}">
                 {{ (repositoryDetails | async).branches[branch][dependency] }}
               </span>
             </span>
@@ -77,25 +77,21 @@
 
         <div *ngFor="let customBranch of (customBranches | async); let i = index">
           <div class="info__custom-branches-display">
-            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch); let j = index">
-              <div class="branch__name" [id]="'customName' + i + j"
-                   (click)="click('customName' + i + j, 'customBody' + i + j, 'customBtn' + i + j)">
+            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch.branches); let j = index">
+              <div class="branch__name" [id]="'name'+i+j" (click)="click('name'+i+j, 'body'+i+j, 'btn'+i+j)">
                 <button class="toggle-button">
-                  <span class="toggle-button__text" [id]="'customBtn' + i + j"> > </span>
+                  <span class="toggle-button__text" [id]="'btn'+i+j"> > </span>
                 </button>
-
-                {{ branch }} :
+                {{ customBranch.branches[branch].branchName }}
               </div>
 
-              <div class="branch__body" [id]="'customBody' + i + j">
-                <span class="branch__dependency"
-                      *ngFor="let dependency of
-                        getDependenciesFromBranch(customBranch.branches[branch])">
+              <div class="branch__body" [id]="'body'+i+j">
+                <div class="branch__dependency" *ngFor="let dependency of getDependenciesFromBranch(customBranch.branches[branch])">
                   <img src="{{ setShieldForDependency(dependency) }}" alt="" />
-                  <span class="version version-{{ setVersionStatus(dependency, customBranch, branch) }}">
+                  <span class="version version-{{ setVersionStatus(dependency, customBranch.branches[branch]) }}">
                     {{ customBranch.branches[branch][dependency] }}
                   </span>
-                </span>
+                </div>
               </div>
             </div>
 
@@ -108,7 +104,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <ng-template #template>

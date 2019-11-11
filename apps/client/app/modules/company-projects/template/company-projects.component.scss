@@ -19,6 +19,8 @@
       height: 50px;
       text-align: center;
       &_element {
+        font-family: Cabin, 'sans-serif';
+        font-size: 20px;
         padding-right: 10px;
         padding-left: 10px;
         white-space: nowrap;
@@ -38,6 +40,7 @@
       border: 1px solid $color-black;
       @include transition(.3s);
       &_element {
+        font-family: Cabin, 'sans-serif';
         text-align: center;
         color: white;
         padding-left: 10px;
@@ -79,16 +82,19 @@
 }
 
 .row-danger {
+  font-family: Cabin, 'sans-serif';
   background-color: $color-danger;
   color: $color-white;
   text-align: center;
   font-size: 22px;
+  font-weight: 100;
   @include transition(.3s);
 }
 
 .public {
   @include transition(.3s);
   font-size: 22px;
+  font-family: Cabin, 'sans-serif';
   text-align: center;
   color: $color-white;
   background-color: rgba(9, 37, 166, 0.7);
@@ -97,6 +103,7 @@
 .private {
   @include transition(.3s);
   font-size: 22px;
+  font-family: Cabin, 'sans-serif';
   text-align: center;
   color: $color-white;
   background-color: rgba(163, 162, 166, 0.7);

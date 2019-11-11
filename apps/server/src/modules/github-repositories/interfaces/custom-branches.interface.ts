@@ -3,5 +3,8 @@ export interface CustomBranchesInterface {
   addedBy: string;
   organization: string;
   vcs: string;
-  branches: object;
+  branches: {
+    baseBranch: object;
+    compareBranch: object;
+  };
 }

@@ -16,10 +16,10 @@ export class DependenciesService {
     this.packages = this.dataService.packages;
   }
 
-  public compareVersions(data: { dependency: string, branch: string }, repositoryData: any) {
+  public compareVersions(dependency: string, repositoryData: any) {
     const { recommendVersion } = this.packages.getValue().find(
-      (pkg: any) => pkg.name === data.dependency);
-    const dependencyVersion = repositoryData.branches[data.branch][data.dependency];
+      (pkg: any) => pkg.name === dependency);
+    const dependencyVersion = repositoryData[dependency];
 
     if (!recommendVersion) {
       return 'success';

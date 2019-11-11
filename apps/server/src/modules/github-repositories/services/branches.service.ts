@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { LayerService } from './layer.service';
 import { HttpService } from '@nestjs/common';
 import { PackagesService } from './packages.service';
-import { CBReqBodyInterface } from '../../../interfaces/cb-req-body.interface';
-import { CustomBranchesInterface } from '../../../interfaces/custom-branches.interface';
+import { CBReqBodyInterface } from '../interfaces/cb-req-body.interface';
+import { CustomBranchesInterface } from '../interfaces/custom-branches.interface';
 import { assign, pick } from 'lodash';
 
 @Injectable()
@@ -49,8 +49,8 @@ export class BranchesService {
       organization: body.organization,
       vcs: 'github',
       branches: {
-        [ body.baseBranch ]: await this.getCustomBranchesData(body.repoName, body.organization, body.baseBranch),
-        [ body.compareBranch ]: await this.getCustomBranchesData(body.repoName, body.organization, body.compareBranch)
+        baseBranch: await this.getCustomBranchesData(body.repoName, body.organization, body.baseBranch),
+        compareBranch: await this.getCustomBranchesData(body.repoName, body.organization, body.compareBranch)
       }
     };
 
@@ -82,7 +82,7 @@ export class BranchesService {
           data.devDependencies
         );
 
-        return pick(dependencies, packages)
+        return assign({ branchName: branchName }, pick(dependencies, packages))
       });
   }
 }

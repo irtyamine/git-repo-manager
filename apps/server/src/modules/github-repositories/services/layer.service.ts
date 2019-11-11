@@ -1,11 +1,12 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model, Document } from 'mongoose';
 
-import { GithubRepositoryInterface } from '../../../interfaces/github-repository.interface';
-import { GithubPackagesInterface } from '../../../interfaces/github-packages.interface';
+import { GithubPackagesInterface } from '../interfaces/github-packages.interface';
 import { OrganizationsListInterface } from '../../../interfaces/organizations-list.interface';
 import { UserDataInterface } from '../../../interfaces/user-data.interface';
-import { CustomBranchesInterface } from '../../../interfaces/custom-branches.interface';
+import { CustomBranchesInterface } from '../interfaces/custom-branches.interface';
+import { BranchesAliasesInterface } from '../interfaces/branches-aliases.interface';
+import { GithubRepositoryInterface } from '../interfaces/github-repository.interface';
 
 @Injectable()
 export class LayerService {
@@ -15,8 +16,15 @@ export class LayerService {
     @Inject('PackagesModelToken') private readonly packagesModel: Model<GithubPackagesInterface&Document>,
     @Inject('OrganizationsModelToken') private readonly organizationsListModel: Model<OrganizationsListInterface&Document>,
     @Inject('UsersModelToken') private readonly usersModel: Model<UserDataInterface&Document>,
-    @Inject('CustomBranchesToken') private readonly customBranchesModel: Model<CustomBranchesInterface&Document>
+    @Inject('CustomBranchesToken') private readonly customBranchesModel: Model<CustomBranchesInterface&Document>,
+    @Inject('BranchesAliases') private readonly branchesAliases: Model<BranchesAliasesInterface&Document>,
   ) {  }
+
+  public async getBranchesAliases() {
+    return await this.branchesAliases
+      .findOne()
+      .select({ '_id': 0 })
+  }
 
   public async getOrganizations(dataSource: string) {
     return await this.organizationsListModel
