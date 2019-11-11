@@ -112,4 +112,21 @@ export class RepositoriesDataService {
       .post(`${environment.url}/api/${dataSource}/repositories/add-custom-branches`, body)
       .pipe();
   }
+
+  public removeComparing(login: string, repoName: string, branchesData: any) {
+    const { organization, dataSource } = this.store.getAuthData();
+
+    const options = {
+      params: new HttpParams()
+        .set('repoName', repoName)
+        .set('userName', login)
+        .set('organization', organization)
+        .set('vcs', dataSource)
+        .set('baseBranch', branchesData.branches.baseBranch.branchName)
+        .set('compareBranch', branchesData.branches.compareBranch.branchName)
+    };
+
+    return this.http.delete(`${environment.url}/api/${dataSource}/repositories/remove-custom-branches`, options)
+      .pipe()
+  }
 }

@@ -52,6 +52,13 @@ export class DataService {
     return this.reposDataService.getAllRepoBranchesData(repoName);
   }
 
+  public removeComparing(login: string, repoName: string, branchesData: any) {
+    return this.reposDataService.removeComparing(login, repoName, branchesData)
+      .subscribe(customBranches => {
+        this._customBranches.next(customBranches);
+      });
+  }
+
   public setPackagesData(packages: any) {
     this.availablePackages.next(packages);
   }

@@ -133,6 +133,7 @@
                  class="new-branch"
                  placeholder="Enter compare branch"
                  formControlName="compareBranch"
+                 (typeaheadOnSelect)="checkNewBranches()"
                  id="CompareBranch">
         </div>
       </div>
@@ -140,10 +141,9 @@
       <div class="warning" [hidden]="!(modalWarning | async)">Warning: {{ modalWarning | async }}</div>
 
       <button class="button mt-15"
-              [disabled]="!customBranchesForm.valid
-                  || !checkNewBranches()"
+              [disabled]="!customBranchesForm.valid || !disableAddBranchesButtonCondition"
               (click)="addBranches()">
-        <span class="button__text">Add branches</span>
+        <span class="button__text">{{ addBranchesText }}</span>
       </button>
 
     </form>

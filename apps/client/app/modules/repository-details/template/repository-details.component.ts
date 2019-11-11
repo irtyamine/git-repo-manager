@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { RepositoryDetailsService } from '../services/repository-details.service';
 import { StoreService } from '../../../shared/services/store.service';
@@ -20,19 +20,21 @@ import { ModalNotifications } from './modal-notifications';
 })
 
 export class RepositoryDetailsComponent implements OnInit {
-  public repositoryDetails = new BehaviorSubject<any>({});
-  public warnings: Object[];
   public warningsCounter: number = 0;
   public defaultBranchesShield: string;
-  public defaultBranches: Object[] = [];
-  public dependencies: Object[] = [];
   public showWarningsCondition: boolean = true;
   public usrData: any;
-  public modalRef: BsModalRef;
   public repositoryBranches: string[];
   public disableButtonCondition: boolean = false;
+  public disableAddBranchesButtonCondition: boolean = true;
   public btnText: string = 'Compare custom branches';
+  public addBranchesText: string = 'Add branches';
+  public warnings: Object[];
+  public defaultBranches: Object[] = [];
+  public dependencies: Object[] = [];
   public customBranchesForm: FormGroup;
+  public modalRef: BsModalRef;
+  public repositoryDetails = new BehaviorSubject<any>({});
   public modalWarning = new BehaviorSubject<string>('');
   public customBranches: BehaviorSubject<any>;
 
@@ -46,7 +48,8 @@ export class RepositoryDetailsComponent implements OnInit {
     private readonly modelService: BsModalService,
     private readonly branchesService: RepositoryBranchesService,
     private readonly formBuilder: FormBuilder,
-    private readonly dataService: DataService
+    private readonly dataService: DataService,
+    private readonly cdr: ChangeDetectorRef
   ) {  }
 
   ngOnInit(): void {
@@ -173,16 +176,14 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   public checkNewBranches() {
-    const { baseBranch } = this.customBranchesForm.value;
-    const { compareBranch } = this.customBranchesForm.value;
+    const { baseBranch, compareBranch } = this.customBranchesForm.value;
 
     const customBranchesNames = this.customBranches.getValue()
       .map(branches => {
-        const keys = Object.keys(branches.branches);
         return {
-          baseBranch: keys[0],
-          compareBranch: keys[1]
-        };
+          baseBranch: branches.branches.baseBranch.branchName,
+          compareBranch: branches.branches.compareBranch.branchName,
+        }
       });
 
     this.modalWarning.next('');
@@ -194,11 +195,15 @@ export class RepositoryDetailsComponent implements OnInit {
 
     if (checkForMultiples) {
       this.modalWarning.next(ModalNotifications.ALREADY_COMPARED_BRANCHES);
+      this.disableAddBranchesButtonCondition = false;
+      this.cdr.detectChanges();
       return false;
     }
 
     if (baseBranch === compareBranch) {
       this.modalWarning.next(ModalNotifications.COMPARE_BRANCH_WITH_ITSELF);
+      this.disableAddBranchesButtonCondition = false;
+      this.cdr.detectChanges();
       return false
     }
 
@@ -206,13 +211,20 @@ export class RepositoryDetailsComponent implements OnInit {
       || (baseBranch === 'development' && compareBranch === 'master'))
     {
       this.modalWarning.next(ModalNotifications.COMPARE_DEFAULT_BRANCHES);
+      this.disableAddBranchesButtonCondition = false;
+      this.cdr.detectChanges();
       return false;
     }
 
+    this.disableAddBranchesButtonCondition = true;
+    this.cdr.detectChanges();
     return true;
   }
 
   public addBranches() {
+    this.addBranchesText = 'Loading...';
+    this.disableAddBranchesButtonCondition = false;
+
     return this.branchesService
       .setNewCustomBranchesData(
         this.customBranchesForm.value,
@@ -220,6 +232,8 @@ export class RepositoryDetailsComponent implements OnInit {
         this.usrData.login
       )
       .subscribe(res => {
+        this.addBranchesText = 'Add branches...';
+        this.disableAddBranchesButtonCondition = true;
         this.customBranchesForm.reset();
         this.customBranches.next(res);
         this.modalRef.hide();
@@ -231,6 +245,9 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
   public removeComparing(branch: any) {
-    console.log(branch);
+    const { login } = this.usrData;
+    const { repoName } = this.repositoryDetails.getValue();
+
+    return this.repoDetailsService.removeBranches(login, repoName, branch);
   }
 }

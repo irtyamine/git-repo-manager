@@ -29,4 +29,8 @@ export class RepositoryDetailsService {
     return this.dataService.getUserData();
   }
 
+  public removeBranches(login: string, repoName: string, branchesData: any) {
+    return this.dataService.removeComparing(login, repoName, branchesData);
+  }
+
 }

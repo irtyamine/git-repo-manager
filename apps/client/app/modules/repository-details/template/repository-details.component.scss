@@ -197,7 +197,7 @@
   outline: 0;
   border-radius: 5px;
   width: 33px;
-  background-color: $color-light-black;
+  background-color: transparent;
   user-select: none;
   align-content: center;
   cursor: pointer;
@@ -220,7 +220,7 @@
   }
 
   &:hover {
-    background-color: $color-private;
+    background-color: $color-light-black;
   }
 }
 

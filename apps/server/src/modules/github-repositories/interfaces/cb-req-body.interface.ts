@@ -4,4 +4,5 @@ export interface CBReqBodyInterface {
   organization: string;
   baseBranch: string;
   compareBranch: string;
+  vcs?: string;
 }

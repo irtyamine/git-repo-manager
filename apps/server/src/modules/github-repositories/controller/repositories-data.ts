@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Query } from '@nestjs/common';
 import { GetRepositoriesDataService } from '../services/get-repositories-data.service';
 import { PackagesService } from '../services/packages.service';
 import { BranchesService } from '../services/branches.service';
 import { Cookies } from '../../../decorators/cookies.decorator';
+import { CBReqBodyInterface } from '../interfaces/cb-req-body.interface';
 
 @Controller('api/github/repositories')
 
@@ -46,5 +47,10 @@ export class RepositoriesData {
   @Post('add-custom-branches')
   async addCustomBranches(@Body() body) {
     return await this.branchesService.setCustomBranchesData(body);
+  }
+
+  @Delete('remove-custom-branches')
+  async removeCustomBranch(@Query() query) {
+    return await this.branchesService.removeComparing(query);
   }
 }

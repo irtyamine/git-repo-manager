@@ -85,4 +85,8 @@ export class BranchesService {
         return assign({ branchName: branchName }, pick(dependencies, packages))
       });
   }
+
+  public async removeComparing(options: CBReqBodyInterface) {
+    return await this.layerService.removeComparing(options);
+  }
 }

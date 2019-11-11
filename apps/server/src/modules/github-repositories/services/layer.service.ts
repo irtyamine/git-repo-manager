@@ -7,6 +7,7 @@ import { UserDataInterface } from '../../../interfaces/user-data.interface';
 import { CustomBranchesInterface } from '../interfaces/custom-branches.interface';
 import { BranchesAliasesInterface } from '../interfaces/branches-aliases.interface';
 import { GithubRepositoryInterface } from '../interfaces/github-repository.interface';
+import { CBReqBodyInterface } from '../interfaces/cb-req-body.interface';
 
 @Injectable()
 export class LayerService {
@@ -117,4 +118,21 @@ export class LayerService {
       })
   }
 
+  public async removeComparing(options: CBReqBodyInterface) {
+    return await this.customBranchesModel
+      .deleteOne({
+        repoName: options.repoName,
+        addedBy: options.userName,
+        'branches.baseBranch.branchName': options.baseBranch,
+        'branches.compareBranch.branchName': options.compareBranch
+      })
+      .then(async () => {
+        return await this.getAllCustomBranches({
+          repoName: options.repoName,
+          addedBy: options.userName,
+          organization: options.organization,
+          vcs: options.vcs
+        })
+      })
+  }
 }
