@@ -14,13 +14,13 @@ export class CronService {
 
   private updateMorning() {
     return new CronJob('00 00 09 * * 1-5',  async () => {
-      await this.updateRepositories.getOrgRepositories();
+      await this.updateRepositories.updateRepositories();
     }, null, true, 'Europe/Kiev');
   }
 
   private updateEvening() {
     return new CronJob('00 00 19 * * 1-5', async () => {
-      await this.updateRepositories.getOrgRepositories();
+      await this.updateRepositories.updateRepositories();
     }, null, true, 'Europe/Kiev');
   }
 

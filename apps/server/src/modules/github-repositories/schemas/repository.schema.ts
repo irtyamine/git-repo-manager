@@ -22,7 +22,13 @@ export const GithubRepositoriesSchema = new mongoose.Schema({
     required: true,
   },
   branches: {
-    type: Object,
-    required: true
+    baseBranch: {
+      type: Object,
+      required: false
+    },
+    compareBranch: {
+      type: Object,
+      required: false
+    }
   }
 }, { versionKey: false, _id: false });

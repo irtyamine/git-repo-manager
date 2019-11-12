@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 export class DataService {
   private availablePackages = new BehaviorSubject<any>([]);
   private companyRepositories = new BehaviorSubject<any>([]);
+  private _customBranches = new BehaviorSubject<any>([]);
 
   constructor(private readonly reposDataService: RepositoriesDataService) {
     this.getPackagesData();
@@ -14,17 +15,28 @@ export class DataService {
 
   public getPackagesData() {
     return this.reposDataService.getRepositories()
-      .subscribe(repositories => {
-        this.setRepositories(repositories);
-      });
-
+      .subscribe(repositories => this.setRepositories(repositories));
   }
 
   public getRepositoriesData() {
     return this.reposDataService.getPackages()
-      .subscribe(packages => {
-        this.setPackagesData(packages);
-      });
+      .subscribe(packages => this.setPackagesData(packages));
+  }
+
+  public getCustomBranches(userName: string, repoName: string) {
+    return this.reposDataService.getCustomBranches(userName, repoName)
+      .subscribe((customBranches: any) => this._customBranches.next(customBranches));
+  }
+
+  public setCustomBranchesData(
+    branches: {
+      baseBranch: string,
+      compareBranch
+    },
+    repoName: string,
+    userName: string
+  ) {
+    return this.reposDataService.setCustomBranchesData(branches, repoName, userName)
   }
 
   public getUserData() {
@@ -33,6 +45,17 @@ export class DataService {
 
   public getRepositoryDetails() {
     return this.reposDataService.getRepositoryDetails();
+  }
+
+  public getAllRepoBranches(repoName: string) {
+    return this.reposDataService.getAllRepoBranchesData(repoName);
+  }
+
+  public removeComparing(login: string, repoName: string, branchesData: any) {
+    return this.reposDataService.removeComparing(login, repoName, branchesData)
+      .subscribe(customBranches => {
+        this._customBranches.next(customBranches);
+      });
   }
 
   public setPackagesData(packages: any) {
@@ -49,5 +72,9 @@ export class DataService {
 
   public get repositories() {
     return this.companyRepositories;
+  }
+
+  public get customBranches() {
+    return this._customBranches;
   }
 }

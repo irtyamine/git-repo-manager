@@ -63,4 +63,70 @@ export class RepositoriesDataService {
       .get(`${environment.url}/api/${dataSource}/repositories/repository-details`, options)
       .pipe();
   }
+
+  public getAllRepoBranchesData(repoName: string) {
+    const options = { params: new HttpParams().set('repoName', repoName) };
+    const { dataSource } = this.store.getAuthData();
+
+    return this.http
+      .get(`${environment.url}/api/${dataSource}/repositories/branches`, options)
+      .pipe();
+  }
+
+  public getCustomBranches(userName: string, repoName: string) {
+    const { organization } = this.store.getAuthData();
+    const { dataSource } = this.store.getAuthData();
+
+    const options = {
+      params: new HttpParams()
+        .set('addedBy', userName)
+        .set('repoName', repoName)
+        .set('organization', organization)
+        .set('vcs', dataSource)
+    };
+
+    return this.http.get(`${environment.url}/api/${dataSource}/repositories/custom-branches`, options)
+      .pipe()
+  }
+
+  public setCustomBranchesData(
+    branches: {
+      baseBranch: string,
+      compareBranch: string
+    },
+    repoName: string,
+    userName: string
+  ) {
+    const { organization } = this.store.getAuthData();
+    const { dataSource } = this.store.getAuthData();
+
+    const body = {
+      repoName: repoName,
+      userName: userName,
+      organization: organization,
+      baseBranch: branches.baseBranch,
+      compareBranch: branches.compareBranch
+    };
+
+    return this.http
+      .post(`${environment.url}/api/${dataSource}/repositories/add-custom-branches`, body)
+      .pipe();
+  }
+
+  public removeComparing(login: string, repoName: string, branchesData: any) {
+    const { organization, dataSource } = this.store.getAuthData();
+
+    const options = {
+      params: new HttpParams()
+        .set('repoName', repoName)
+        .set('userName', login)
+        .set('organization', organization)
+        .set('vcs', dataSource)
+        .set('baseBranch', branchesData.branches.baseBranch.branchName)
+        .set('compareBranch', branchesData.branches.compareBranch.branchName)
+    };
+
+    return this.http.delete(`${environment.url}/api/${dataSource}/repositories/remove-custom-branches`, options)
+      .pipe()
+  }
 }

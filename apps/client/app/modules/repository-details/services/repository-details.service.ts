@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ShieldsService } from '../../../shared/services/shields.service';
 import { StoreService } from '../../../shared/services/store.service';
 import { DataService } from '../../../shared/services/data.service';
 
@@ -8,7 +9,8 @@ export class RepositoryDetailsService {
 
   constructor(
     private readonly store: StoreService,
-    private readonly dataService: DataService
+    private readonly dataService: DataService,
+    private readonly shieldsService: ShieldsService
   ) {
     this.authData = this.store.getAuthData();
   }
@@ -17,33 +19,18 @@ export class RepositoryDetailsService {
     return this.dataService.getRepositoryDetails();
   }
 
-  public getDefaultBranchesData(branches?: Object[]) {
-    if (branches.length > 1) {
-      return `https://img.shields.io/badge/default%20branches-${branches[0]} \u27F5 ${branches[1]}-green?style=flat-square`;
-    }
-    else {
-      switch (branches[0]) {
-        case 'master': {
-          this.store.setWarnings(
-            'development',
-            'branch \'development\' missed'
-          );
-          return `https://img.shields.io/badge/default%20branches-${branches[0]}-red?style=flat-square`;
-        }
-        case 'development': {
-          this.store.setWarnings(
-            'master',
-            'branch \'master\' missed'
-          );
-          return `https://img.shields.io/badge/default%20branches-${branches[0]}-red?style=flat-square`;
-        }
+  public getDefaultBranchesData(branches: any) {
+    const { baseBranch, compareBranch } = branches;
 
-      }
-    }
+    return this.shieldsService.setShieldsForRepositoryDefaultBranches(baseBranch, compareBranch);
   }
 
   public getUserData() {
     return this.dataService.getUserData();
+  }
+
+  public removeBranches(login: string, repoName: string, branchesData: any) {
+    return this.dataService.removeComparing(login, repoName, branchesData);
   }
 
 }

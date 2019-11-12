@@ -16,105 +16,90 @@ export class HelpersService {
     row.classList.add('row-danger');
   }
 
-  public setTextDangerForImportantPackage(
-    firstPackage: string,
-    packageName: string,
-    secondPackage: string,
-    cellId: string
-  ) {
-    const row = document.getElementById(cellId);
-    if (row) {
-      if (firstPackage === '(none)') {
-        row.innerHTML = `<span class="text-danger">${firstPackage}</span> &#8594; <span>${secondPackage}</span>`;
-      }
-      else if (secondPackage === '(none)') {
-        row.innerHTML = `<span>${firstPackage}</span> &#8594; <span class="text-danger">${secondPackage}</span>`;
-      }
-    }
-  }
-
   public checkPackageVersion(
-    packageName: string,
-    packageVersion: string,
-    recommendVersion: string,
+    pkgVersion: string,
+    recommendVersion: string
   ) {
-    const newElement = document.createElement('span');
-    const text = document.createTextNode(packageVersion);
-    newElement.appendChild(text);
 
     if (!recommendVersion) {
-      return `<span>${packageVersion}</span>`;
+      return `<span class="text-white">${ pkgVersion }</span>`;
     }
 
     try {
-      if (semver.lt(packageVersion, recommendVersion)) {
-        return `<span class="text-danger">${packageVersion}</span>`;
+      const checkResult = semver.lt(pkgVersion, recommendVersion);
+
+      if (checkResult) {
+        return `<span class="text-danger">${ pkgVersion }</span>`;
       }
-      return `<span>${packageVersion}</span>`;
-    } catch (err) {
-      return `<span class="text-danger">${packageVersion}</span>`;
+
+      return `<span class="text-white">${ pkgVersion }</span>`;
+    }
+    catch (err) {
+      return `<span class="text-danger">${ pkgVersion }</span>`;
     }
   }
 
-  public getPackageData(
-    packageName: string,
-    firstPackage: string,
-    secondPackage: string,
-    recommendVersion: string,
-    isImportant: boolean,
-    cellId: string,
-    rowId: string
-  ) {
-    if (!firstPackage && !secondPackage) {
+
+  public getDependencies(data: {
+    base: string;
+    compare: string;
+    isImportant: boolean;
+    minVersion: string;
+    rowId: string;
+    id: string;
+  }) {
+    const { base, compare, isImportant, minVersion, rowId, id } = data;
+    const doc = document.getElementById(id);
+
+    if (
+      (!base && !compare)
+      || (base === 'N/A' && !compare)
+      || (!base && compare === 'N/A')
+    ) {
       if (isImportant) {
-        this.setRowBefore('before_danger', rowId);
-        this.setRowBgDanger(cellId);
+        this.setRowBgDanger(id);
+        this.setRowBefore('before_danger', rowId)
       }
-      return '(none)';
+
+      return doc.innerHTML = '<span class="text-white">N/A</span>'
     }
-    else if (firstPackage === secondPackage) {
-      const cell = document.getElementById(cellId);
-      cell.innerHTML = this.checkPackageVersion(packageName, firstPackage, recommendVersion);
+
+    if (base === compare) {
+      return doc.innerHTML = this.checkPackageVersion(base, minVersion);
     }
-    else if (!firstPackage) {
+
+    if (!base && compare) {
       if (isImportant) {
-        this.setTextDangerForImportantPackage('(none)', packageName, secondPackage, cellId);
-      } else {
-        const cell = document.getElementById(cellId);
-        cell.innerHTML = `<span>(none)</span> &#8594; 
-          ${this.checkPackageVersion(
-            packageName, 
-            secondPackage, 
-            recommendVersion
-          )}`;
+        return doc.innerHTML = `<span class="text-danger">N/A</span> &#8594; ${this.checkPackageVersion(compare, minVersion)}`
       }
+
+      return doc.innerHTML = `<span class="text-white">N/A</span> &#8594; ${this.checkPackageVersion(compare, minVersion)}`
     }
-    else if (!secondPackage) {
+
+    if (base && !compare) {
       if (isImportant) {
-        this.setTextDangerForImportantPackage(firstPackage, packageName, '(none)', cellId);
-      } else {
-        const cell = document.getElementById(cellId);
-        cell.innerHTML = `${this.checkPackageVersion(
-          packageName,
-          firstPackage,
-          recommendVersion,
-        )} &#8594; <span>(none)</span>`;
+        return doc.innerHTML = `${this.checkPackageVersion(base, minVersion)} &#8594; <span class="text-danger">N/A</span>`
       }
+
+      return doc.innerHTML = `${this.checkPackageVersion(base, minVersion)} &#8594; <span class="text-white">N/A</span>`;
     }
-    else {
-      const cell = document.getElementById(cellId);
-      cell.innerHTML = `
-        ${this.checkPackageVersion(
-          packageName, 
-          firstPackage, 
-          recommendVersion,
-        )} 
-        &#8594; 
-        ${this.checkPackageVersion(
-          packageName, 
-          secondPackage, 
-          recommendVersion,
-        )}`;
+
+    if (base === 'N/A' && compare) {
+      if (isImportant) {
+        return doc.innerHTML = `<span class="text-danger">${base}</span> &#8594; ${this.checkPackageVersion(compare, minVersion)}`
+      }
+
+      return doc.innerHTML = `<span class="text-white">${base}</span> &#8594; ${this.checkPackageVersion(compare, minVersion)}`
     }
+
+    if (base && compare === 'N/A') {
+      if (isImportant) {
+        return doc.innerHTML = `${this.checkPackageVersion(base, minVersion)} &#8594; <span class="text-danger">${compare}</span>`
+      }
+
+      return doc.innerHTML = `${this.checkPackageVersion(base, minVersion)} &#8594; <span class="text-white">${compare}</span>`;
+    }
+
+    return doc.innerHTML = `${this.checkPackageVersion(base, minVersion)} &#8594; ${this.checkPackageVersion(compare, minVersion)}`;
   }
 }

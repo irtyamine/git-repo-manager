@@ -1,5 +1,7 @@
 @import '../../../shared/scss/variables';
 @import '../../../shared/scss/transition';
+@import '../../../shared/scss/button';
+@import '../../../shared/scss/helpers';
 
 .repository {
   position: relative;
@@ -89,52 +91,69 @@
 .info {
   margin-top: 10px;
   margin-left: 50px;
+  margin-right: 50px;
+  padding-bottom: 30px;
   font-family: Cabin, 'sans-serif';
   color: $color-white;
 
   &__branches {
     margin-top: 30px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 200px;
+
+    &-header {
+      position: relative;
+      margin-top: 30px;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 0;
+    }
   }
 
   &__custom-branches {
-    margin-left: -50px;
-    border-top: 1px solid #616161;
-    text-align: center;
-    color: #616161;
-    font-family: Cabin, 'sans-serif';
-    font-size: 40px;
     margin-top: 30px;
-    margin-bottom: 50px;
+
+    &-header {
+      position: relative;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    &-display {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 200px;
+    }
   }
 }
 
 .branch {
 
   &__name {
+    user-select: none;
     cursor: pointer;
     font-size: 20px;
 
     &:after {
-      content: '  {';
+      cursor: text;
+      content: '  { . . . }';
+      color: $color-white
     }
 
     &.name-clicked {
       &:after {
-        cursor: text;
-        content: '  { . . . }';
-        color: $color-white
+        content: '  {';
       }
     }
   }
 
   &__body {
-    display: flex;
-    flex-direction: column;
+    display: none;
 
     &.body-clicked {
-      display: none;
+      display: flex;
+      flex-direction: column;
     }
 
     &:after {
@@ -178,7 +197,7 @@
   outline: 0;
   border-radius: 5px;
   width: 33px;
-  background-color: $color-light-black;
+  background-color: transparent;
   user-select: none;
   align-content: center;
   cursor: pointer;
@@ -190,18 +209,18 @@
     font-size: 21px;
     text-align: center;
     color: $color-white;
-    transform: rotate(90deg);
+    transform: rotate(0);
 
     @include transition(.3s);
 
     &.btn-clicked {
       text-align: center;
-      transform: rotate(0);
+      transform: rotate(90deg);
     }
   }
 
   &:hover {
-    background-color: $color-private;
+    background-color: $color-light-black;
   }
 }
 
@@ -227,5 +246,97 @@
 
   &:hover {
     background-color: $color-private;
+  }
+}
+
+.custom-branches {
+  display: flex;
+  flex-direction: row;
+
+  &__base {
+    position: relative;
+    padding-right: 50px;
+
+    &:after {
+      position: absolute;
+      display: inline-block;
+      right: 15px;
+      top: 27px;
+      font-size: 25px;
+      content: '\2190';
+    }
+  }
+
+  &__compare {
+
+  }
+}
+
+.new-branch {
+  outline: 0;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid #b8b8b8;
+  @include transition(.3s);
+
+  &::placeholder {
+    @include transition(.3s);
+    color: #616161;
+  }
+
+  &:focus {
+    &::placeholder {
+      color: transparent;
+    }
+
+    box-shadow: 0 0 0 1px rgba(17, 165, 247, 0.58);
+  }
+}
+
+.remove-comparing {
+  position: relative;
+  border: 0;
+  border-radius: 3px;
+  outline: 0;
+  width: 30px;
+  height: 30px;
+  background-color: $color-danger;
+  text-align: center;
+
+  @include transition(.3s);
+
+  &__cross {
+    position: absolute;
+    top: -12px;
+    left: 8px;
+    color: $color-white;
+    font-size: 35px;
+
+    @include transition(.3s);
+  }
+
+  &__text {
+    position: absolute;
+    white-space: nowrap;
+    color: transparent;
+    font-size: 0;
+    top: 3px;
+    left: 4px;
+
+    @include transition(.3s);
+  }
+
+  &:hover {
+    cursor: pointer;
+    width: 150px;
+    .remove-comparing__cross {
+      color: transparent;
+      transform: rotate(-45deg);
+    }
+
+    .remove-comparing__text {
+      color: $color-white;
+      font-size: 17px;
+    }
   }
 }

@@ -1,6 +1,6 @@
 <header
-  [lastUpdate]="repositoryData?.timestamp | timestamp"
-  [dataSource]="repositoryData?.dataSource"
+  [lastUpdate]="(repositoryDetails | async).timestamp | timestamp"
+  [dataSource]="(repositoryDetails | async).dataSource"
   [userData]="usrData">
 </header>
 
@@ -11,7 +11,7 @@
   </button>
 
   <div class="repository__name">
-    {{ repositoryData?.repoName }}
+    {{ (repositoryDetails | async).repoName }}
   </div>
 
   <div class="warnings">
@@ -32,39 +32,120 @@
     </div>
 
     <div class="info">
-      <div>Type of privacy: {{ repositoryData?.repoType }}</div>
+      <span>Type of privacy: {{ (repositoryDetails | async).repoType }}</span>
 
       <div>
-        <img *ngFor="let dependency of dependencies" class="image" src="{{ setRepoDependenciesShields(dependency) }}" alt="">
+        <img *ngFor="let dependency of dependencies"
+             src="{{ setRepoDependenciesShields(dependency) }}"
+             class="image" alt="" />
+      </div>
+
+      <div class="info__branches-header">
+        <span>Default branches</span>
       </div>
 
       <div class="info__branches">
         <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
-          <span class="branch__name" [id]="'name' + i" (click)="click('name' + i, 'body' + i, 'btn' + i)">
+          <div class="branch__name" [id]="'name'+i" (click)="click('name'+i, 'body'+i, 'btn'+i)">
             <button class="toggle-button">
-              <span class="toggle-button__text" [id]="'btn' + i"> > </span>
+              <span class="toggle-button__text" [id]="'btn'+i"> > </span>
             </button>
-            {{ branch }}:
-          </span>
+            {{ (repositoryDetails | async).branches[branch].branchName }}
+          </div>
 
-          <span class="branch__body" [id]="'body' + i">
+          <div class="branch__body" [id]="'body'+i">
             <span class="branch__dependency"
-                  *ngFor="let dependency of
-                    getDependenciesFromBranch(
-                    repositoryData?.branches[branch])">
+                  *ngFor="let dependency of getDependenciesFromBranch((repositoryDetails | async).branches[branch])">
               <img src="{{ setShieldForDependency(dependency) }}" alt="" />
-              <span class="version version-{{ setVersionStatus(dependency, branch) }}">
-                {{ repositoryData?.branches[branch][dependency] }}
+
+              <span class="version version-{{setVersionStatus(dependency, (repositoryDetails | async).branches[branch])}}">
+                {{ (repositoryDetails | async).branches[branch][dependency] }}
               </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
 
       <div class="info__custom-branches">
-        Custom branches - coming soon
+        <div class="info__custom-branches-header">
+          <span>Custom branches</span>
+        </div>
+
+        <button class="button" (click)="openCompareCustomBranchesModal(template)" [disabled]="disableButtonCondition">
+          <span class="button__text">{{ btnText }}</span>
+        </button>
+
+        <div *ngFor="let customBranch of (customBranches | async); let i = index">
+          <div class="info__custom-branches-display">
+            <div class="branch" *ngFor="let branch of getCustomBranches(customBranch.branches); let j = index">
+              <div class="branch__name" [id]="'name'+i+j" (click)="click('name'+i+j, 'body'+i+j, 'btn'+i+j)">
+                <button class="toggle-button">
+                  <span class="toggle-button__text" [id]="'btn'+i+j"> > </span>
+                </button>
+                {{ customBranch.branches[branch].branchName }}
+              </div>
+
+              <div class="branch__body" [id]="'body'+i+j">
+                <div class="branch__dependency" *ngFor="let dependency of getDependenciesFromBranch(customBranch.branches[branch])">
+                  <img src="{{ setShieldForDependency(dependency) }}" alt="" />
+                  <span class="version version-{{ setVersionStatus(dependency, customBranch.branches[branch]) }}">
+                    {{ customBranch.branches[branch][dependency] }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button class="remove-comparing" (click)="removeComparing(customBranch)">
+              <span class="remove-comparing__cross">&times;</span>
+              <span class="remove-comparing__text">Remove comparing</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <span>Choose branches for <b>{{ (repositoryDetails | async).repoName }}</b></span>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()" id="getBranchesButton">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="customBranchesForm">
+      <div class="custom-branches">
+        <div class="custom-branches__base">
+          <label for="BaseBranch">Choose base branch</label>
+          <input [typeahead]="repositoryBranches"
+                 autocomplete="off"
+                 class="new-branch"
+                 placeholder="Enter base branch"
+                 formControlName="baseBranch"
+                 id="BaseBranch">
+        </div>
+
+        <div class="custom-branches__compare">
+          <label for="CompareBranch">Choose compare branch</label>
+          <input [typeahead]="repositoryBranches"
+                 autocomplete="off"
+                 class="new-branch"
+                 placeholder="Enter compare branch"
+                 formControlName="compareBranch"
+                 (typeaheadOnSelect)="checkNewBranches()"
+                 id="CompareBranch">
+        </div>
+      </div>
+
+      <div class="warning" [hidden]="!(modalWarning | async)">Warning: {{ modalWarning | async }}</div>
+
+      <button class="button mt-15"
+              [disabled]="!customBranchesForm.valid || !disableAddBranchesButtonCondition"
+              (click)="addBranches()">
+        <span class="button__text">{{ addBranchesText }}</span>
+      </button>
+
+    </form>
+  </div>
+</ng-template>
