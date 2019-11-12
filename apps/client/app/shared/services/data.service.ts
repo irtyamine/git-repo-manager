@@ -7,7 +7,6 @@ export class DataService {
   private availablePackages = new BehaviorSubject<any>([]);
   private companyRepositories = new BehaviorSubject<any>([]);
   private _customBranches = new BehaviorSubject<any>([]);
-  private customBrancesNames = new BehaviorSubject<object>([]);
 
   constructor(private readonly reposDataService: RepositoriesDataService) {
     this.getPackagesData();

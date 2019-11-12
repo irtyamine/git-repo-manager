@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { StoreService } from './store.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ShieldsService {
 
   private shieldsUrl: string = 'https://img.shields.io/badge';
+  private packages: BehaviorSubject<any>;
 
   constructor(
     private readonly dataService: DataService,
     private readonly store: StoreService
-  ) {  }
+  ) {
+    this.packages = this.dataService.packages;
+  }
 
 
   public setShieldsForDependencies(dependency: string) {
-    const packages = this.dataService.packages.getValue();
-    const packageData = packages.find(pkj => pkj.name === dependency);
+    const packageData = this.packages.getValue()
+      .find(pkg => pkg.name === dependency);
 
-    if (!packageData.recommendVersion) {
+    if (!packageData || !packageData.recommendVersion) {
       return `${this.shieldsUrl}/-${dependency}-blue?style=flat-square`;
     }
 
@@ -25,10 +29,10 @@ export class ShieldsService {
   }
 
   public setRepositoryDependencies(dependency: string) {
-    const packages = this.dataService.packages.getValue();
-    const { isImportant } = packages.find(pkg => pkg.name === dependency);
+    const packageData = this.packages.getValue()
+      .find(pkg => pkg.name === dependency);
 
-    if (!isImportant) {
+    if (!packageData || !packageData.isImportant) {
       return `${this.shieldsUrl}/-${dependency}-blue?style=flat-square`;
     }
 

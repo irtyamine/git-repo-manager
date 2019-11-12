@@ -17,16 +17,16 @@ export class DependenciesService {
   }
 
   public compareVersions(dependency: string, repositoryData: any) {
-    const { recommendVersion } = this.packages.getValue().find(
-      (pkg: any) => pkg.name === dependency);
+    const packageData = this.packages.getValue()
+      .find((pkg: any) => pkg.name === dependency);
     const dependencyVersion = repositoryData[dependency];
 
-    if (!recommendVersion) {
+    if (!packageData || !packageData.recommendVersion) {
       return 'success';
     }
 
     try {
-      if (semver.lt(dependencyVersion, recommendVersion)) {
+      if (semver.lt(dependencyVersion, packageData.recommendVersion)) {
         return 'danger';
       }
     } catch (error) {

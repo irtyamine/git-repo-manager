@@ -82,8 +82,8 @@ export class RepositoryDetailsComponent implements OnInit {
     return this.repoDetailsService
       .getRepositoryDetails()
       .subscribe((res: any) => {
+        const { branches } = res;
         this.repositoryDetails.next(res);
-        const { branches } = this.repositoryDetails.getValue();
 
         this.setDefaultBranchesShields(branches);
         this.getBranches(branches);
