@@ -1,0 +1,33 @@
+@import '../../../../../shared/scss/variables';
+@import '../../../../../shared/scss/transition';
+@import '../../../../../shared/scss/button';
+
+.add-filter {
+  border: 0;
+  height: 30px;
+  width: 130px;
+  border-radius: 5px;
+  background-color: #7f8685;
+  outline: 0;
+  @include transition(.3s);
+  &:hover {
+    cursor: pointer;
+    background-color: #b5bfbe;
+    .btn-text {
+      color: black;
+      font-size: 15px;
+    }
+  }
+}
+
+.btn-text {
+  color: white;
+  @include transition(.3s);
+}
+
+.filters {
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 2vm;
+}

@@ -1,0 +1,19 @@
+@import '../scss/variables';
+
+.notification {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 40px;
+  border-radius: 4px;
+  text-align: center;
+
+  &-error {
+    color: $color-hover-danger;
+    border: 1px solid $color-hover-danger;
+    background-color: rgba(102, 0, 0, 0.16);
+    font-size: 25px;
+  }
+}

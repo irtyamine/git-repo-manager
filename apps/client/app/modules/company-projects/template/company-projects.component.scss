@@ -1,0 +1,203 @@
+@import '../../../shared/scss/variables';
+@import '../../../shared/scss/transition';
+
+.my-table {
+  margin: 3% auto;
+  position: relative;
+  &__caption {
+    caption-side: top;
+    color: #e1e1e1;
+    span {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__header {
+    background-color: $color-grey;
+    &-row {
+      height: 50px;
+      text-align: center;
+      &_element {
+        font-family: Cabin, 'sans-serif';
+        font-size: 20px;
+        padding-right: 10px;
+        padding-left: 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: $color-white;
+      }
+      &::before {
+        content: '';
+      }
+    }
+  }
+
+  &__body {
+    background-color: $color-light-black;
+    &-row {
+      height: 40px;
+      border: 1px solid $color-black;
+      @include transition(.3s);
+      &_element {
+        font-family: Cabin, 'sans-serif';
+        text-align: center;
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        overflow: hidden;
+        max-width: 180px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &:first-child {
+          max-width: 320px;
+          text-align: left;
+          padding-left: 10px;
+        }
+      }
+      &:hover {
+        background-color: $color-black;
+        height: 55px;
+        .row-danger {
+          background-color: $color-hover-danger;
+        }
+        .public {
+          background-color: $color-hover-public;
+        }
+        .private {
+          background-color: $color-hover-private;
+        }
+      }
+    }
+  }
+
+  &__filters {
+    margin-top: 50px;
+    margin-left: 43px;
+  }
+}
+
+.important {
+  cursor: help;
+}
+
+.row-danger {
+  font-family: Cabin, 'sans-serif';
+  background-color: $color-danger;
+  color: $color-white;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 100;
+  @include transition(.3s);
+}
+
+.public {
+  @include transition(.3s);
+  font-size: 22px;
+  font-family: Cabin, 'sans-serif';
+  text-align: center;
+  color: $color-white;
+  background-color: rgba(9, 37, 166, 0.7);
+}
+
+.private {
+  @include transition(.3s);
+  font-size: 22px;
+  font-family: Cabin, 'sans-serif';
+  text-align: center;
+  color: $color-white;
+  background-color: rgba(163, 162, 166, 0.7);
+}
+
+.before_success {
+  @extend .my-table__body-row;
+  &::before {
+    @include transition(.3s);
+    position: absolute;
+    content: '';
+    left: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $color-row-before;
+    width: 3px;
+    height: 39px;
+  }
+  &:hover {
+    &::before {
+      height: 54px;
+      background-color: $color-row-before-active;
+    }
+  }
+}
+
+.before_danger {
+  @extend .my-table__body-row;
+  &::before {
+    @include transition(.3s);
+    position: absolute;
+    content: '';
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: $color-row-before-danger;
+    width: 3px;
+    height: 39px;
+  }
+  &:hover {
+    &::before {
+      height: 54px;
+      background-color: $color-hover-danger;
+    }
+  }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 10px;
+  text-align: center;
+  white-space: nowrap;
+  &__button {
+    border: 0;
+    width: 150px;
+    border-radius: 5px;
+    font-size: 15px;
+    color: $color-white;
+    background-color: #7f8685;
+    @include transition(.3s);
+    &:hover {
+      cursor: pointer;
+      background-color: aliceblue;
+      color: black;
+    }
+  }
+  &__filter {
+    padding: 5px;
+    button {
+      border: 0;
+      border-radius: 5px;
+      max-width: 100px;
+      background-color: $color-danger;
+      &:hover {
+        background-color: $color-hover-danger;
+      }
+    }
+  }
+}
+
+.remove-button {
+  background-color: red;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+}
+
+.select-field {
+  border: 0;
+}
+
+.repo-name {
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}

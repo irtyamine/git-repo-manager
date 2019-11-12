@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "lib": ["es2015", "es2017"],
+    "sourceMap": true,
+    "allowJs": true,
+    "typeRoots": ["../../node_modules/@types"],
+    "outDir": "../../dist/server"
+  },
+  "include": [ "src/**/*" ],
+  "exclude": [ "node_modules", "**/*.spec.ts" ]
+}

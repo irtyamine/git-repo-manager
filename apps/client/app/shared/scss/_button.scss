@@ -1,0 +1,29 @@
+@import 'variables';
+@import 'transition';
+
+.button {
+  border: 0;
+  outline: 0;
+  border-radius: 2px;
+  background-color: $button-bg;
+  width: 270px;
+
+  @include transition(.3s);
+
+  &__text {
+    font-family: Cabin, 'sans-serif';
+    padding: 15px;
+    font-size: 20px;
+    color: $color-white;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $button-bg-hover;
+  }
+
+  &:disabled {
+    background-color: $color-input-focus;
+    cursor: not-allowed;
+  }
+}

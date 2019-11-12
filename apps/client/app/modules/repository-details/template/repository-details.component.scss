@@ -1,0 +1,342 @@
+@import '../../../shared/scss/variables';
+@import '../../../shared/scss/transition';
+@import '../../../shared/scss/button';
+@import '../../../shared/scss/helpers';
+
+.repository {
+  position: relative;
+  margin: 100px auto 0;
+  width: 65%;
+  background-color: $color-light-black;
+
+  &__name {
+    font-family: Cabin,'sans-serif';
+    text-align: left;
+    padding-top: 20px;
+    margin-left: 50px;
+    font-size: 35px;
+    color: white;
+  }
+
+  &__default-info {
+    margin-bottom: 50px;
+  }
+}
+
+.subhead {
+  width: 40%;
+  color: $color-white;
+  font-family: Cabin, 'sans-serif';
+  font-size: 25px;
+  margin-left: 50px;
+  border-bottom: 1px solid $color-white;
+}
+
+.warnings {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  text-align: right;
+
+  &__head {
+    color: $color-white;
+    font-family: Cabin, 'sans-serif';
+  }
+
+  &__button {
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    width: 50px;
+    font-size: 15px;
+    margin-left: 10px;
+    background-color: $color-public;
+
+    @include transition(.3s);
+
+    &:hover {
+      cursor: pointer;
+      background-color: $color-hover-public;
+    }
+
+    &-text {
+      font-family: Cabin, 'sans-serif';
+      color: $color-white;
+    }
+  }
+}
+
+.warning {
+  position: relative;
+  width: 100%;
+  padding: 3px 15px;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  user-select: none;
+  font-family: Cabin, 'sans-serif';
+  color: $color-hover-danger;
+  border: 1px solid $color-hover-danger;
+  background-color: rgba(102, 0, 0, 0.16);
+  border-radius: 4px;
+
+  &:before {
+    content: '\26A0';
+    margin-right: 10px;
+    font-size: 25px;
+  }
+}
+
+.info {
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-bottom: 30px;
+  font-family: Cabin, 'sans-serif';
+  color: $color-white;
+
+  &__branches {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 200px;
+
+    &-header {
+      position: relative;
+      margin-top: 30px;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 0;
+    }
+  }
+
+  &__custom-branches {
+    margin-top: 30px;
+
+    &-header {
+      position: relative;
+      font-family: Cabin, 'sans-serif';
+      font-size: 30px;
+      margin-bottom: 5px;
+    }
+
+    &-display {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 200px;
+    }
+  }
+}
+
+.branch {
+
+  &__name {
+    user-select: none;
+    cursor: pointer;
+    font-size: 20px;
+
+    &:after {
+      cursor: text;
+      content: '  { . . . }';
+      color: $color-white
+    }
+
+    &.name-clicked {
+      &:after {
+        content: '  {';
+      }
+    }
+  }
+
+  &__body {
+    display: none;
+
+    &.body-clicked {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &:after {
+      display: inline-block;
+      content: '}';
+      font-size: 20px;
+    }
+  }
+
+  &__dependency {
+    margin-left: 15px;
+  }
+}
+
+.version {
+
+  &-success {
+    color: $color-success;
+  }
+
+  &-danger {
+    color: $color-hover-danger;
+  }
+
+  &:before {
+    display: inline-block;
+    content: ':';
+    margin-left: 2px;
+    color: $color-white;
+  }
+}
+
+.image {
+  margin-right: 10px;
+}
+
+.toggle-button {
+  position: relative;
+  text-align: center;
+  border: 0;
+  outline: 0;
+  border-radius: 5px;
+  width: 33px;
+  background-color: transparent;
+  user-select: none;
+  align-content: center;
+  cursor: pointer;
+
+  @include transition(.3s);
+
+  &__text {
+    display: inline-block;
+    font-size: 21px;
+    text-align: center;
+    color: $color-white;
+    transform: rotate(0);
+
+    @include transition(.3s);
+
+    &.btn-clicked {
+      text-align: center;
+      transform: rotate(90deg);
+    }
+  }
+
+  &:hover {
+    background-color: $color-light-black;
+  }
+}
+
+.back-button {
+  border: 0;
+  outline: 0;
+  background-color: $color-light-black;
+  margin-top: 20px;
+  margin-left: 50px;
+  cursor: pointer;
+  border-radius: 5px;
+  @include transition(.3s);
+
+  &__text {
+    color: $color-white;
+    padding: 10px;
+
+    &:before {
+      content: '\2B88  ';
+      color: $color-white;
+    }
+  }
+
+  &:hover {
+    background-color: $color-private;
+  }
+}
+
+.custom-branches {
+  display: flex;
+  flex-direction: row;
+
+  &__base {
+    position: relative;
+    padding-right: 50px;
+
+    &:after {
+      position: absolute;
+      display: inline-block;
+      right: 15px;
+      top: 27px;
+      font-size: 25px;
+      content: '\2190';
+    }
+  }
+
+  &__compare {
+
+  }
+}
+
+.new-branch {
+  outline: 0;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid #b8b8b8;
+  @include transition(.3s);
+
+  &::placeholder {
+    @include transition(.3s);
+    color: #616161;
+  }
+
+  &:focus {
+    &::placeholder {
+      color: transparent;
+    }
+
+    box-shadow: 0 0 0 1px rgba(17, 165, 247, 0.58);
+  }
+}
+
+.remove-comparing {
+  position: relative;
+  border: 0;
+  border-radius: 3px;
+  outline: 0;
+  width: 30px;
+  height: 30px;
+  background-color: $color-danger;
+  text-align: center;
+
+  @include transition(.3s);
+
+  &__cross {
+    position: absolute;
+    top: -12px;
+    left: 8px;
+    color: $color-white;
+    font-size: 35px;
+
+    @include transition(.3s);
+  }
+
+  &__text {
+    position: absolute;
+    white-space: nowrap;
+    color: transparent;
+    font-size: 0;
+    top: 3px;
+    left: 4px;
+
+    @include transition(.3s);
+  }
+
+  &:hover {
+    cursor: pointer;
+    width: 150px;
+    .remove-comparing__cross {
+      color: transparent;
+      transform: rotate(-45deg);
+    }
+
+    .remove-comparing__text {
+      color: $color-white;
+      font-size: 17px;
+    }
+  }
+}

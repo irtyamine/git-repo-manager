@@ -1,0 +1,44 @@
+<header [lastUpdate]="getTimestamp((repositories | async)[0]) | timestamp"
+        [dataSource]="authData.dataSource" [userData]="usrData">
+</header>
+
+<div class="my-table__filters">
+  <filters [options]="tableHeader"></filters>
+</div>
+
+<table class="my-table">
+  <thead class="my-table__header">
+    <tr class="my-table__header-row" id="tableHeader">
+      <th class="my-table__header-row_element">repository name</th>
+      <th class="my-table__header-row_element">branches</th>
+      <th class="my-table__header-row_element">type of privacy</th>
+      <th class="my-table__header-row_element" *ngFor="let headElement of (tableHeader | async)">
+        <span [tooltip]="headElement.recommendVersion">{{ headElement.name }}</span>
+        <span [hidden]="!headElement.recommendVersion">: {{ headElement.recommendVersion }}</span>
+        <span [hidden]="!headElement.isImportant" class="important" tooltip="Important Field"> *</span>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody class="my-table__body">
+    <tr class="my-table__body-row" *ngFor="let repository of (repositories | async); let rowIndex = index" [id]="'row'+rowIndex">
+      <td [id]="'repoName'+rowIndex" class="my-table__body-row_element">
+        <span class="repo-name" (click)="navigateToDetailsPage(repository.repoName)">{{ repository.repoName }}</span>
+      </td>
+
+      <td [id]="'branches'+rowIndex" class="my-table__body-row_element">
+        <span>{{ getBranches(repository.branches, rowIndex) }}</span>
+      </td>
+
+      <td class="my-table__body-row_element {{ setRepositoryType(repository.repoType) }}">
+        <span>{{ repository.repoType }}</span>
+      </td>
+
+      <td class="my-table__body-row_element" *ngFor="let headElement of (tableHeader | async)" [id]="headElement.name+rowIndex">
+        <span>
+          {{ getPkjData(repository.branches, headElement, rowIndex) }}
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

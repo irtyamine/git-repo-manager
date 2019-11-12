@@ -1,0 +1,286 @@
+@import '../../../shared/scss/variables';
+@import '../../../shared/scss/transition';
+
+.form {
+  border-radius: 10px;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px;
+  height: 400px;
+  background-color: rgba(255,255,255,0.1);
+
+  &__header {
+    height: 60px;
+    text-align: center;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: rgba(255,255,255,0.3);
+    &-text {
+      color: white;
+      font-size: 40px;
+    }
+  }
+}
+
+.organization {
+  margin-top: 85px;
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+
+  &__left-side {
+    text-align: center;
+  }
+
+  &__middle-side {
+    border-radius: 10px;
+    background-color: $color-input-focus;
+  }
+
+  &__right-side {  }
+}
+
+.input-text {
+  & label {
+    color: $color-input;
+    @include transition(.3s);
+  }
+}
+
+.input-field {
+  text-align: center;
+  border: 2px solid $color-grey;
+  outline: 0;
+  border-radius: 5px;
+  color: $color-input;
+  font-size: 20px;
+  padding: 12px;
+  width: 18em;
+  background-color: $color-hover-black;
+
+  @include transition(.3s);
+
+  &::placeholder {
+    @include transition(.3s);
+    font-size: 22px;
+    color: $color-grey;
+  }
+
+  &:focus {
+    border: 2px solid $color-input-focus;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+}
+
+.test {
+  vertical-align: middle;
+}
+
+.coming_soon {
+  text-align: center;
+  font-size: 30px;
+  color: $color-input-focus;
+}
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  margin-left: 67px;
+
+  & input {
+    opacity: 0;
+
+    &:checked + label {
+      color: $color-input-focus;
+
+      &::before {
+        border: 2px solid $color-input-focus;
+      }
+
+      &::after {
+        content: "";
+      }
+    }
+  }
+
+  & label {
+    position: relative;
+    font-size: 35px;
+    user-select: none;
+    color: $color-grey;
+    cursor: pointer;
+
+    @include transition(.3s);
+
+    &:before {
+      content: '';
+      position: absolute;
+      display: inline-block;
+      cursor: pointer;
+      height: 25px;
+      width: 25px;
+      background-color: $color-hover-black;
+      border-radius: 12px;
+      border: 2px solid $color-grey;
+      top: 15px;
+      left: -35px;
+
+      @include transition(.3s);
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      display: inline-block;
+      background-color: $color-input;
+      height: 11px;
+      width: 11px;
+      border-radius: 10px;
+      left: -28px;
+      top: 22px;
+    }
+  }
+
+  & input + label {
+    &:after {
+      content: none;
+    }
+  }
+}
+
+.checkbox {
+  margin-left: 67px;
+
+  & input {
+    opacity: 0;
+
+    &:checked + label {
+
+      color: $color-input-focus;
+
+      &::before {
+        border: 2px solid $color-input-focus;
+      }
+
+      &::after {
+        content: "";
+      }
+    }
+  }
+
+  & label {
+    position: relative;
+    font-size: 35px;
+    user-select: none;
+    color: $color-grey;
+    cursor: pointer;
+    @include transition(.3s);
+
+    &::before {
+      content: '';
+      cursor: pointer;
+      display: inline-block;
+      position: absolute;
+
+      height: 25px;
+      width: 25px;
+
+      @include transition(.3s);
+
+      background-color: $color-hover-black;
+      border-radius: 5px;
+      border: 2px solid $color-grey;
+      top: 15px;
+      left: -35px;
+    }
+
+    &::after {
+      content: '';
+      display: inline-block;
+      position: absolute;
+
+      height: 9px;
+      width: 15px;
+      border-left: 2px solid white;
+      border-bottom: 2px solid white;
+
+      transform: rotate(-45deg);
+      left: -30px;
+      top: 20px;
+    }
+  }
+
+  & input + label {
+    &::after {
+      content: none;
+    }
+  }
+}
+
+.form__footer {
+  display: flex;
+  flex-direction: row;
+
+  &-login {
+    margin-top: 50px;
+    margin-left: 45px;
+  }
+}
+
+.login-button {
+  border: 0;
+  outline: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  height: 40px;
+  width: 250px;
+  background-color: rgba(0, 39, 169, 0.65);
+  @include transition(.3s);
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #7f8685;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: rgba(0, 50, 217, 0.65);
+
+    .button-text {
+      color: #d9d9d9;
+    }
+  }
+}
+
+.button-text {
+  color: #aaaaaa;
+  padding: 5px;
+  font-weight: 300;
+  @include transition(.3s);
+}
+
+.error {
+  text-align: center;
+  display: block;
+  position: absolute;
+  background-color: $color-danger;
+  width: 500px;
+  height: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+
+  &__text {
+    padding: 5px;
+    font-size: 20px;
+    color: $color-white;
+
+    &:before {
+      content: '\26A0';
+      margin-right: 5px;
+      color: $color-white;
+    }
+  }
+}
