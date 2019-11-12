@@ -82,7 +82,7 @@ export class RepositoriesDataService {
     };
 
     return this.http.get(`${environment.url}/api/${dataSource}/repositories/custom-branches`, options)
-      .pipe()
+      .pipe();
   }
 
   public setCustomBranchesData(
@@ -122,6 +122,6 @@ export class RepositoriesDataService {
     };
 
     return this.http.delete(`${environment.url}/api/${dataSource}/repositories/remove-custom-branches`, options)
-      .pipe()
+      .pipe();
   }
 }

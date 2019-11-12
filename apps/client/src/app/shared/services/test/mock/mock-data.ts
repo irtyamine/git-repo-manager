@@ -62,3 +62,45 @@ export const MockRepositories = [
   },
 
 ];
+
+export const ListOfBranches = [
+  'branch1',
+  'branch2',
+  'branch3',
+  'branch4',
+  'branch5',
+  'branch6'
+];
+
+export const ListOfCustombranches = [
+  {
+    repoName: 'testRepo1',
+    addedBy: 'testUser',
+    organization: 'testOrg',
+    vcs: 'all',
+    branches: {
+      baseBranch: {},
+      compareBranch: {}
+    }
+  },
+  {
+    repoName: 'testRepo2',
+    addedBy: 'testUser',
+    organization: 'testOrg',
+    vcs: 'all',
+    branches: {
+      baseBranch: {},
+      compareBranch: {}
+    }
+  },
+  {
+    repoName: 'testRepo1',
+    addedBy: 'testUser',
+    organization: 'testOrg',
+    vcs: 'all',
+    branches: {
+      baseBranch: {},
+      compareBranch: {}
+    }
+  }
+];

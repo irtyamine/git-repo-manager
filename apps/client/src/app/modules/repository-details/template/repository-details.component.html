@@ -48,9 +48,9 @@
         <div class="branch" *ngFor="let branch of defaultBranches; let i = index">
           <div class="branch__name" [id]="'name'+i" (click)="click('name'+i, 'body'+i, 'btn'+i)">
             <button class="toggle-button">
-              <span class="toggle-button__text" [id]="'btn'+i"> > </span>
+              <span class="toggle-button__text" [id]="'btn'+i">&#8250;</span>
             </button>
-            {{ (repositoryDetails | async).branches[branch].branchName }}
+            <span>{{ (repositoryDetails | async).branches[branch].branchName }}</span>
           </div>
 
           <div class="branch__body" [id]="'body'+i">
@@ -80,9 +80,9 @@
             <div class="branch" *ngFor="let branch of getCustomBranches(customBranch.branches); let j = index">
               <div class="branch__name" [id]="'name'+i+j" (click)="click('name'+i+j, 'body'+i+j, 'btn'+i+j)">
                 <button class="toggle-button">
-                  <span class="toggle-button__text" [id]="'btn'+i+j"> > </span>
+                  <span class="toggle-button__text" [id]="'btn'+i+j">&#8250;</span>
                 </button>
-                {{ customBranch.branches[branch].branchName }}
+                <span>{{ customBranch.branches[branch].branchName }}</span>
               </div>
 
               <div class="branch__body" [id]="'body'+i+j">
