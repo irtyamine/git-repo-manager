@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   DefaultBranches,
   MockPackages
-} from './mock-data';
+} from './mock/mock-data';
 
 @Injectable({ providedIn: 'root' })
 class MockShieldsService extends ShieldsService {
@@ -33,11 +33,9 @@ describe('Service: ShieldsService', () => {
           'warnings': WarningsReducer
         }),
       ],
-      providers: [ DataService, StoreService ]
-    })
-  });
+      providers: [ ShieldsService, DataService, StoreService ]
+    });
 
-  beforeEach(() => {
     shieldsService = TestBed.get(MockShieldsService);
     shieldsUrl = shieldsService.shieldsUrl;
     shieldsService.packages.next(MockPackages);

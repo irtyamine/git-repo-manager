@@ -21,8 +21,7 @@ export class RepositoriesDataService {
   }
 
   public getPackages() {
-    const { organization } = this.store.getAuthData();
-    const { dataSource } = this.store.getAuthData();
+    const { organization, dataSource } = this.store.getAuthData();
 
     const options = {
       params: new HttpParams()
@@ -35,8 +34,7 @@ export class RepositoriesDataService {
   }
 
   public getRepositories() {
-    const { organization } = this.store.getAuthData();
-    const { dataSource } = this.store.getAuthData();
+    const { organization, dataSource } = this.store.getAuthData();
 
     const options = {
       params: new HttpParams()
@@ -50,8 +48,7 @@ export class RepositoriesDataService {
 
   public getRepositoryDetails() {
     const repository = this.lsService.getItem('repository');
-    const { organization } = this.store.getAuthData();
-    const { dataSource } = this.store.getAuthData();
+    const { organization, dataSource } = this.store.getAuthData();
 
     const options = {
       params: new HttpParams()
@@ -74,8 +71,7 @@ export class RepositoriesDataService {
   }
 
   public getCustomBranches(userName: string, repoName: string) {
-    const { organization } = this.store.getAuthData();
-    const { dataSource } = this.store.getAuthData();
+    const { organization, dataSource } = this.store.getAuthData();
 
     const options = {
       params: new HttpParams()
@@ -97,8 +93,7 @@ export class RepositoriesDataService {
     repoName: string,
     userName: string
   ) {
-    const { organization } = this.store.getAuthData();
-    const { dataSource } = this.store.getAuthData();
+    const { organization, dataSource } = this.store.getAuthData();
 
     const body = {
       repoName: repoName,
