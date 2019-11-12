@@ -3,7 +3,7 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '..',
+    basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -12,9 +12,6 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },
     reporters: ['progress', 'kjhtml', 'coverage-istanbul'],
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../../../coverage/client'),
@@ -27,39 +24,27 @@ module.exports = function (config) {
           subdir: 'html'
         }
       },
-      thresholds: {
-        emitWarning: false,
-        global: {
-          statements: 20,
-          lines: 20,
-          branches: 20,
-          functions: 20
-        },
-        each: {
-          statements: 20,
-          lines: 20,
-          branches: 20,
-          functions: 20
-        }
-      },
-      port: 9876,
-      colors: true,
-      logLevel: config.LOG_INFO,
-      autoWatch: true,
-      browsers: ['Chrome'],
-      singleRun: false,
-      restartOnFileChange: true,
-      customLaunchers: {
-        ChromeHeadlessNoSandbox: {
-          base: 'ChromeHeadless',
-          flags: [
-            '--no-sandbox',
-            '--headless',
-            '--disable-gpu',
-            ' --remote-debugging-port=9222'
-          ]
-        }
+      verbose: false
+    },
+    client: {
+      clearContext: false
+    },
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-gpu',
+          ' --remote-debugging-port=9222'
+        ]
       }
-    }
+    },
+    singleRun: false
   });
 };

@@ -15,7 +15,7 @@
     "server:start": "ts-node --compiler typescript --project apps/server/tsconfig.server.json apps/server/src/main.ts",
     "start:prod": "node ./dist/server/main.js",
     "lint": "ng lint",
-    "test": "ng test"
+    "test": "ng test --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox"
   },
   "dependencies": {
     "@angular/animations": "8.2.0",
