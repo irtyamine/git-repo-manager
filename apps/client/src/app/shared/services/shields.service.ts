@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class ShieldsService {
 
-  private shieldsUrl: string = 'https://img.shields.io/badge';
-  private packages: BehaviorSubject<any>;
+  protected shieldsUrl: string = 'https://img.shields.io/badge';
+  protected packages: BehaviorSubject<any>;
 
   constructor(
     private readonly dataService: DataService,
