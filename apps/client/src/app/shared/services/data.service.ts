@@ -4,9 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-  private availablePackages = new BehaviorSubject<any>([]);
-  private companyRepositories = new BehaviorSubject<any>([]);
-  private _customBranches = new BehaviorSubject<any>([]);
+  protected availablePackages = new BehaviorSubject<any>([]);
+  protected companyRepositories = new BehaviorSubject<any>([]);
+  protected customBranchesSubject = new BehaviorSubject<any>([]);
 
   constructor(private readonly reposDataService: RepositoriesDataService) {
     this.getPackagesData();
@@ -14,29 +14,29 @@ export class DataService {
   }
 
   public getPackagesData() {
-    return this.reposDataService.getRepositories()
-      .subscribe(repositories => this.setRepositories(repositories));
-  }
-
-  public getRepositoriesData() {
     return this.reposDataService.getPackages()
       .subscribe(packages => this.setPackagesData(packages));
   }
 
+  public getRepositoriesData() {
+    return this.reposDataService.getRepositories()
+      .subscribe(repositories => this.setRepositories(repositories));
+  }
+
   public getCustomBranches(userName: string, repoName: string) {
     return this.reposDataService.getCustomBranches(userName, repoName)
-      .subscribe((customBranches: any) => this._customBranches.next(customBranches));
+      .subscribe((customBranches: any) => this.setCustomBranches(customBranches));
   }
 
   public setCustomBranchesData(
     branches: {
       baseBranch: string,
-      compareBranch
+      compareBranch: string
     },
     repoName: string,
     userName: string
   ) {
-    return this.reposDataService.setCustomBranchesData(branches, repoName, userName)
+    return this.reposDataService.setCustomBranchesData(branches, repoName, userName);
   }
 
   public getUserData() {
@@ -54,7 +54,7 @@ export class DataService {
   public removeComparing(login: string, repoName: string, branchesData: any) {
     return this.reposDataService.removeComparing(login, repoName, branchesData)
       .subscribe(customBranches => {
-        this._customBranches.next(customBranches);
+        this.setCustomBranches(customBranches);
       });
   }
 
@@ -66,6 +66,10 @@ export class DataService {
     this.companyRepositories.next(repositories);
   }
 
+  public setCustomBranches(customBranches: any) {
+    this.customBranchesSubject.next(customBranches);
+  }
+
   public get packages() {
     return this.availablePackages;
   }
@@ -75,6 +79,6 @@ export class DataService {
   }
 
   public get customBranches() {
-    return this._customBranches;
+    return this.customBranchesSubject;
   }
 }

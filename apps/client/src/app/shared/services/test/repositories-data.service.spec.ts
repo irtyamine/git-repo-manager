@@ -159,6 +159,50 @@ describe('Service: RepositoriesDataService', () => {
 
       req.flush(repos);
     });
+
+    it('should add new custom branches', () => {
+      lsService.setItem('org', 'testOrg');
+      lsService.setItem('source', 'github');
+
+      const testBody = {
+        repoName: 'testRepo',
+        userName: 'testUser',
+        organization: 'testOrg',
+        baseBranch: 'customBranch1',
+        compareBranch: 'customBranch2'
+      };
+
+      reposDataService
+        .setCustomBranchesData(
+          {
+            baseBranch: 'customBranch1',
+            compareBranch: 'customBranch2'
+          },
+          'testRepo',
+          'testUser')
+        .subscribe();
+
+      const req = httpMock.expectOne(`${environment.url}/api/github/repositories/add-custom-branches`);
+      expect(req.request.method).toEqual('POST');
+    });
+
+    it('should delete selected custom branches', () => {
+      lsService.setItem('org', 'testOrg');
+      lsService.setItem('source', 'github');
+
+      reposDataService.removeComparing(
+        'testUser',
+        'testRepo2',
+        {
+          branches: {
+            baseBranch: { branchName: 'testBranch1' },
+            compareBranch: { branchName: 'testBranch2' }
+          }
+        }).subscribe();
+
+      const req = httpMock.expectOne(`${environment.url}/api/github/repositories/remove-custom-branches?repoName=testRepo2&userName=testUser&organization=testOrg&vcs=github&baseBranch=testBranch1&compareBranch=testBranch2`);
+      expect(req.request.method).toEqual('DELETE');
+    });
   });
 
 });
