@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-user-authorization',
@@ -21,7 +20,6 @@ export class UserAuthorizationComponent implements OnInit {
     private readonly router: Router,
     private readonly auth: AuthService,
     private readonly formBuilder: FormBuilder,
-    private readonly lsService: LocalStorageService
   ) {  }
 
   ngOnInit(): void {
@@ -29,16 +27,6 @@ export class UserAuthorizationComponent implements OnInit {
       organization: ['', Validators.required],
       dataSource: ['', Validators.required]
     });
-
-    this.auth.check()
-      .subscribe(res => {
-        if (!res) {
-          this.lsService.clear();
-        }
-        else {
-          this.router.navigateByUrl('repositories');
-        }
-      })
   }
 
   public setVCS() {
@@ -46,9 +34,12 @@ export class UserAuthorizationComponent implements OnInit {
 
     switch (this.loginForm.value.dataSource) {
       case orgNameLength !== 0 && 'github':
-        return 'Log in via GitHub';
+        this.loginText = 'Log in via GitHub';
+        break;
+
       default:
-        return 'Choose organization and VCS';
+        this.loginText = 'Choose organization and VCS';
+        break;
     }
   }
   public login() {

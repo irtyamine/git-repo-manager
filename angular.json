@@ -6,8 +6,8 @@
     "client": {
       "projectType": "application",
       "schematics": {},
-      "root": "apps",
-      "sourceRoot": "apps/client",
+      "root": "apps/client",
+      "sourceRoot": "apps/client/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -121,5 +121,5 @@
         }
       }
     }},
-  "defaultProject": "apps/client"
+  "defaultProject": "client"
 }
