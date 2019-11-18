@@ -18,7 +18,7 @@ export const MockPackages = [
   },
   {
     name: 'lodash',
-    recommendVersion: '14.10.0',
+    recommendVersion: '14.17.10',
     addedBy: 'admin',
     organization: 'valor-software',
     dataSource: 'github',

@@ -7,7 +7,7 @@ import * as semver from 'semver';
 @Injectable()
 export class DependenciesService {
 
-  private packages: BehaviorSubject<any>;
+  protected packages: BehaviorSubject<any>;
 
   constructor(
     private readonly store: StoreService,

@@ -56,7 +56,7 @@ describe('Service: ShieldsService', () => {
 
       expect(result)
         .toBe(
-          `${shieldsUrl}/lodash-14.10.0-blue?style=flat-square`
+          `${shieldsUrl}/lodash-14.17.10-blue?style=flat-square`
         )
     })
   });
@@ -68,7 +68,7 @@ describe('Service: ShieldsService', () => {
       expect(result)
         .toBe(
           `${shieldsUrl}/-lodash-blue?style=flat-square`
-        )
+        );
     });
 
     it('should return shield link for important dependency', () => {
