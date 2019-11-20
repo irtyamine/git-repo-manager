@@ -7,7 +7,7 @@ import { StoreService } from '../../../../shared/services/store.service';
 import { DataService } from '../../../../shared/services/data.service';
 import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
 import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
-import { MockPackages } from '../../../../shared/services/test/mock/mock-data';
+import { MockPackages } from '../../../../shared/mock/mock-data';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

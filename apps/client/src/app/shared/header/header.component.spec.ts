@@ -8,7 +8,7 @@ import { AuthService } from '../../modules/user-authorization/services/auth.serv
 import { AuthReducer } from '../store/reducers/auth.reducer';
 import { WarningsReducer } from '../store/reducers/warnings.reducer';
 import { LocalStorageService } from '../services/local-storage.service';
-import { MockLocalStorage } from '../services/test/mock/mock-local-storage';
+import { MockLocalStorage } from '../mock/mock-local-storage';
 import { By } from '@angular/platform-browser';
 
 describe('Component: HeaderComponent', () => {

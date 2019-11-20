@@ -36,7 +36,7 @@ export class RepositoryDetailsComponent implements OnInit {
   public modalRef: BsModalRef;
   public repositoryDetails = new BehaviorSubject<any>({});
   public modalWarning = new BehaviorSubject<string>('');
-  public customBranches: BehaviorSubject<any>;
+  public customBranches = new BehaviorSubject<any>([]);
 
   constructor(
     private readonly lsService: LocalStorageService,
@@ -78,7 +78,7 @@ export class RepositoryDetailsComponent implements OnInit {
       });
   }
 
-  private getRepositoryDetails() {
+  protected getRepositoryDetails() {
     return this.repoDetailsService
       .getRepositoryDetails()
       .subscribe((res: any) => {
@@ -93,7 +93,7 @@ export class RepositoryDetailsComponent implements OnInit {
       });
   }
 
-  private getUserData() {
+  protected getUserData() {
     return this.repoDetailsService
       .getUserData()
       .subscribe((user: any) => {
@@ -117,18 +117,18 @@ export class RepositoryDetailsComponent implements OnInit {
     return dependencies;
   }
 
-  private setDefaultBranchesShields(branches: any) {
+  protected setDefaultBranchesShields(branches: any) {
     this.defaultBranchesShield = this.repoDetailsService
       .getDefaultBranchesData(branches);
   }
 
-  private getBranches(branches: any) {
+  protected getBranches(branches: any) {
     this.defaultBranches = Object.keys(branches);
 
     return this.defaultBranches;
   }
 
-  private setRepositoryDependencies(branches: any) {
+  protected setRepositoryDependencies(branches: any) {
     const { baseBranch, compareBranch } = branches;
 
     const dependencies = Object.keys(
@@ -141,7 +141,7 @@ export class RepositoryDetailsComponent implements OnInit {
   }
 
 
-  private checkForImportantDependencies(dependencies: any) {
+  protected checkForImportantDependencies(dependencies: any) {
     this.dependenciesService.checkForImportantDependencies(dependencies);
 
     this.warnings = this.store.getWarnings();
@@ -183,7 +183,7 @@ export class RepositoryDetailsComponent implements OnInit {
         return {
           baseBranch: branches.branches.baseBranch.branchName,
           compareBranch: branches.branches.compareBranch.branchName,
-        }
+        };
       });
 
     this.modalWarning.next('');
@@ -204,7 +204,7 @@ export class RepositoryDetailsComponent implements OnInit {
       this.modalWarning.next(ModalNotifications.COMPARE_BRANCH_WITH_ITSELF);
       this.disableAddBranchesButtonCondition = false;
       this.cdr.detectChanges();
-      return false
+      return false;
     }
 
     if ((baseBranch === 'master' && compareBranch === 'development')
@@ -237,7 +237,7 @@ export class RepositoryDetailsComponent implements OnInit {
         this.customBranchesForm.reset();
         this.customBranches.next(res);
         this.modalRef.hide();
-      })
+      });
   }
 
   public getCustomBranches(branches: any) {

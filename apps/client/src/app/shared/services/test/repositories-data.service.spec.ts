@@ -5,7 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { LocalStorageService } from '../local-storage.service';
 import { AuthReducer } from '../../store/reducers/auth.reducer';
 import { WarningsReducer } from '../../store/reducers/warnings.reducer';
-import { MockLocalStorage } from './mock/mock-local-storage';
+import { MockLocalStorage } from '../../mock/mock-local-storage';
 import { environment } from '../../../../environments/environment';
 import {
   HttpClientTestingModule,
@@ -15,8 +15,8 @@ import {
   MockPackages,
   MockRepositories,
   ListOfBranches,
-  ListOfCustombranches
-} from './mock/mock-data';
+  ListOfCustomBranches
+} from '../../mock/mock-data';
 
 describe('Service: RepositoriesDataService', () => {
   let reposDataService: RepositoriesDataService;
@@ -147,7 +147,7 @@ describe('Service: RepositoriesDataService', () => {
       lsService.setItem('org', 'testOrg');
       lsService.setItem('source', 'github');
 
-      const repos = ListOfCustombranches.filter(repo => repo.repoName === 'testRepo1');
+      const repos = ListOfCustomBranches.filter(repo => repo.repoName === 'testRepo1');
 
       reposDataService.getCustomBranches('testUser', 'testRepo1')
         .subscribe((res: Object[]) => {

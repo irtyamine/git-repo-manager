@@ -5,10 +5,10 @@ import { RepositoryBranchesService } from '../repository-branches.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
 import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
-import { DefaultBranches } from '../../../../shared/services/test/mock/mock-data';
+import { DefaultBranches } from '../../../../shared/mock/mock-data';
 import { environment } from '../../../../../environments/environment';
-import { MockLocalStorage } from '../../../../shared/services/test/mock/mock-local-storage';
-import { ListOfCustombranches } from '../../../../shared/services/test/mock/mock-data';
+import { MockLocalStorage } from '../../../../shared/mock/mock-local-storage';
+import { ListOfCustomBranches } from '../../../../shared/mock/mock-data';
 import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 
 describe('Service: RepositoryBranchesService', () => {
@@ -91,11 +91,11 @@ describe('Service: RepositoryBranchesService', () => {
       repositoryBranchesService.getCustomBranches('testUser', 'testRepo');
 
       const req = httpMock.expectOne(`${environment.url}/api/github/repositories/custom-branches?addedBy=testUser&repoName=testRepo&organization=testOrg&vcs=github`);
-      req.flush(ListOfCustombranches);
+      req.flush(ListOfCustomBranches);
 
       dataService.customBranches
         .subscribe(res => {
-          expect(res).toEqual(ListOfCustombranches);
+          expect(res).toEqual(ListOfCustomBranches);
         });
 
       expect(req.request.method).toBe('GET');
@@ -151,11 +151,11 @@ describe('Service: RepositoryBranchesService', () => {
         'testUser'
       )
         .subscribe(res => {
-          expect(res).toEqual(ListOfCustombranches);
+          expect(res).toEqual(ListOfCustomBranches);
         });
 
       const req = httpMock.expectOne(`${environment.url}/api/github/repositories/add-custom-branches`);
-      req.flush(ListOfCustombranches);
+      req.flush(ListOfCustomBranches);
 
       expect(req.request.method).toBe('POST');
     });

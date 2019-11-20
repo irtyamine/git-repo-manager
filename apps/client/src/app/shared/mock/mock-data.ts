@@ -72,15 +72,19 @@ export const ListOfBranches = [
   'branch6'
 ];
 
-export const ListOfCustombranches = [
+export const ListOfCustomBranches = [
   {
     repoName: 'testRepo1',
     addedBy: 'testUser',
     organization: 'testOrg',
     vcs: 'all',
     branches: {
-      baseBranch: {},
-      compareBranch: {}
+      baseBranch: {
+        branchName: 'testOne'
+      },
+      compareBranch: {
+        branchName: 'testTwo'
+      }
     }
   },
   {
@@ -89,8 +93,12 @@ export const ListOfCustombranches = [
     organization: 'testOrg',
     vcs: 'all',
     branches: {
-      baseBranch: {},
-      compareBranch: {}
+      baseBranch: {
+        branchName: 'testThree'
+      },
+      compareBranch: {
+        branchName: 'testFour'
+      }
     }
   },
   {
@@ -99,8 +107,12 @@ export const ListOfCustombranches = [
     organization: 'testOrg',
     vcs: 'all',
     branches: {
-      baseBranch: {},
-      compareBranch: {}
+      baseBranch: {
+        branchName: 'testFive'
+      },
+      compareBranch: {
+        branchName: 'testSix'
+      }
     }
   }
 ];

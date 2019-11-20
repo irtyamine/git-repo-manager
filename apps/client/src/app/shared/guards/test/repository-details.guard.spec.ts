@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RepositoryDetailsGuard } from '../repository-details.guard';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LocalStorageService } from '../../services/local-storage.service';
-import { MockLocalStorage } from '../../services/test/mock/mock-local-storage';
+import { MockLocalStorage } from '../../mock/mock-local-storage';
 
 describe('Guard: RepositoryDetailsGuard', () => {
   let repositoryDetailsGuard: RepositoryDetailsGuard;

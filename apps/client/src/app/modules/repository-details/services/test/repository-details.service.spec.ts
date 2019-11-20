@@ -8,7 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
 import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
-import { MockLocalStorage } from '../../../../shared/services/test/mock/mock-local-storage';
+import { MockLocalStorage } from '../../../../shared/mock/mock-local-storage';
 import { environment } from '../../../../../environments/environment';
 
 describe('Service: RepositoryDetailsService', () => {

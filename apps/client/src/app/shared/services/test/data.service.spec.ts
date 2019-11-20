@@ -10,8 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 import {
   MockPackages,
   MockRepositories,
-  ListOfCustombranches
-} from './mock/mock-data';
+  ListOfCustomBranches
+} from '../../mock/mock-data';
 
 @Injectable({ providedIn: 'root' })
 export class MockDataService extends DataService {
@@ -149,11 +149,11 @@ describe('Service: DataService', () => {
 
   describe('customBranches()', () => {
     it('should return \'CustomBranches\' ', () => {
-      dataService.setCustomBranches(ListOfCustombranches);
+      dataService.setCustomBranches(ListOfCustomBranches);
 
       dataService.customBranches
         .subscribe(branches => {
-          expect(branches).toBe(ListOfCustombranches);
+          expect(branches).toBe(ListOfCustomBranches);
         });
     });
   });

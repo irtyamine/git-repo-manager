@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 import {
   DefaultBranches,
   MockPackages
-} from './mock/mock-data';
+} from '../../mock/mock-data';
 
 @Injectable({ providedIn: 'root' })
 class MockShieldsService extends ShieldsService {
