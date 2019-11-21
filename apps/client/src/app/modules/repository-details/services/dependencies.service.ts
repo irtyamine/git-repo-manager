@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { StoreService } from '../../../shared/services/store.service';
-import { DataService } from '../../../shared/services/data.service';
+import { StoreService } from '../../../../shared/services/store.service';
+import { DataService } from '../../../../shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import * as semver from 'semver';
 

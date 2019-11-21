@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ShieldsService } from '../../../shared/services/shields.service';
-import { DataService } from '../../../shared/services/data.service';
+import { ShieldsService } from '../../../../shared/services/shields.service';
+import { DataService } from '../../../../shared/services/data.service';
 
 @Injectable()
 export class RepositoryDetailsService {

@@ -12,9 +12,9 @@ import { TooltipModule } from 'ngx-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { FiltrationService } from './services/filtration.service';
 import { AuthService } from '../user-authorization/services/auth.service';
-import { HeaderModule } from '../../shared/header/header.module';
-import { TimestampPipe } from '../../shared/pipes/timestamp.pipe';
-import { PipesModule } from '../../shared/pipes/pipes.module';
+import { HeaderModule } from '../../../shared/header/header.module';
+import { TimestampPipe } from '../../../shared/pipes/timestamp.pipe';
+import { PipesModule } from '../../../shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
-import { DataService } from '../../../shared/services/data.service';
+import { DataService } from '../../../../shared/services/data.service';
 import { BehaviorSubject } from 'rxjs';
 import { PackageInfoInterface } from '../interfaces/package-info.interface';
-import { StoreService } from '../../../shared/services/store.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { StoreService } from '../../../../shared/services/store.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { FiltrationService } from '../services/filtration.service';
 import { Router } from '@angular/router';
 

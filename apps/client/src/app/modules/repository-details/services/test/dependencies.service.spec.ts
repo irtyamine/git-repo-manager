@@ -3,11 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import { DependenciesService } from '../dependencies.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { StoreModule } from '@ngrx/store';
-import { StoreService } from '../../../../shared/services/store.service';
-import { DataService } from '../../../../shared/services/data.service';
-import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
-import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
-import { MockPackages } from '../../../../shared/mock/mock-data';
+import { StoreService } from '../../../../../shared/services/store.service';
+import { DataService } from '../../../../../shared/services/data.service';
+import { AuthReducer } from '../../../../../shared/store/reducers/auth.reducer';
+import { WarningsReducer } from '../../../../../shared/store/reducers/warnings.reducer';
+import { MockPackages } from '../../../../../shared/mock/mock-data';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

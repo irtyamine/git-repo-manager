@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { setTheme } from 'ngx-bootstrap';
 import { Router } from '@angular/router';
 import { AuthService } from '../../modules/user-authorization/services/auth.service';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-root',

@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NotificationService } from '../notifications/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
-import { AuthService } from '../../modules/user-authorization/services/auth.service';
+import { AuthService } from '../../app/modules/user-authorization/services/auth.service';
 import { AuthReducer } from '../store/reducers/auth.reducer';
 import { WarningsReducer } from '../store/reducers/warnings.reducer';
 import { LocalStorageService } from '../services/local-storage.service';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { RepositoriesDataService } from '../../../shared/services/repositories-data.service';
-import { DataService } from '../../../shared/services/data.service';
+import { RepositoriesDataService } from '../../../../shared/services/repositories-data.service';
+import { DataService } from '../../../../shared/services/data.service';
 
 import { FilteringOptionsInterface } from '../interfaces/filteringOptions.interface';
 import { RepositoryInterface } from '../interfaces/repository.interface';

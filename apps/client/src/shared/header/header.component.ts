@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '../../modules/user-authorization/services/auth.service';
+import { AuthService } from '../../app/modules/user-authorization/services/auth.service';
 import { AuthDataInterface } from '../interfaces/auth-data.interface';
 
 @Component({

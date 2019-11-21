@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { DataService } from '../../../../shared/services/data.service';
+import { DataService } from '../../../../../shared/services/data.service';
 import { StoreModule } from '@ngrx/store';
 import { RepositoryBranchesService } from '../repository-branches.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
-import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
-import { DefaultBranches } from '../../../../shared/mock/mock-data';
+import { AuthReducer } from '../../../../../shared/store/reducers/auth.reducer';
+import { WarningsReducer } from '../../../../../shared/store/reducers/warnings.reducer';
+import { DefaultBranches } from '../../../../../shared/mock/mock-data';
 import { environment } from '../../../../../environments/environment';
-import { MockLocalStorage } from '../../../../shared/mock/mock-local-storage';
-import { ListOfCustomBranches } from '../../../../shared/mock/mock-data';
-import { LocalStorageService } from '../../../../shared/services/local-storage.service';
+import { MockLocalStorage } from '../../../../../shared/mock/mock-local-storage';
+import { ListOfCustomBranches } from '../../../../../shared/mock/mock-data';
+import { LocalStorageService } from '../../../../../shared/services/local-storage.service';
 
 describe('Service: RepositoryBranchesService', () => {
   let repositoryBranchesService: RepositoryBranchesService;

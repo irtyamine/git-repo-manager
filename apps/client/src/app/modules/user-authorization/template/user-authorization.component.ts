@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -20,9 +21,11 @@ export class UserAuthorizationComponent implements OnInit {
     private readonly router: Router,
     private readonly auth: AuthService,
     private readonly formBuilder: FormBuilder,
+    private readonly lsService: LocalStorageService
   ) {  }
 
   ngOnInit(): void {
+    this.lsService.clear();
     this.loginForm = this.formBuilder.group({
       organization: ['', Validators.required],
       dataSource: ['', Validators.required]

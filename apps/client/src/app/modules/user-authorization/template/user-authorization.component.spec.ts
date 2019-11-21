@@ -3,12 +3,12 @@ import { UserAuthorizationComponent } from './user-authorization.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { StoreModule } from '@ngrx/store';
-import { AuthReducer } from '../../../shared/store/reducers/auth.reducer';
-import { WarningsReducer } from '../../../shared/store/reducers/warnings.reducer';
-import { NotificationService } from '../../../shared/notifications/notification.service';
+import { AuthReducer } from '../../../../shared/store/reducers/auth.reducer';
+import { WarningsReducer } from '../../../../shared/store/reducers/warnings.reducer';
+import { NotificationService } from '../../../../shared/notifications/notification.service';
 
 describe('Component: UserAuthorizationComponent', () => {
   let component: UserAuthorizationComponent;

@@ -1,15 +1,15 @@
 import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { RepositoryDetailsService } from '../services/repository-details.service';
-import { StoreService } from '../../../shared/services/store.service';
-import { ShieldsService } from '../../../shared/services/shields.service';
+import { StoreService } from '../../../../shared/services/store.service';
+import { ShieldsService } from '../../../../shared/services/shields.service';
 import { DependenciesService } from '../services/dependencies.service';
 import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { RepositoryBranchesService } from '../services/repository-branches.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { DataService } from '../../../shared/services/data.service';
+import { DataService } from '../../../../shared/services/data.service';
 
 import { ModalNotifications } from './modal-notifications';
 

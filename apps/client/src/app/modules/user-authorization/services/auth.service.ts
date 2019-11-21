@@ -3,9 +3,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { NotificationService } from '../../../shared/notifications/notification.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { StoreService } from '../../../shared/services/store.service';
+import { NotificationService } from '../../../../shared/notifications/notification.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
+import { StoreService } from '../../../../shared/services/store.service';
 
 @Injectable()
 export class AuthService implements ErrorHandler {

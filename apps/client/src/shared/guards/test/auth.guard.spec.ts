@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthGuard } from '../auth.guard';
-import { AuthService } from '../../../modules/user-authorization/services/auth.service';
+import { AuthService } from '../../../app/modules/user-authorization/services/auth.service';
 import { NotificationService } from '../../notifications/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthReducer } from '../../store/reducers/auth.reducer';
 import { WarningsReducer } from '../../store/reducers/warnings.reducer';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpResponse } from '@angular/common/http';
 
 describe('Guard: AuthGuard', () => {

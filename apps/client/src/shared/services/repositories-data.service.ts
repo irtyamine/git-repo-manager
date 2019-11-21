@@ -4,7 +4,7 @@ import { StoreService } from './store.service';
 import { LocalStorageService } from './local-storage.service';
 import { catchError } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RepositoriesDataService {

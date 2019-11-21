@@ -6,7 +6,7 @@ import { LocalStorageService } from '../local-storage.service';
 import { AuthReducer } from '../../store/reducers/auth.reducer';
 import { WarningsReducer } from '../../store/reducers/warnings.reducer';
 import { MockLocalStorage } from '../../mock/mock-local-storage';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import {
   HttpClientTestingModule,
   HttpTestingController
