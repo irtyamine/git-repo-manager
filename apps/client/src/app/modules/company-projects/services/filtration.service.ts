@@ -56,16 +56,16 @@ export class FiltrationService {
   public filterData(filteringOptions: FilteringOptionsInterface[]) {
 
     const filteredOptions = this.repositories.filter((repository: RepositoryInterface) => {
-      const repositoryBranches = Object.keys(repository.branches);
+      const { branches } = repository;
+      const repositoryBranches = Object.keys(branches);
 
-      const firstBranchName = repositoryBranches[0];
-      const firstBranchData = repository.branches[firstBranchName];
+      const firstBranchData = branches['baseBranch'];
+      const firstBranchName = firstBranchData ? firstBranchData['branchName'] : undefined;
 
-      const secondBranchName = repositoryBranches[1];
-      const secondBranchData = repository.branches[secondBranchName];
+      const secondBranchData = branches['compareBranch'];
+      const secondBranchName = firstBranchData ? firstBranchData['branchName'] : undefined;
 
       return filteringOptions.every(option => {
-
         if (option.value === 'none') {
           return (!firstBranchData || !firstBranchData[option.key]) && (!secondBranchData || !secondBranchData[option.key]);
         }

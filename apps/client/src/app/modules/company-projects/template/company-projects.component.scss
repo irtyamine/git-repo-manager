@@ -36,6 +36,7 @@
   &__body {
     background-color: $color-light-black;
     &-row {
+      position: relative;
       height: 40px;
       border: 1px solid $color-black;
       @include transition(.3s);
@@ -136,6 +137,7 @@
     @include transition(.3s);
     position: absolute;
     content: '';
+    left: 0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
     background-color: $color-row-before-danger;
