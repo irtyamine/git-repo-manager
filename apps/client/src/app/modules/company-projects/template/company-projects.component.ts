@@ -15,9 +15,9 @@ import { Router } from '@angular/router';
 })
 
 export class CompanyProjectsComponent implements OnInit, OnDestroy {
-  public tableHeader: BehaviorSubject<any>;
-  public repositories: BehaviorSubject<any>;
-  private defaultRepos: BehaviorSubject<any>;
+  protected defaultRepos = new BehaviorSubject<any>([]);
+  public tableHeader = new BehaviorSubject<any>([]);
+  public repositories = new BehaviorSubject<any>([]);
   public usrData: object;
   public authData: any;
 
