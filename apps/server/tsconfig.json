@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@shared/*": ["../shared/*"]
+    },
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "lib": ["es2015", "es2017"],
+    "sourceMap": true,
+    "allowJs": true,
+    "typeRoots": ["../../node_modules/@types"],
+    "outDir": "../../dist/server",
+    "resolveJsonModule": true,
+    "strict": true,
+    // dto s are failing this check
+    "strictPropertyInitialization": false  /* Enable strict checking of property initialization in classes. */
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ],
+  "references": [
+    { "path": "../shared" }
+  ]
+}
