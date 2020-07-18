@@ -45,7 +45,7 @@
     "cron": "1.6.0",
     "dotenv": "7.0.0",
     "lite-server": "2.4.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "mongoose": "5.3.12",
     "ngx-bootstrap": "3.2.0",
     "node-cmd": "3.0.0",
